@@ -1,0 +1,16 @@
+[package]
+name = "transitous-sim"
+version = "0.0.0"
+description = "Fake MOTIS 2 server built from recorded Transitous responses, for tests"
+keywords = ["transitous", "motis", "testing", "mock"]
+categories = ["development-tools::testing"]
+readme = "README.md"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish = false
+
+[lints]
+workspace = true

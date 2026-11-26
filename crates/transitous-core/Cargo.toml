@@ -1,0 +1,15 @@
+[package]
+name = "transitous-core"
+version = "0.0.0"
+description = "Usage rules, stop resolution and connection status for the Transitous API"
+keywords = ["transitous", "transit", "public-transport", "realtime"]
+categories = ["api-bindings"]
+readme = "README.md"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[lints]
+workspace = true
