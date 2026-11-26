@@ -256,7 +256,7 @@ async fn main() -> ExitCode {
 
 /// The configuration, with `--no-cache` applied.
 fn config(global: &Global) -> anyhow::Result<Config> {
-    let mut config = Config::load(&env)?;
+    let mut config = Config::load(&env).map_err(transitous_core::Error::from)?;
     if global.no_cache {
         config.cache_dir = None;
     }

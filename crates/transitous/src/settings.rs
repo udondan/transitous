@@ -57,7 +57,9 @@ pub(crate) fn run(
         }
         ConfigCommand::Path => Ok(writeln!(out, "{}", path()?.display())?),
         ConfigCommand::Get { key } => {
-            let value = Settings::load(&path()?)?.get(&key)?;
+            let value = Settings::load(&path()?)
+                .and_then(|settings| settings.get(&key))
+                .map_err(transitous_core::Error::from)?;
             if let Some(value) = value {
                 writeln!(out, "{value}")?;
             }
@@ -70,9 +72,11 @@ pub(crate) fn run(
 
 fn change(key: &str, value: Option<&str>, out: &mut impl Write) -> anyhow::Result<()> {
     let path = path()?;
-    let mut settings = Settings::load(&path)?;
-    settings.set(key, value)?;
-    settings.save(&path)?;
+    let mut settings = Settings::load(&path).map_err(transitous_core::Error::from)?;
+    settings
+        .set(key, value)
+        .and_then(|()| settings.save(&path))
+        .map_err(transitous_core::Error::from)?;
     let verb = if value.is_some() { "set" } else { "unset" };
     writeln!(out, "{verb} {key} in {}", path.display())?;
     Ok(())

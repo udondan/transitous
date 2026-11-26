@@ -426,8 +426,10 @@ async fn changes_the_configuration() {
         stdout(&config(&["get", "contact"])),
         "mailto:someone@example.org\n"
     );
-    let output = config(&["set", "plan_daily_limit", "many"]);
+    let output = config(&["-o", "json", "set", "plan_daily_limit", "many"]);
     assert_eq!(output.status.code(), Some(1));
+    let error: Value = serde_json::from_slice(&output.stderr).unwrap();
+    assert_eq!(error["status"], "config_error");
     assert!(
         stderr(&output).contains("plan_daily_limit"),
         "{}",
@@ -460,14 +462,25 @@ fn a_broken_configuration_is_reported() {
     let mut command = home.command();
     command
         .env("TRANSITOUS_CONFIG", &file)
-        .args(["-o", "text", "usage"]);
+        .args(["-o", "json", "usage"]);
     let output = command.output().unwrap();
     assert_eq!(output.status.code(), Some(1));
+    let error: Value = serde_json::from_slice(&output.stderr).unwrap();
+    assert_eq!(error["status"], "config_error");
     assert!(
-        stderr(&output).contains("is not a valid configuration"),
-        "{}",
-        stderr(&output)
+        error["error"]
+            .as_str()
+            .unwrap()
+            .contains("is not a valid configuration"),
+        "{error}"
     );
+    let mut command = home.command();
+    command
+        .env("TRANSITOUS_CONFIG", &file)
+        .args(["-o", "json", "config", "get", "contact"]);
+    let output = command.output().unwrap();
+    let error: Value = serde_json::from_slice(&output.stderr).unwrap();
+    assert_eq!(error["status"], "config_error");
 }
 
 #[test]

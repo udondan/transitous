@@ -132,7 +132,7 @@ same format on stderr, with a stable `status`:
 | `status` | Meaning |
 | --- | --- |
 | `contact_missing` | No contact configured; nothing was sent |
-| `config_error` | The configuration file or the contact is invalid |
+| `config_error` | The configuration file, a setting or the contact is invalid |
 | `invalid_input` | (MCP) A time, mode or place could not be read; the CLI reports these as usage errors |
 | `ambiguous_stop` | The name fits several stops; see `candidates` |
 | `stop_not_found` | No stop has that name |
@@ -243,7 +243,7 @@ to the profile `transitous`. Set the secret `transitous.contact` with
 | `TRANSITOUS_NO_CACHE` | `1`: no cache, like `--no-cache` |
 | `TRANSITOUS_LOG`, `TRANSITOUS_LOG_FILE` | Log level, like `debug` or `motis=debug`, and a log file |
 | `TRANSITOUS_MCP_TOKEN` | The bearer token of `mcp --http` |
-| `TRANSITOUS_NOW` | Evaluate the status at another time, like `07:50` |
+| `TRANSITOUS_NOW` | Evaluate the status as if it were another time, as RFC 3339 like `2026-11-27T07:50:00+01:00`; `HH:MM` times then count from that day |
 
 ## Usage rules and limits
 
