@@ -11,7 +11,7 @@
           "type": "boolean"
         },
         "count": {
-          "description": "The most departures, up to 100. Default 10.",
+          "description": "How many departures to ask for, up to 100. Default 10. Transitous\ncan return more.",
           "format": "uint32",
           "minimum": 0,
           "type": [
@@ -726,7 +726,7 @@
           "type": "boolean"
         },
         "count": {
-          "description": "The number of connections, up to 20. Default 5.",
+          "description": "How many connections to ask for, up to 20. Default 5. Transitous\ncan return more; all are returned, so the page cursors skip none.",
           "format": "uint32",
           "minimum": 0,
           "type": [

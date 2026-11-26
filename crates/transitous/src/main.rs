@@ -92,7 +92,8 @@ enum Command {
         /// or RFC 3339. Defaults to now.
         #[arg(long, value_parser = time::arg)]
         time: Option<Timestamp>,
-        /// The most departures to show, up to 100.
+        /// How many departures to ask for, up to 100. Transitous can return
+        /// more, like all that leave in the same minute.
         #[arg(long, default_value_t = 10)]
         count: u32,
         /// Arrivals instead of departures.
@@ -123,7 +124,8 @@ enum Command {
         /// Depart at this time, like `--arrive`. Defaults to now.
         #[arg(long, value_parser = time::arg)]
         depart: Option<Timestamp>,
-        /// The number of connections to ask for, up to 20.
+        /// How many connections to ask for, up to 20. Transitous can return
+        /// more; all of them are shown, so the page cursors skip none.
         #[arg(long, default_value_t = 5)]
         count: u32,
         /// Only these transit modes, like `rail,subway`.

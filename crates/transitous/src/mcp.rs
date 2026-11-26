@@ -173,7 +173,8 @@ pub(crate) struct DeparturesParams {
     stop: String,
     /// From this time: RFC 3339, a local time or HH:MM today. Default now.
     time: Option<String>,
-    /// The most departures, up to 100. Default 10.
+    /// How many departures to ask for, up to 100. Default 10. Transitous
+    /// can return more.
     count: Option<u32>,
     /// Arrivals instead of departures.
     #[serde(default)]
@@ -199,7 +200,8 @@ pub(crate) struct TripParams {
     /// earlier ones, to switch to.
     #[serde(default)]
     arrive_by: bool,
-    /// The number of connections, up to 20. Default 5.
+    /// How many connections to ask for, up to 20. Default 5. Transitous
+    /// can return more; all are returned, so the page cursors skip none.
     count: Option<u32>,
     /// Only these transit modes, like `["rail", "subway"]`.
     #[serde(default)]
