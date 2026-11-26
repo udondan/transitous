@@ -27,8 +27,9 @@ use crate::output::Format;
 /// The product in the User-Agent.
 const PRODUCT: &str = concat!("transitous/", env!("CARGO_PKG_VERSION"));
 
-/// Sets the current time for the status of connections, as RFC 3339. For
-/// tests, and to see what the status would be at another time.
+/// Sets the current time, as RFC 3339, for the status of connections and for
+/// times like `07:50`. For tests, and to see what the status would be at
+/// another time.
 const ENV_NOW: &str = "TRANSITOUS_NOW";
 
 /// Public transport connections and departures with realtime status, from

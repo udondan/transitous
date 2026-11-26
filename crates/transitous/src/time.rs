@@ -35,9 +35,18 @@ fn local(datetime: DateTime, zone: &TimeZone) -> Result<Timestamp, String> {
         .map_err(|error| format!("invalid time {datetime}: {error}"))
 }
 
-/// Parses a time for clap, relative to now in the local zone.
+/// Parses a time for clap, relative to now in the local zone. Now is
+/// `TRANSITOUS_NOW` if it is set and valid, like the clock of the status.
 pub(crate) fn arg(input: &str) -> Result<Timestamp, String> {
-    parse(input, &ZonedDateTime::now())
+    parse(input, &current(crate::env(crate::ENV_NOW).as_deref()))
+}
+
+/// `fixed` in the local zone, or the current time without it.
+fn current(fixed: Option<&str>) -> ZonedDateTime {
+    match fixed.and_then(|fixed| fixed.parse::<Timestamp>().ok()) {
+        Some(timestamp) => timestamp.to_zoned_datetime(TimeZone::system()),
+        None => ZonedDateTime::now(),
+    }
 }
 
 #[cfg(test)]
@@ -72,6 +81,10 @@ mod tests {
             assert!(error.starts_with("invalid time"), "{input}: {error}");
         }
         assert!(arg("07:50").is_ok());
+        let fixed = current(Some("2026-11-26T20:00:00Z"));
+        assert_eq!(fixed.timestamp().to_string(), "2026-11-26T20:00:00Z");
+        let past: Timestamp = "2000-01-01T00:00:00Z".parse().unwrap();
+        assert!(current(Some("yesterday")).timestamp() > past);
         // Beyond the last time there is.
         let error = parse("9999-12-31T23:59", &now()).unwrap_err();
         assert!(
