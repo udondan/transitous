@@ -247,16 +247,23 @@ fn config(global: &Global) -> anyhow::Result<Config> {
     Ok(config)
 }
 
+/// The time from `TRANSITOUS_NOW`, if it is set.
+fn fixed_now() -> anyhow::Result<Option<Timestamp>> {
+    env(ENV_NOW)
+        .map(|now| {
+            now.parse()
+                .map_err(|error| anyhow::anyhow!("invalid {ENV_NOW} {now:?}: {error}"))
+        })
+        .transpose()
+}
+
 /// The client. Fails without a contact, before any request.
 fn service(global: &Global) -> anyhow::Result<Transitous> {
     let service = Transitous::new(&config(global)?, PRODUCT)?;
-    let Some(now) = env(ENV_NOW) else {
-        return Ok(service);
-    };
-    let now: Timestamp = now
-        .parse()
-        .map_err(|error| anyhow::anyhow!("invalid {ENV_NOW} {now:?}: {error}"))?;
-    Ok(service.with_clock(Arc::new(move || now)))
+    Ok(match fixed_now()? {
+        Some(now) => service.with_clock(Arc::new(move || now)),
+        None => service,
+    })
 }
 
 async fn run(command: Command, global: &Global, format: Format) -> anyhow::Result<()> {
@@ -326,7 +333,7 @@ async fn run(command: Command, global: &Global, format: Format) -> anyhow::Resul
                 config.state_dir.as_deref(),
                 config.plan_daily_limit,
             );
-            let summary = usage.summary(Timestamp::now())?;
+            let summary = usage.summary(fixed_now()?.unwrap_or_else(Timestamp::now))?;
             output::show(&summary, format, out, text::usage)
         }
         Command::Completion { shell } => Ok(completion::script(shell, out)?),
