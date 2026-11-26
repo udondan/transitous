@@ -241,13 +241,23 @@ impl Connection {
         let legs: Vec<Leg> = itinerary.legs.iter().map(Leg::from).collect();
         let first = itinerary.legs.first();
         let last = itinerary.legs.last();
+        // Walks have no realtime data of their own: their times follow the
+        // ride they lead to or come from.
+        let mut rides = itinerary.legs.iter().filter(|leg| leg.mode.is_transit());
+        let departs_realtime = rides.next().is_some_and(|leg| leg.real_time);
+        let arrives_realtime = itinerary
+            .legs
+            .iter()
+            .rev()
+            .find(|leg| leg.mode.is_transit())
+            .is_some_and(|leg| leg.real_time);
         let departure = first.map_or_else(
             || Time::new(itinerary.start_time, itinerary.start_time, false, None),
             |leg| {
                 Time::new(
                     leg.scheduled_start_time,
                     leg.start_time,
-                    evaluation.realtime != Realtime::None,
+                    departs_realtime,
                     leg.from.tz.as_deref(),
                 )
             },
@@ -258,7 +268,7 @@ impl Connection {
                 Time::new(
                     leg.scheduled_end_time,
                     leg.end_time,
-                    evaluation.realtime != Realtime::None,
+                    arrives_realtime,
                     leg.to.tz.as_deref(),
                 )
             },
@@ -715,6 +725,42 @@ mod tests {
         assert_eq!(result.stops, Vec::<JourneyStop>::new());
         assert_eq!(result.mode, "");
         assert!(!result.realtime);
+    }
+
+    #[test]
+    fn each_end_has_the_realtime_of_its_ride() {
+        let time: Timestamp = "2026-11-26T20:00:00Z".parse().unwrap();
+        let ride = |real_time| motis::Leg {
+            mode: motis::Mode::Bus,
+            scheduled_start_time: time,
+            start_time: time,
+            scheduled_end_time: time,
+            end_time: time,
+            real_time,
+            ..motis::Leg::default()
+        };
+        let walk = motis::Leg {
+            mode: motis::Mode::Walk,
+            ..ride(false)
+        };
+        let delays = |legs: Vec<motis::Leg>| {
+            let itinerary = motis::Itinerary {
+                legs,
+                ..motis::Itinerary::default()
+            };
+            let evaluation = crate::status::evaluate(&itinerary, time, 2);
+            let connection = Connection::new(&itinerary, evaluation);
+            (
+                connection.departure.delay_minutes,
+                connection.arrival.delay_minutes,
+            )
+        };
+        assert_eq!(
+            delays(vec![walk.clone(), ride(true), ride(false), walk.clone()]),
+            (Some(0), None)
+        );
+        assert_eq!(delays(vec![ride(false), ride(true)]), (None, Some(0)));
+        assert_eq!(delays(vec![walk]), (None, None));
     }
 
     #[test]

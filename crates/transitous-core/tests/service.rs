@@ -390,17 +390,41 @@ async fn an_arrive_by_search_keeps_the_latest_connections() {
         },
     )
     .await;
-    // At least three are asked for, the last two kept: enough, no second
-    // page.
+    // At least three are asked for, and all that come are kept, so the
+    // page cursors skip nothing. Enough: no second page.
     assert_eq!(paths(&sim.requests()), ["/api/v6/plan"]);
     assert_eq!(sim.requests()[0].param("numItineraries"), Some("3"));
     assert!(sim.requests()[0].param("time").is_some());
-    let lines: Vec<Option<&str>> = result
-        .connections
-        .iter()
-        .map(|c| c.legs[1].line.as_deref())
-        .collect();
-    assert_eq!(lines, [Some("S5"), Some("S9")]);
+    assert_eq!(result.connections.len(), 4);
+}
+
+#[tokio::test]
+async fn a_walk_faster_than_any_ride_is_a_connection() {
+    let sim = Sim::start().await;
+    let walk = r#"{"mode":"WALK","from":{"name":"A","lat":50.1,"lon":8.6,"level":0,"vertexType":"NORMAL"},"to":{"name":"B","lat":50.11,"lon":8.61,"level":0,"vertexType":"NORMAL"},"duration":300,"startTime":"2026-11-26T20:05:00Z","endTime":"2026-11-26T20:10:00Z","scheduledStartTime":"2026-11-26T20:05:00Z","scheduledEndTime":"2026-11-26T20:10:00Z","realTime":false,"scheduled":true,"legGeometry":{"points":"","precision":7,"length":0}}"#;
+    let body = format!(
+        r#"{{"requestParameters":{{}},"debugOutput":{{}},"from":{{"name":"A","lat":50.1,"lon":8.6,"level":0,"vertexType":"NORMAL"}},"to":{{"name":"B","lat":50.11,"lon":8.61,"level":0,"vertexType":"NORMAL"}},"direct":[{{"duration":300,"startTime":"2026-11-26T20:05:00Z","endTime":"2026-11-26T20:10:00Z","transfers":0,"legs":[{walk}]}}],"itineraries":[],"previousPageCursor":"","nextPageCursor":""}}"#
+    );
+    sim.inject(Injection::Respond {
+        endpoint: Endpoint::Plan,
+        status: 200,
+        body,
+    });
+    let result = trip(
+        &sim,
+        &TripQuery {
+            from: "50.1,8.6".into(),
+            to: "50.11,8.61".into(),
+            ..trip_query()
+        },
+    )
+    .await;
+    assert_eq!(result.connections.len(), 1);
+    let connection = &result.connections[0];
+    assert_eq!(connection.legs[0].mode, "WALK");
+    assert_eq!(connection.duration_minutes, 5);
+    assert_eq!(connection.status, Status::Ok);
+    assert_eq!(connection.departure.delay_minutes, None);
 }
 
 #[tokio::test]

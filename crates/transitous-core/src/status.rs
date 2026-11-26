@@ -118,7 +118,11 @@ pub fn evaluate(itinerary: &Itinerary, now: Timestamp, delay_threshold_minutes: 
         .collect();
     let mut reasons = Vec::new();
     for &(index, leg) in &rides {
-        cancellations(index, leg, &mut reasons);
+        let seated = itinerary
+            .legs
+            .get(index + 1)
+            .is_some_and(|next| next.interline_with_previous_leg == Some(true));
+        cancellations(index, leg, seated, &mut reasons);
     }
     transfers(itinerary, &rides, &mut reasons);
     if let Some(&(index, leg)) = rides.first()
@@ -171,7 +175,9 @@ pub fn evaluate(itinerary: &Itinerary, now: Timestamp, delay_threshold_minutes: 
     }
 }
 
-fn cancellations(index: usize, leg: &Leg, reasons: &mut Vec<Reason>) {
+/// `seated`: the passenger stays aboard into the next leg, so does not
+/// alight at the end of this one.
+fn cancellations(index: usize, leg: &Leg, seated: bool, reasons: &mut Vec<Reason>) {
     if leg.cancelled == Some(true) {
         reasons.push(Reason::LegCancelled { leg: index });
         return;
@@ -185,7 +191,7 @@ fn cancellations(index: usize, leg: &Leg, reasons: &mut Vec<Reason>) {
             side: Side::Departure,
         });
     }
-    if leg.to.cancelled == Some(true) || leg.to.dropoff_type == not_allowed {
+    if !seated && (leg.to.cancelled == Some(true) || leg.to.dropoff_type == not_allowed) {
         reasons.push(Reason::StopCancelled {
             leg: index,
             side: Side::Arrival,
@@ -334,6 +340,19 @@ mod tests {
         );
         next.interline_with_previous_leg = Some(true);
         assert_eq!(check(vec![ride(0, 5, 0), next]).status, Status::Ok);
+    }
+
+    #[test]
+    fn dropoff_not_allowed_cancels_alighting_unless_seated() {
+        let mut first = ride(0, 5, 0);
+        first.to.dropoff_type = Some(PickupDropoffType::NotAllowed);
+        assert_eq!(
+            check(vec![first.clone(), ride(5, 9, 0)]).status,
+            Status::Cancelled
+        );
+        let mut next = ride(5, 9, 0);
+        next.interline_with_previous_leg = Some(true);
+        assert_eq!(check(vec![first, next]).status, Status::Ok);
     }
 
     #[test]

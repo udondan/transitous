@@ -90,7 +90,9 @@ pub struct TripQuery {
     /// Whether `time` is the latest arrival rather than the earliest
     /// departure.
     pub arrive_by: bool,
-    /// At most [`MAX_CONNECTIONS`].
+    /// How many connections to ask for, at most [`MAX_CONNECTIONS`]. The
+    /// result has all the API returns, which can be more: the page cursors
+    /// continue after the whole page, so nothing is dropped.
     pub count: u32,
     /// Only these transit modes. Empty: all.
     pub modes: Vec<Mode>,
@@ -303,7 +305,10 @@ impl Transitous {
             ..Plan::new(from, to)
         };
         let response = self.call(&request, &mut warnings).await?;
+        // Walking can beat every ride: the API then returns it as a direct
+        // route and leaves out the slower rides.
         let mut itineraries = response.itineraries;
+        add_new(&mut itineraries, response.direct);
         let mut earlier = response.previous_page_cursor;
         let later = response.next_page_cursor;
         let short = itineraries.len() < count as usize;
@@ -321,13 +326,6 @@ impl Transitous {
             }
         }
         itineraries.sort_by_key(departure);
-        let keep = count as usize;
-        if query.arrive_by {
-            let skip = itineraries.len().saturating_sub(keep);
-            itineraries.drain(..skip);
-        } else {
-            itineraries.truncate(keep);
-        }
         let now = (self.clock)();
         Ok(TripResult {
             from: Location::from(&response.from),
