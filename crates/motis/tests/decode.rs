@@ -97,6 +97,7 @@ fn decodes_alerts_and_keeps_unknown_values() {
                 "effect": "NO_SERVICE",
                 "severityLevel": "SEVERE",
                 "impactPeriod": [{"start": "2026-11-26T05:00:00Z", "end": "2026-11-26T23:00:00Z"}],
+                "communicationPeriod": [{"start": "2026-11-25T18:00:00Z"}],
                 "somethingNew": true
             }]}
         }],
@@ -112,10 +113,11 @@ fn decodes_alerts_and_keeps_unknown_values() {
     assert_eq!(alert.cause, Some(AlertCause::Strike));
     assert_eq!(alert.effect, Some(AlertEffect::NoService));
     assert_eq!(alert.severity_level, Some(AlertSeverityLevel::Severe));
-    assert_eq!(
-        alert.impact_period[0].end.to_string(),
-        "2026-11-26T23:00:00Z"
-    );
+    let end = alert.impact_period[0].end.unwrap();
+    assert_eq!(end.to_string(), "2026-11-26T23:00:00Z");
+    let open = &alert.communication_period[0];
+    assert!(open.start.is_some());
+    assert_eq!(open.end, None);
 }
 
 #[test]

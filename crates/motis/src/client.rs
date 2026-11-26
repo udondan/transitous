@@ -55,6 +55,8 @@ impl ClientBuilder {
         let http = reqwest::Client::builder()
             .tls_backend_preconfigured(tls)
             .timeout(self.timeout)
+            // Not even the protocol-level retries reqwest makes by default.
+            .retry(reqwest::retry::never())
             .build()
             .map_err(Error::Client)?;
         Ok(Client {

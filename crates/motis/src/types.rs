@@ -240,6 +240,8 @@ pub struct Alert {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(default, rename_all = "camelCase")]
 pub struct TimeRange {
-    pub start: Timestamp,
-    pub end: Timestamp,
+    /// `None`: since ever.
+    pub start: Option<Timestamp>,
+    /// `None`: until further notice.
+    pub end: Option<Timestamp>,
 }
