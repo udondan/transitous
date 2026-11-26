@@ -28,7 +28,9 @@ Cargo workspace:
 - `make lint test` must pass.
 - Library crates (`motis`, `transitous-core`, `transitous-sim`) use regular
   version requirements; the `transitous` binary and dev-dependencies use
-  exact versions (`=x.y.z`).
+  exact versions (`=x.y.z`) for external crates. The crates of the workspace
+  come from `[workspace.dependencies]`, whose versions release-please keeps
+  in step with each release.
 - Conventional commits: `feat:`/`fix:` only for changes to shipped code,
   `chore:` for tooling and CI, `build(deps):` for runtime dependency updates.
   A change that belongs to one crate names it as scope, like
