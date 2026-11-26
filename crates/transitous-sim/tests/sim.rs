@@ -115,6 +115,8 @@ async fn cancels_a_trip_in_plans_and_departures() {
     assert!(tram.cancelled && tram.trip_cancelled);
     assert_eq!(tram.pickup_dropoff_type, PickupDropoffType::NotAllowed);
     assert_eq!(tram.place.cancelled, Some(true));
+    assert_eq!(tram.trip_from.cancelled, Some(true));
+    assert_eq!(tram.trip_to.cancelled, Some(true));
 }
 
 #[tokio::test]
@@ -129,9 +131,15 @@ async fn cancels_one_stop() {
         trip_id: DEPARTURE_TRIP.to_owned(),
         stop_id: "de-DELFI_de:06412:8:2:2".to_owned(),
     });
+    // the first stop of the next departure's trip, not the stop it departs from
+    let fixture =
+        Client::decode::<Stoptimes>(include_bytes!("../fixtures/stoptimes.json")).unwrap();
+    let next = &fixture.stop_times[1];
+    let origin = next.trip_from.stop_id.clone().unwrap();
+    assert_ne!(next.place.stop_id.as_ref(), Some(&origin));
     sim.inject(Injection::CancelStop {
-        trip_id: DEPARTURE_TRIP.to_owned(),
-        stop_id: "elsewhere".to_owned(),
+        trip_id: next.trip_id.clone(),
+        stop_id: origin,
     });
     let client = client(&sim);
     let trip = client.send(&Trip::new(DIRECT_TRIP)).await.unwrap();
@@ -150,7 +158,10 @@ async fn cancels_one_stop() {
     assert!(tram.cancelled);
     assert!(!tram.trip_cancelled);
     assert_eq!(tram.pickup_dropoff_type, PickupDropoffType::NotAllowed);
-    assert!(!departures.stop_times[1].cancelled);
+    let next = &departures.stop_times[1];
+    assert!(!next.cancelled);
+    assert_eq!(next.place.cancelled, fixture.stop_times[1].place.cancelled);
+    assert_eq!(next.trip_from.cancelled, Some(true));
 }
 
 #[tokio::test]
@@ -209,6 +220,8 @@ async fn removes_the_realtime_data() {
             assert_eq!(leg.end_time, leg.scheduled_end_time);
             assert_eq!(leg.from.departure, leg.from.scheduled_departure);
             assert_eq!(leg.to.arrival, leg.to.scheduled_arrival);
+            let origin = leg.trip_from.as_ref().unwrap();
+            assert_eq!(origin.departure, origin.scheduled_departure);
         }
     }
     let departures = client.send(&Stoptimes::new("stop")).await.unwrap();
@@ -222,6 +235,8 @@ async fn removes_the_realtime_data() {
             stop_time.place.departure_timestamp_reason,
             Some(TimestampReason::NoRtData)
         );
+        let end = &stop_time.trip_to;
+        assert_eq!(end.arrival, end.scheduled_arrival);
     }
 }
 

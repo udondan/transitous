@@ -309,12 +309,13 @@ fn for_each_trip(value: &mut Value, f: &mut impl FnMut(&str, &mut Value)) {
 }
 
 /// The stops of a leg (`from`, `to`, `intermediateStops`) or of a stop time
-/// (`place`).
+/// (`place`), with the copies of the first and last stop of the trip
+/// (`tripFrom`, `tripTo`).
 fn places(item: &mut Value) -> Vec<&mut Value> {
     let mut places = Vec::new();
     for (key, value) in item.as_object_mut().into_iter().flatten() {
         match (key.as_str(), value) {
-            ("from" | "to" | "place", value) => places.push(value),
+            ("from" | "to" | "place" | "tripFrom" | "tripTo", value) => places.push(value),
             ("intermediateStops", Value::Array(stops)) => places.extend(stops.iter_mut()),
             _ => {}
         }
@@ -340,15 +341,14 @@ fn cancel(item: &mut Value) {
 }
 
 fn cancel_stop(item: &mut Value, stop_id: &str) {
-    let is_stop_time = item.get("place").is_some();
-    let mut hit = false;
+    // a departure is cancelled only if its own stop is
+    let departs_here = item["place"]["stopId"].as_str() == Some(stop_id);
     for place in places(item) {
         if place.get("stopId").and_then(Value::as_str) == Some(stop_id) {
             set_cancelled(place);
-            hit = true;
         }
     }
-    if hit && is_stop_time {
+    if departs_here {
         item["cancelled"] = Value::Bool(true);
         item["pickupDropoffType"] = "NOT_ALLOWED".into();
     }
