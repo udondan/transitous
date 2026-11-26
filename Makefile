@@ -8,7 +8,7 @@ export PATH := $(TOOLCHAIN):$(PATH)
 endif
 CARGO ?= cargo
 
-.PHONY: build release run test lint coverage hooks
+.PHONY: build release run test lint coverage live hooks
 
 build:
 	@$(CARGO) build --workspace
@@ -31,6 +31,11 @@ lint:
 # the patch status of Codecov.
 coverage:
 	@.githooks/pre-push
+
+# A smoke test against the real API with four requests. Needs
+# TRANSITOUS_CONTACT. By hand only, never in CI.
+live:
+	@bash scripts/live.sh
 
 # Links the hooks into the repository's hooks directory, which all worktrees
 # share. The links point to the main checkout's copies of the scripts.

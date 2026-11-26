@@ -1,0 +1,12 @@
+# Server definition for the Docker MCP Toolkit.
+# Add it to a profile with `mise run docker-register` (see README, section Docker).
+name: transitous
+type: server
+image: udondan/transitous:latest
+title: Transitous public transport
+description: Finds stops, departures and connections on Transitous, the community-run public transport API, and reports for each connection whether it is cancelled, delayed or has a missed transfer. Read-only.
+secrets:
+  - name: transitous.contact
+    env: TRANSITOUS_CONTACT
+    example: mailto:you@example.org
+    description: Contact for the User-Agent that the Transitous usage rules require (a URL, mailto link or email address)
