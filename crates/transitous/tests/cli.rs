@@ -1,4 +1,9 @@
 //! End-to-end tests of the `transitous` binary against the sim.
+//!
+//! The tests give every run its own home through `HOME` and the XDG
+//! variables. Windows takes the directories from the system instead, so
+//! there the tests would share the real ones, and they do not run.
+#![cfg(not(windows))]
 
 use std::path::Path;
 use std::process::{Command, Output};
