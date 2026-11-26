@@ -14,8 +14,8 @@ authors = ["Daniel Schroeder"]
 # transitous binary declares its own dependencies with exact versions.
 # Cargo.lock pins every build.
 [workspace.dependencies]
-motis = { path = "crates/motis", version = "0.0.0" }
-transitous-core = { path = "crates/transitous-core", version = "0.0.0" }
+motis = { path = "crates/motis", version = "0.1.0" }
+transitous-core = { path = "crates/transitous-core", version = "0.1.0" }
 transitous-sim = { path = "crates/transitous-sim" }
 
 [workspace.lints.rust]
