@@ -1,0 +1,4 @@
+# Recorded API responses; collapsed in diffs.
+crates/transitous-sim/fixtures/** linguist-generated=true
+# The OpenAPI specification of MOTIS, vendored unchanged.
+crates/motis/openapi/** linguist-vendored=true

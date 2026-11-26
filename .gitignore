@@ -1,0 +1,12 @@
+target
+lcov.info
+.claude/
+# Personal values the fixture anonymizer must never let through (own name, address, real SSIDs).
+.private-patterns
+# Raw captures stay outside the repository; this catches one written here by mistake.
+/captures/
+# Local qlty cache links
+.qlty/logs
+.qlty/out
+.qlty/plugin_cachedir
+.qlty/results
