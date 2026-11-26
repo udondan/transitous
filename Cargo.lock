@@ -1207,7 +1207,7 @@ dependencies = [
 
 [[package]]
 name = "motis"
-version = "0.0.0"
+version = "0.1.0"
 dependencies = [
  "axum",
  "jiff",
@@ -2240,7 +2240,7 @@ dependencies = [
 
 [[package]]
 name = "transitous"
-version = "0.0.0"
+version = "0.1.0"
 dependencies = [
  "anyhow",
  "axum",
@@ -2265,7 +2265,7 @@ dependencies = [
 
 [[package]]
 name = "transitous-core"
-version = "0.0.0"
+version = "0.1.0"
 dependencies = [
  "directories",
  "jiff",
@@ -2283,7 +2283,7 @@ dependencies = [
 
 [[package]]
 name = "transitous-sim"
-version = "0.0.0"
+version = "0.1.0"
 dependencies = [
  "axum",
  "form_urlencoded",
