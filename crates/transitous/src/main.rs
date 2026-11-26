@@ -7,12 +7,14 @@
 
 mod completion;
 mod logging;
+mod mcp;
 mod output;
 mod settings;
 mod text;
 mod time;
 
 use std::io::{self, IsTerminal as _, Write as _};
+use std::net::SocketAddr;
 use std::process::ExitCode;
 use std::sync::Arc;
 
@@ -148,6 +150,18 @@ enum Command {
     Config(ConfigCommand),
     /// The requests of the last 24 hours and the limits.
     Usage,
+    /// Serve the tools as an MCP server, on stdin and stdout.
+    ///
+    /// The tools are `transitous_find_stop`, `transitous_departures`,
+    /// `transitous_trip` and `transitous_journey`; they only read. Without a
+    /// contact, the server starts and every tool returns `contact_missing`.
+    Mcp {
+        /// Serve streamable HTTP at `/mcp` on this address instead, by default
+        /// 127.0.0.1:8080. Needs a bearer token of at least 16 characters in
+        /// `TRANSITOUS_MCP_TOKEN`.
+        #[arg(long, value_name = "ADDR", num_args = 0..=1, default_missing_value = "127.0.0.1:8080")]
+        http: Option<SocketAddr>,
+    },
     /// Print the completion script for a shell.
     ///
     /// The script calls `transitous` from the `PATH` on every completion,
@@ -267,7 +281,8 @@ fn service(global: &Global) -> anyhow::Result<Transitous> {
 }
 
 async fn run(command: Command, global: &Global, format: Format) -> anyhow::Result<()> {
-    let out = &mut io::stdout().lock();
+    // Not locked: the MCP server writes to stdout itself.
+    let out = &mut io::stdout();
     match command {
         Command::Stops { name, near, count } => {
             let query = StopsQuery {
@@ -337,6 +352,13 @@ async fn run(command: Command, global: &Global, format: Format) -> anyhow::Resul
             output::show(&summary, format, out, text::usage)
         }
         Command::Completion { shell } => Ok(completion::script(shell, out)?),
+        Command::Mcp { http } => {
+            let service = service(global).map_err(|error| output::failure(&error));
+            match http {
+                Some(address) => mcp::http(service, address, env(mcp::ENV_TOKEN)).await,
+                None => mcp::stdio(service).await,
+            }
+        }
     }
 }
 
