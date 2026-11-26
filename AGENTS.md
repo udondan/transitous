@@ -62,3 +62,8 @@ Cargo workspace:
 
 - `docs/realtime-findings.md` records how the live API reports realtime data
   and cancellations; the status rules build on it.
+- `docs/status.md` explains the status rules of `status.rs`. Keep it, the
+  README (commands, tools, settings, variables, error statuses) and
+  `skills/transitous/SKILL.md` in step with the code they describe.
+- `make live` runs a smoke test against the real API by hand, with four
+  requests. Never in CI, never in a loop.
