@@ -70,7 +70,8 @@ pub struct DeparturesQuery {
     pub stop: String,
     /// `None`: now.
     pub time: Option<Timestamp>,
-    /// At most [`MAX_DEPARTURES`].
+    /// How many to ask for, at most [`MAX_DEPARTURES`]. The API can return
+    /// more, and the result has them all.
     pub count: u32,
     pub arrivals: bool,
     /// Only these modes. Empty: all.
