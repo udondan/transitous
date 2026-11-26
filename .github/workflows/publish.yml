@@ -1,0 +1,403 @@
+---
+name: Publish
+
+# Started by the tags that release-please creates for its draft releases.
+# Releases in this repository are immutable once published, so everything is
+# attached while the release is still a draft and the release is published
+# last.
+#
+# - Every tag publishes the crates whose versions are not on crates.io yet.
+# - transitous-v* also builds the binaries, signs their checksums, pushes the
+#   Docker image and updates the Homebrew formula.
+#
+# Pull requests that change the release build everything without uploading,
+# publishing or signing anything.
+
+on:
+  push:
+    tags:
+      - motis-v*
+      - transitous-v*
+      - transitous-core-v*
+      - transitous-sim-v*
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/publish.yml
+      - .github/scripts/**
+      - Dockerfile
+      - release-please-config.json
+
+permissions: {}
+
+env:
+  CARGO_TERM_COLOR: always
+  # Empty for pull requests: nothing is uploaded or published then.
+  TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # crates.io accepts the crates from this workflow in the environment
+  # crates-io (Trusted Publishing), so no token is stored in the repository.
+  crates:
+    name: crates.io
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: crates-io
+      url: https://crates.io/crates/transitous
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - run: rustup update stable && rustup default stable
+
+      - id: auth
+        uses: rust-lang/crates-io-auth-action@3268eb413133e2960fa4ae0e963ca76380c54cd9 # v1.0.6
+
+      - run: bash .github/scripts/publish-crates.sh
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
+
+  # Checks on pull requests that all crates can be packaged together.
+  crates-check:
+    name: crates.io (check)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - run: rustup update stable && rustup default stable
+
+      - run: cargo package --locked -p motis -p transitous-core -p transitous
+
+  binaries:
+    name: Binary ${{ matrix.target }}
+    if: github.event_name == 'pull_request' || startsWith(github.ref_name, 'transitous-v')
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
+            cross: true
+            runs: true
+          - target: aarch64-unknown-linux-musl
+            os: ubuntu-latest
+            cross: true
+            runs: false # tested in the Docker image, under emulation
+          - target: x86_64-apple-darwin
+            os: macos-latest
+            cross: false
+            runs: true # Rosetta
+          - target: aarch64-apple-darwin
+            os: macos-latest
+            cross: false
+            runs: true
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            cross: false
+            runs: true
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    permissions:
+      contents: write # attach the archive to the draft release
+    env:
+      TARGET: ${{ matrix.target }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Install the toolchain
+        run: |
+          rustup update stable
+          rustup default stable
+          rustup target add "$TARGET"
+
+      # Builds the musl binaries in a container with the C toolchain ring needs.
+      - name: Install cross
+        if: matrix.cross
+        uses: taiki-e/install-action@fe3acb53a98b62c772db35de75ce0e4595e7ca8c # v2.90.8
+        with:
+          tool: cross
+
+      - name: Build
+        env:
+          CARGO: ${{ matrix.cross && 'cross' || 'cargo' }}
+        run: $CARGO build --release --locked -p transitous --target "$TARGET"
+
+      - name: Run the binary
+        if: matrix.runs
+        run: |
+          bin=target/$TARGET/release/transitous
+          [[ -f $bin.exe ]] && bin=$bin.exe
+          "$bin" --version
+          "$bin" --help >/dev/null
+
+      # The scripts are the same for every target. Binaries that cannot run
+      # here leave them to a build for the runner.
+      - name: Generate the completion scripts
+        env:
+          RUNS: ${{ matrix.runs }}
+        run: |
+          bin=target/$TARGET/release/transitous
+          [[ -f $bin.exe ]] && bin=$bin.exe
+          if [[ $RUNS != true ]]; then
+            cargo build --release --locked -p transitous
+            bin=target/release/transitous
+          fi
+          dir=target/$TARGET/release/completions
+          mkdir -p "$dir"
+          "$bin" completion bash >"$dir/transitous.bash"
+          "$bin" completion zsh >"$dir/_transitous"
+          "$bin" completion fish >"$dir/transitous.fish"
+          "$bin" completion elvish >"$dir/transitous.elv"
+          "$bin" completion powershell >"$dir/_transitous.ps1"
+          grep -q 'COMPLETE="bash"' "$dir/transitous.bash"
+          ls -l "$dir"
+
+      - name: Pack
+        id: pack
+        run: |
+          version=${TAG#transitous-v}
+          version=${version:-0.0.0}
+          name="transitous-$version-$TARGET"
+          mkdir -p dist
+          cp LICENSE README.md "target/$TARGET/release/"
+          cd "target/$TARGET/release"
+          if [[ $TARGET == *windows* ]]; then
+            7z a "../../../dist/$name.zip" transitous.exe LICENSE README.md completions
+            echo "archive=dist/$name.zip" >>"$GITHUB_OUTPUT"
+          else
+            tar -czf "../../../dist/$name.tar.gz" transitous LICENSE README.md completions
+            echo "archive=dist/$name.tar.gz" >>"$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: binary-${{ matrix.target }}
+          path: ${{ steps.pack.outputs.archive }}
+          if-no-files-found: error
+
+      - name: Attach to the draft release
+        if: env.TAG != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARCHIVE: ${{ steps.pack.outputs.archive }}
+        run: |
+          if [[ $(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft) != true ]]; then
+            echo "::error::Release $TAG is published already; immutable releases take no more assets."
+            exit 1
+          fi
+          gh release upload "$TAG" "$ARCHIVE" --clobber --repo "$GITHUB_REPOSITORY"
+
+  checksums:
+    name: Checksums
+    needs: binaries
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # attach the checksums to the draft release
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: binary-*
+          path: dist
+          merge-multiple: true
+
+      - name: Compute the checksums
+        run: |
+          cd dist
+          sha256sum transitous-* | sort -k2 >SHA256SUMS.txt
+          cat SHA256SUMS.txt
+          [[ $(wc -l <SHA256SUMS.txt) == 5 ]]
+
+      - name: Sign the checksums
+        if: env.TAG != ''
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          KEY: F111A9BDD62F384A
+        run: |
+          printf '%s' "$GPG_PRIVATE_KEY" | gpg --batch --import
+          cd dist
+          printf '%s' "$GPG_PASSPHRASE" | gpg --batch --yes --pinentry-mode loopback \
+            --passphrase-fd 0 --local-user "$KEY" --detach-sign --armor SHA256SUMS.txt
+          gpg --verify SHA256SUMS.txt.asc SHA256SUMS.txt
+
+      - name: Attach to the draft release
+        if: env.TAG != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$TAG" dist/SHA256SUMS.txt dist/SHA256SUMS.txt.asc --clobber --repo "$GITHUB_REPOSITORY"
+
+  # The image copies the musl binaries built above, so no Rust is compiled
+  # under emulation. Docker Hub has no OIDC for personal accounts, so the push
+  # uses an access token. It lives in the environment docker-hub, which only
+  # transitous-v* tags may use; pull requests build without it.
+  docker:
+    name: Docker
+    needs: binaries
+    environment: ${{ github.ref_type == 'tag' && 'docker-hub' || '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write # keyless cosign signature
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: binary-*-linux-musl
+          path: archives
+          merge-multiple: true
+
+      - name: Unpack the binaries
+        run: |
+          for arch in amd64:x86_64 arm64:aarch64; do
+            mkdir -p "dist/${arch%%:*}"
+            tar -xzf archives/transitous-*-"${arch#*:}"-unknown-linux-musl.tar.gz -C "dist/${arch%%:*}" transitous
+          done
+          ls -l dist/*
+
+      - uses: sigstore/cosign-installer@756fe2d284c7292c4e9b62c8a28f1e5629c59532 # v4.1.3
+        if: env.TAG != ''
+      - uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
+        if: env.TAG != ''
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Tag transitous-v1.2.3 → 1.2.3, 1.2, 1 and latest.
+      - id: meta
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: udondan/transitous
+          flavor: latest=false
+          tags: |
+            type=match,pattern=transitous-v(\d+\.\d+\.\d+),group=1
+            type=match,pattern=transitous-v(\d+\.\d+)\.\d+,group=1
+            type=match,pattern=transitous-v(\d+)\.\d+\.\d+,group=1
+            type=raw,value=latest,enable=${{ github.ref_type == 'tag' }}
+
+      - id: push
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          build-args: BINARY=prebuilt
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.ref_type == 'tag' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          provenance: mode=max
+          sbom: true
+
+      # Keyless: the signature names this workflow as signer, via GitHub OIDC
+      # and the public Sigstore log. Signing the digest covers all tags.
+      - name: Sign the image
+        if: env.TAG != ''
+        env:
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: cosign sign --yes "udondan/transitous@${DIGEST}"
+
+      - name: Run the image on both platforms
+        if: env.TAG != ''
+        env:
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: |
+          for platform in linux/amd64 linux/arm64; do
+            docker run --rm --platform "$platform" "udondan/transitous@${DIGEST}" --version
+          done
+
+  # Publishes the draft release once everything is attached. Only transitous
+  # releases become the latest release of the repository.
+  release:
+    name: Release
+    needs:
+      - crates
+      - checksums
+      - docker
+    if: >-
+      !cancelled() && github.ref_type == 'tag'
+      && needs.crates.result == 'success'
+      && (startsWith(github.ref_name, 'transitous-v')
+          && needs.checksums.result == 'success' && needs.docker.result == 'success'
+        || !startsWith(github.ref_name, 'transitous-v'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LATEST: ${{ startsWith(github.ref_name, 'transitous-v') }}
+        run: gh release edit "$TAG" --draft=false --latest="$LATEST" --repo "$GITHUB_REPOSITORY"
+
+  # The formula points to the archives of the published release. Pull
+  # requests print the formula without pushing it.
+  homebrew:
+    name: Homebrew
+    needs:
+      - binaries
+      - release
+    if: >-
+      !cancelled() && needs.binaries.result == 'success'
+      && (github.event_name == 'pull_request' || needs.release.result == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions: {}
+    steps:
+      # The transitous scripts, from this commit.
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          path: transitous
+
+      # Only releases push, with the personal token. Pull requests, also from
+      # forks without secrets, read the public tap with the GITHUB_TOKEN.
+      - uses: actions/checkout@v7
+        with: # zizmor: ignore[artipacked] pushes the formula to the tap repository
+          repository: udondan/homebrew-software
+          token: ${{ github.ref_type == 'tag' && secrets.OVERRIDE_TOKEN || github.token }}
+          path: tap
+
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: binary-*
+          path: dist
+          merge-multiple: true
+
+      - name: Update the formula
+        run: |
+          version=${TAG#transitous-v}
+          bash transitous/.github/scripts/homebrew-formula.sh "${version:-0.0.0}" dist >tap/transitous.rb
+          cat tap/transitous.rb
+          cd tap
+          git add transitous.rb
+          git -c user.name=udondan -c user.email=6443408+udondan@users.noreply.github.com \
+            commit -m "transitous ${version:-0.0.0}"
+          if [[ -n $TAG ]]; then
+            git push
+          fi

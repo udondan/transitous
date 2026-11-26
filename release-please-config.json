@@ -98,6 +98,12 @@
       "exclude-paths": [
         "crates/transitous-sim/tests"
       ]
+    },
+    "crates/transitous": {
+      "component": "transitous",
+      "exclude-paths": [
+        "crates/transitous/tests"
+      ]
     }
   }
 }
