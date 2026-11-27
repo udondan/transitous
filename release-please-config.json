@@ -85,29 +85,25 @@
       "component": "motis",
       "exclude-paths": [
         "crates/motis/tests"
-      ],
-      "release-as": "1.0.0"
+      ]
     },
     "crates/transitous-core": {
       "component": "transitous-core",
       "exclude-paths": [
         "crates/transitous-core/tests"
-      ],
-      "release-as": "1.0.0"
+      ]
     },
     "crates/motis-sim": {
       "component": "motis-sim",
       "exclude-paths": [
         "crates/motis-sim/tests"
-      ],
-      "release-as": "1.0.0"
+      ]
     },
     "crates/transitous": {
       "component": "transitous",
       "exclude-paths": [
         "crates/transitous/tests"
-      ],
-      "release-as": "1.0.0"
+      ]
     }
   }
 }
