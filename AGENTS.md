@@ -38,7 +38,10 @@ Cargo workspace:
   A change that belongs to one crate names it as scope, like
   `feat(motis): add the trip endpoint`: it then appears in the release notes
   of that crate only, even when it touches others. Without a scope, a change
-  is listed under every crate whose files outside `tests/` it changes.
+  is listed under every crate whose files outside `tests/` it changes. A
+  crate released together with one of its workspace dependencies lists that
+  dependency's version under "Dependencies", with its entries if it ships
+  with the crate (`.github/scripts/release-notes-*.py`).
 
 ## Commands
 
