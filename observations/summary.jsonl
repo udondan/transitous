@@ -2,3 +2,4 @@
 {"run":"2026-11-26T21:10:05Z","calls":1,"per_stop":{},"comparisons":0,"errors":1}
 {"run":"2026-11-27T05:09:58Z","calls":1,"per_stop":{},"comparisons":0,"errors":2}
 {"run":"2026-11-27T06:10:23Z","calls":1,"per_stop":{},"comparisons":0,"errors":2}
+{"run":"2026-11-27T06:16:30Z","calls":10,"per_stop":{"de-DELFI_de:06412:1_G":[101,93,4,4,0],"at-Railway-Current-Reference-Data-2026_de:06412:10:16:16":[100,92,2,2,0],"de-DELFI_de:06412:510_G":[100,96,2,2,0],"de-DELFI_de:06412:1366":[100,66,3,3,0]},"comparisons":2,"errors":0}
