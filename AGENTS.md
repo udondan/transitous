@@ -64,6 +64,11 @@ Cargo workspace:
 - Where rustup is installed, `make` and the hooks put its stable toolchain
   first in PATH, so clippy and rustfmt are the versions of CI, not older ones
   of Homebrew. Without that, new lints only fail in CI.
+- The `tdqs` CI job lints the tool list of
+  `crates/transitous/tests/data/mcp-tools.json` with mcp-tdqs, the deterministic
+  checks of Glama's Tool Definition Quality Score, in the version of
+  `mise.toml`. Warnings fail it. Locally:
+  `mise exec -- tdqs lint --file crates/transitous/tests/data/mcp-tools.json --fail-on warning`.
 
 ## Background
 
