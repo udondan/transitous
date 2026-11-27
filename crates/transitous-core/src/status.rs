@@ -3,7 +3,8 @@
 //! threshold; `docs/status.md` explains the rules.
 //!
 //! Only rides count (legs whose mode is transit); walks have no realtime
-//! data and cannot be cancelled.
+//! data and cannot be cancelled. A cancellation is realtime data too, even
+//! though MOTIS sends `realTime: false` with it.
 
 use jiff::Timestamp;
 use motis::{Itinerary, Leg, PickupDropoffType};
@@ -51,7 +52,7 @@ pub enum Realtime {
     Full,
     /// Some rides.
     Partial,
-    /// No ride.
+    /// No ride, or the connection has no rides.
     None,
 }
 
@@ -135,16 +136,16 @@ pub fn evaluate(itinerary: &Itinerary, now: Timestamp, delay_threshold_minutes: 
     }
     delays(&rides, delay_threshold_minutes, &mut reasons);
     for &(index, leg) in &rides {
-        if !leg.real_time {
+        if !informed(leg) {
             reasons.push(Reason::NoRealtime { leg: index });
         }
     }
 
-    let with_realtime = rides.iter().filter(|(_, leg)| leg.real_time).count();
-    let realtime = if with_realtime == rides.len() {
-        Realtime::Full
-    } else if with_realtime == 0 {
+    let with_realtime = rides.iter().filter(|(_, leg)| informed(leg)).count();
+    let realtime = if with_realtime == 0 {
         Realtime::None
+    } else if with_realtime == rides.len() {
+        Realtime::Full
     } else {
         Realtime::Partial
     };
@@ -173,6 +174,17 @@ pub fn evaluate(itinerary: &Itinerary, now: Timestamp, delay_threshold_minutes: 
         realtime,
         max_delay_minutes,
     }
+}
+
+/// Whether realtime data tells something about the ride. MOTIS marks
+/// cancelled trips and stops with `realTime: false`, because they carry no
+/// realtime times, but the cancellation itself comes from realtime data.
+/// Delays still count only with `realTime`.
+fn informed(leg: &Leg) -> bool {
+    leg.real_time
+        || leg.cancelled == Some(true)
+        || leg.from.cancelled == Some(true)
+        || leg.to.cancelled == Some(true)
 }
 
 /// `seated`: the passenger stays aboard into the next leg, so does not
@@ -533,8 +545,66 @@ mod tests {
             ..leg(Mode::Walk, 0, 10, 0)
         }]);
         assert_eq!(result.status, Status::Ok);
+        assert_eq!(result.realtime, Realtime::None);
+        assert_eq!(result.max_delay_minutes, None);
+    }
+
+    #[test]
+    fn a_cancellation_counts_as_realtime_data() {
+        let mut cancelled = ride(0, 5, 0);
+        cancelled.real_time = false;
+        cancelled.cancelled = Some(true);
+        let result = check(vec![cancelled]);
+        assert_eq!(result.status, Status::Cancelled);
+        assert_eq!(result.reasons, [Reason::LegCancelled { leg: 0 }]);
         assert_eq!(result.realtime, Realtime::Full);
         assert_eq!(result.max_delay_minutes, None);
+
+        for arrival in [false, true] {
+            let mut skipped = ride(0, 5, 0);
+            skipped.real_time = false;
+            if arrival {
+                skipped.to.cancelled = Some(true);
+            } else {
+                skipped.from.cancelled = Some(true);
+            }
+            let result = check(vec![skipped, ride(6, 10, 0)]);
+            assert_eq!(result.status, Status::Cancelled, "{arrival}");
+            assert_eq!(result.realtime, Realtime::Full, "{arrival}");
+            assert!(
+                !result
+                    .reasons
+                    .iter()
+                    .any(|r| matches!(r, Reason::NoRealtime { .. })),
+                "{:?}",
+                result.reasons
+            );
+        }
+    }
+
+    /// The U1 of 07:29 from Frankfurt Römerstadt, cancelled on 2026-11-27,
+    /// as `plan` with `REALTIME_ANNOTATION_ONLY` returned it (trimmed).
+    #[test]
+    fn the_recorded_cancellation_is_cancelled_with_realtime() {
+        let plan: motis::PlanResponse =
+            serde_json::from_str(include_str!("../tests/data/plan-cancelled.json")).unwrap();
+        let now: Timestamp = "2026-11-27T06:12:00Z".parse().unwrap();
+        let results: Vec<Evaluation> = plan
+            .itineraries
+            .iter()
+            .map(|itinerary| evaluate(itinerary, now, 2))
+            .collect();
+        assert_eq!(results[0].status, Status::Ok);
+        assert_eq!(results[0].realtime, Realtime::Full);
+        assert_eq!(results[1].status, Status::Cancelled);
+        assert_eq!(results[1].realtime, Realtime::Full);
+        assert_eq!(results[1].max_delay_minutes, None);
+        assert_eq!(
+            results[1].reasons,
+            [Reason::LegCancelled { leg: 0 }],
+            "{:?}",
+            plan.itineraries[1].legs
+        );
     }
 
     #[test]
