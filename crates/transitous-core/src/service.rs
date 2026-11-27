@@ -1,11 +1,20 @@
 //! The operations of the CLI and the MCP server, with the usage rules
 //! applied: a contact in every request, the cache first, then the usage
 //! counter, then one request, never a retry.
+//!
+//! A local time like `07:50` is the time at the stop, in its time zone, like
+//! the times of the results. A stop given by name tells its zone in the name
+//! search. For a stop given by ID, the zone of an earlier answer or of the
+//! process is a guess; if the answer names another zone in which the time is
+//! another instant, the request is sent once more, and the zone is kept for
+//! an hour.
 
 use std::fmt;
 use std::sync::Arc;
+use std::time::Duration;
 
 use jiff::Timestamp;
+use jiff::tz::TimeZone;
 use motis::{Client, Geocode, LocationType, Mode, Plan, RealtimeMode, Request, Stoptimes, Trip};
 
 use crate::cache::{self, Cache};
@@ -14,6 +23,7 @@ use crate::model::{
     Attribution, Connection, Departure, DeparturesResult, FindStopResult, JourneyResult, Location,
     PageCursor, StopMatch, TripResult, UsageSummary,
 };
+use crate::time::{self, QueryTime};
 use crate::usage::{Endpoint, Usage};
 use crate::{Error, agent, resolve, status};
 
@@ -28,6 +38,9 @@ pub const MAX_STOPS: u32 = 20;
 const MIN_ARRIVE_BY: u32 = 3;
 /// The geocoding matches a name is chosen from.
 const RESOLVE_MATCHES: u32 = 10;
+/// How long the time zone of a stop from an answer keeps, so that a local
+/// time at a stop given by ID needs a second request at most once an hour.
+const ZONE_TTL: Duration = Duration::from_secs(60 * 60);
 
 /// The current time. Replaceable for tests.
 pub type Clock = Arc<dyn Fn() -> Timestamp + Send + Sync>;
@@ -68,8 +81,8 @@ pub struct StopsQuery {
 pub struct DeparturesQuery {
     /// A stop ID, or a name that names one stop.
     pub stop: String,
-    /// `None`: now.
-    pub time: Option<Timestamp>,
+    /// `None`: now. A local time is the time at the stop.
+    pub time: Option<QueryTime>,
     /// How many to ask for, at most [`MAX_DEPARTURES`]. The API can return
     /// more, and the result has them all.
     pub count: u32,
@@ -86,8 +99,9 @@ pub struct TripQuery {
     /// A stop ID, a name that names one stop, or `LAT,LON`.
     pub from: String,
     pub to: String,
-    /// `None`: now.
-    pub time: Option<Timestamp>,
+    /// `None`: now. A local time is the time at `from`, or at `to` with
+    /// `arrive_by`.
+    pub time: Option<QueryTime>,
     /// Whether `time` is the latest arrival rather than the earliest
     /// departure.
     pub arrive_by: bool,
@@ -112,6 +126,7 @@ pub struct Transitous {
     usage: Usage,
     delay_threshold_minutes: u32,
     clock: Clock,
+    zone: TimeZone,
 }
 
 impl fmt::Debug for Transitous {
@@ -142,7 +157,16 @@ impl Transitous {
             usage: Usage::new(config.state_dir.as_deref(), config.plan_daily_limit),
             delay_threshold_minutes: config.delay_threshold_minutes,
             clock: Arc::new(Timestamp::now),
+            zone: TimeZone::system(),
         })
+    }
+
+    /// Reads local times in `zone` at places whose time zone is not known
+    /// before the request, instead of in the zone of the process.
+    #[must_use]
+    pub fn with_zone(mut self, zone: TimeZone) -> Self {
+        self.zone = zone;
+        self
     }
 
     /// Uses `clock` for the current time.
@@ -212,9 +236,19 @@ impl Transitous {
         input: &str,
         warnings: &mut Vec<String>,
     ) -> Result<String, Error> {
+        Ok(self.resolve_stop_zone(input, warnings).await?.0)
+    }
+
+    /// The stop ID for an ID or a name, with the time zone of the stop if
+    /// the name search tells it.
+    async fn resolve_stop_zone(
+        &self,
+        input: &str,
+        warnings: &mut Vec<String>,
+    ) -> Result<(String, Option<String>), Error> {
         let input = input.trim();
         if resolve::is_stop_id(input) {
-            return Ok(input.to_owned());
+            return Ok((input.to_owned(), None));
         }
         if input.is_empty() {
             return Err(Error::StopNotFound {
@@ -227,27 +261,76 @@ impl Transitous {
             ..Geocode::new(input)
         };
         let matches = self.call(&request, warnings).await?;
-        Ok(resolve::choose(input, &matches)?.id.clone())
+        let chosen = resolve::choose(input, &matches)?;
+        Ok((chosen.id.clone(), chosen.tz.clone()))
     }
 
-    /// A place for the routing: coordinates as they are, else a stop.
+    /// A place for the routing: coordinates as they are, else a stop, with
+    /// the time zone if the name search tells it.
     async fn resolve_place(
         &self,
         input: &str,
         warnings: &mut Vec<String>,
-    ) -> Result<String, Error> {
+    ) -> Result<(String, Option<String>), Error> {
         match resolve::coordinates(input) {
-            Some((lat, lon)) => Ok(format!("{lat},{lon}")),
-            None => self.resolve_stop(input, warnings).await,
+            Some((lat, lon)) => Ok((format!("{lat},{lon}"), None)),
+            None => self.resolve_stop_zone(input, warnings).await,
         }
+    }
+
+    /// The time zone of `place`: the one the name search told, else the one
+    /// an earlier answer told, else the one of this client.
+    fn zone(&self, place: &str, told: Option<&str>, now: Timestamp) -> TimeZone {
+        let known = || {
+            let body = self.cache.get(&zone_key(place), ZONE_TTL, now)?;
+            time::zone(Some(&String::from_utf8(body).ok()?))
+        };
+        time::zone(told)
+            .or_else(known)
+            .unwrap_or_else(|| self.zone.clone())
+    }
+
+    /// Sends `request` at `time`, a local time read in the zone `local.zone`
+    /// of the place. If the answer names another zone for the place, in which
+    /// the time is another instant, it sends the request once more at that
+    /// instant and keeps the zone for the place.
+    async fn call_at<R: Call>(
+        &self,
+        mut request: R,
+        local: Option<Local<'_>>,
+        retime: impl Fn(&mut R, Timestamp),
+        zone_of: impl Fn(&R::Response) -> Option<&str>,
+        warnings: &mut Vec<String>,
+    ) -> Result<(R, R::Response), Error> {
+        let response = self.call(&request, warnings).await?;
+        let Some(local) = local else {
+            return Ok((request, response));
+        };
+        let told = zone_of(&response).and_then(|name| Some((name, time::zone(Some(name))?)));
+        let Some((name, actual)) = told.filter(|(_, actual)| *actual != local.zone) else {
+            return Ok((request, response));
+        };
+        let now = (self.clock)();
+        self.cache.put(&zone_key(local.place), name.as_bytes(), now);
+        let instant = local.time.in_zone(&actual, now).map_err(bad_time)?;
+        if Some(instant) == local.time.in_zone(&local.zone, now).ok() {
+            return Ok((request, response));
+        }
+        retime(&mut request, instant);
+        let response = self.call(&request, warnings).await?;
+        Ok((request, response))
     }
 
     /// Departures or arrivals at a stop.
     pub async fn departures(&self, query: &DeparturesQuery) -> Result<DeparturesResult, Error> {
         let mut warnings = Vec::new();
-        let stop_id = self.resolve_stop(&query.stop, &mut warnings).await?;
+        let (stop_id, told) = self.resolve_stop_zone(&query.stop, &mut warnings).await?;
+        let now = (self.clock)();
+        let zone = self.zone(&stop_id, told.as_deref(), now);
+        let time = at(query.time, &zone, now)?;
+        let local = Local::new(query.time, &stop_id, zone, query.page_cursor.is_none());
         let request = Stoptimes {
-            time: query.time,
+            time,
             arrive_by: Some(query.arrivals),
             n: Some(query.count.clamp(1, MAX_DEPARTURES)),
             mode: query.modes.clone(),
@@ -255,7 +338,15 @@ impl Transitous {
             with_alerts: Some(true),
             ..Stoptimes::new(stop_id.clone())
         };
-        let response = self.call(&request, &mut warnings).await?;
+        let (_, response) = self
+            .call_at(
+                request,
+                local,
+                |request, time| request.time = Some(time),
+                |response| response.place.tz.as_deref(),
+                &mut warnings,
+            )
+            .await?;
         let mut stop = Location::from(&response.place);
         stop.id.get_or_insert(stop_id);
         Ok(DeparturesResult {
@@ -282,8 +373,8 @@ impl Transitous {
     /// has fewer than `count`, it asks once more for the page before.
     pub async fn trip(&self, query: &TripQuery) -> Result<TripResult, Error> {
         let mut warnings = Vec::new();
-        let from = self.resolve_place(&query.from, &mut warnings).await?;
-        let to = self.resolve_place(&query.to, &mut warnings).await?;
+        let (from, from_zone) = self.resolve_place(&query.from, &mut warnings).await?;
+        let (to, to_zone) = self.resolve_place(&query.to, &mut warnings).await?;
         let count = query.count.clamp(1, MAX_CONNECTIONS);
         let wanted = if query.arrive_by {
             count.max(MIN_ARRIVE_BY)
@@ -291,8 +382,17 @@ impl Transitous {
             count
         };
         let now = (self.clock)();
+        let (place, told) = if query.arrive_by {
+            (&to, to_zone)
+        } else {
+            (&from, from_zone)
+        };
+        let zone = self.zone(place, told.as_deref(), now);
+        let time = at(query.time, &zone, now)?;
+        let local = Local::new(query.time, place, zone, query.page_cursor.is_none());
+        let arrive_by = query.arrive_by;
         let request = Plan {
-            time: query.time.or(query.arrive_by.then_some(now)),
+            time: time.or(query.arrive_by.then_some(now)),
             arrive_by: Some(query.arrive_by),
             num_itineraries: Some(wanted),
             page_cursor: query.page_cursor.clone(),
@@ -303,9 +403,24 @@ impl Transitous {
             } else {
                 RealtimeMode::RealtimeAnnotationOnly
             }),
-            ..Plan::new(from, to)
+            ..Plan::new(from.clone(), to.clone())
         };
-        let response = self.call(&request, &mut warnings).await?;
+        let (request, response) = self
+            .call_at(
+                request,
+                local,
+                |request, time| request.time = Some(time),
+                |response| {
+                    let place = if arrive_by {
+                        &response.to
+                    } else {
+                        &response.from
+                    };
+                    place.tz.as_deref()
+                },
+                &mut warnings,
+            )
+            .await?;
         // Walking can beat every ride: the API then returns it as a direct
         // route and leaves out the slower rides.
         let mut itineraries = response.itineraries;
@@ -382,6 +497,42 @@ fn same(a: &motis::Itinerary, b: &motis::Itinerary) -> bool {
             .collect()
     };
     trips(a) == trips(b)
+}
+
+/// A local time of a search and the place and zone it was read in.
+struct Local<'a> {
+    time: QueryTime,
+    place: &'a str,
+    zone: TimeZone,
+}
+
+impl<'a> Local<'a> {
+    /// `Some` for a local time of a first page: later pages continue from
+    /// their cursor.
+    fn new(time: Option<QueryTime>, place: &'a str, zone: TimeZone, first: bool) -> Option<Self> {
+        let time = time.filter(|time| first && time.is_local())?;
+        Some(Self { time, place, zone })
+    }
+}
+
+/// The instant of `time` in `zone`.
+fn at(
+    time: Option<QueryTime>,
+    zone: &TimeZone,
+    now: Timestamp,
+) -> Result<Option<Timestamp>, Error> {
+    time.map(|time| time.in_zone(zone, now))
+        .transpose()
+        .map_err(bad_time)
+}
+
+fn bad_time(message: String) -> Error {
+    Error::BadRequest { message }
+}
+
+/// The cache key of the time zone of `place`.
+fn zone_key(place: &str) -> String {
+    format!("zone:{place}")
 }
 
 #[cfg(test)]

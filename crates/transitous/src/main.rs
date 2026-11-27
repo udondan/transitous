@@ -11,7 +11,6 @@ mod mcp;
 mod output;
 mod settings;
 mod text;
-mod time;
 
 use std::io::{self, IsTerminal as _, Write as _};
 use std::net::SocketAddr;
@@ -22,7 +21,7 @@ use clap::{ArgAction, Args, CommandFactory as _, Parser, Subcommand};
 use jiff::Timestamp;
 use motis::Mode;
 use transitous_core::config::Settings;
-use transitous_core::{Config, DeparturesQuery, StopsQuery, Transitous, TripQuery};
+use transitous_core::{Config, DeparturesQuery, QueryTime, StopsQuery, Transitous, TripQuery};
 
 use crate::output::Format;
 
@@ -88,10 +87,11 @@ enum Command {
     Departures {
         /// The stop: its ID, or a name that fits one stop.
         stop: String,
-        /// From this time: HH:MM today, a local time like 2026-11-27T07:50,
-        /// or RFC 3339. Defaults to now.
-        #[arg(long, value_parser = time::arg)]
-        time: Option<Timestamp>,
+        /// From this time: HH:MM today or a local time like
+        /// 2026-11-27T07:50, both at the stop, or RFC 3339 with an offset.
+        /// Defaults to now.
+        #[arg(long)]
+        time: Option<QueryTime>,
         /// How many departures to ask for, up to 100. Transitous can return
         /// more, like all that leave in the same minute.
         #[arg(long, default_value_t = 10)]
@@ -118,12 +118,14 @@ enum Command {
         from: String,
         /// Where to, like `from`.
         to: String,
-        /// Arrive by this time: HH:MM today, a local time or RFC 3339.
-        #[arg(long, value_parser = time::arg, conflicts_with = "depart")]
-        arrive: Option<Timestamp>,
-        /// Depart at this time, like `--arrive`. Defaults to now.
-        #[arg(long, value_parser = time::arg)]
-        depart: Option<Timestamp>,
+        /// Arrive by this time: HH:MM today or a local time, both at the
+        /// destination, or RFC 3339 with an offset.
+        #[arg(long, conflicts_with = "depart")]
+        arrive: Option<QueryTime>,
+        /// Depart at this time: HH:MM today or a local time, both at the
+        /// origin, or RFC 3339 with an offset. Defaults to now.
+        #[arg(long)]
+        depart: Option<QueryTime>,
         /// How many connections to ask for, up to 20. Transitous can return
         /// more; all of them are shown, so the page cursors skip none.
         #[arg(long, default_value_t = 5)]

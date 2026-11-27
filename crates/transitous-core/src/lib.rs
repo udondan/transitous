@@ -16,9 +16,11 @@ pub mod model;
 pub mod resolve;
 pub mod service;
 pub mod status;
+pub mod time;
 pub mod usage;
 
 pub use config::Config;
 pub use error::Error;
 pub use service::{DeparturesQuery, StopsQuery, Transitous, TripQuery};
 pub use status::Status;
+pub use time::QueryTime;

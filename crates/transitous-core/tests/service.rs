@@ -350,7 +350,7 @@ async fn an_arrive_by_search_adds_the_page_before() {
         &sim,
         &TripQuery {
             arrive_by: true,
-            time: Some(at("2026-11-26T20:35:00Z")),
+            time: Some(at("2026-11-26T20:35:00Z").into()),
             count: 6,
             ..trip_query()
         },

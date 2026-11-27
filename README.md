@@ -124,8 +124,12 @@ Data: Transitous (https://transitous.org) and its sources, …
 - **Stops** are given by ID, or by a name that fits exactly one stop. A name
   that fits several gives `ambiguous_stop` with the candidates and their IDs,
   never a guess. `trip` also takes coordinates `LAT,LON`.
-- **Times** are `HH:MM` (always today, in the local time zone, never rolled
-  over to tomorrow), a local time like `2026-11-27T07:50`, or RFC 3339.
+- **Times** are `HH:MM` (always today, never rolled over to tomorrow), a
+  local time like `2026-11-27T07:50`, or RFC 3339 with an offset. `HH:MM` and
+  local times are the time at the stop, in its time zone, like the times of
+  the results: at the stop of `departures`, at the origin of `trip`, and at
+  the destination with `--arrive`. The time zone of the machine or container
+  does not matter.
 - **`trip --arrive 07:50`** returns the connections arriving last before
   07:50, together with earlier ones to switch to.
 - **Pages**: every result has a `page_cursor` with `earlier` and `later`;
@@ -260,8 +264,11 @@ Transitous:
 
 - every request carries the User-Agent
   `transitous/<version> (+https://github.com/udondan/transitous; contact: <your contact>)`;
-- nothing is retried. The only automatic follow-up request is one earlier
-  page for `trip --arrive` when the first has too few connections;
+- nothing is retried. The only automatic follow-up requests are one
+  earlier page for `trip --arrive` when the first has too few connections,
+  and one request again when a local time was read in another time zone than
+  the stop's. That happens only for a stop given by ID whose time zone is not
+  known yet; the time zone is then kept for an hour;
 - answers are cached on disk: stop searches for 15 minutes, departures,
   connections and journeys for 60 seconds;
 - at most 20 requests per minute go out, counted across all processes and
