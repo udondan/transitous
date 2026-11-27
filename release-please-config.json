@@ -103,6 +103,13 @@
       "component": "transitous",
       "exclude-paths": [
         "crates/transitous/tests"
+      ],
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "server.json",
+          "jsonpath": "$.version"
+        }
       ]
     }
   }

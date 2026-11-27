@@ -8,7 +8,8 @@ name: Publish
 #
 # - Every tag publishes the crates whose versions are not on crates.io yet.
 # - transitous-v* also builds the binaries, signs their checksums, pushes the
-#   Docker image and updates the Homebrew formula.
+#   Docker image, updates the Homebrew formula and publishes the server to
+#   the MCP Registry.
 #
 # Pull requests that change the release build everything without uploading,
 # publishing or signing anything.
@@ -28,6 +29,7 @@ on:
       - .github/scripts/**
       - Dockerfile
       - release-please-config.json
+      - crates/transitous/server.json
 
 permissions: {}
 
@@ -354,6 +356,108 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           LATEST: ${{ startsWith(github.ref_name, 'transitous-v') }}
         run: gh release edit "$TAG" --draft=false --latest="$LATEST" --repo "$GITHUB_REPOSITORY"
+
+  # Lists the server in the MCP Registry as io.github.udondan/transitous, once
+  # the release with its image is published. The registry accepts the
+  # namespace io.github.udondan through GitHub OIDC, so no token is stored. It
+  # checks that the image carries the label io.modelcontextprotocol.server.name
+  # of the Dockerfile.
+  mcp-registry:
+    name: MCP Registry
+    needs:
+      - docker
+      - release
+    if: startsWith(github.ref_name, 'transitous-v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write # login to the MCP Registry
+    env:
+      MCP_PUBLISHER_VERSION: v1.8.16
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: sigstore/cosign-installer@756fe2d284c7292c4e9b62c8a28f1e5629c59532 # v4.1.3
+
+      - name: Download and verify mcp-publisher
+        run: |
+          os="$(uname -s | tr '[:upper:]' '[:lower:]')"
+          arch="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')"
+          archive="mcp-publisher_${os}_${arch}.tar.gz"
+          base_url="https://github.com/modelcontextprotocol/registry/releases/download/${MCP_PUBLISHER_VERSION}"
+
+          curl --fail --location --silent --show-error --output "$archive" "$base_url/$archive"
+          curl --fail --location --silent --show-error --output "$archive.sigstore.json" "$base_url/$archive.sigstore.json"
+          cosign verify-blob \
+            --bundle "$archive.sigstore.json" \
+            --certificate-identity "https://github.com/modelcontextprotocol/registry/.github/workflows/release.yml@refs/tags/${MCP_PUBLISHER_VERSION}" \
+            --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+            "$archive"
+          tar xzf "$archive" mcp-publisher
+          rm -f "$archive" "$archive.sigstore.json"
+
+      # Release Please keeps .version in step with the crate; the image tag in
+      # .identifier follows it here.
+      - name: Set the image of the release
+        run: |
+          version=${TAG#transitous-v}
+          file=crates/transitous/server.json
+          if [[ $(jq -r .version "$file") != "$version" ]]; then
+            echo "::error::$file has version $(jq -r .version "$file"), the release is $version."
+            exit 1
+          fi
+          jq --arg image "docker.io/udondan/transitous:$version" \
+            '.packages[0].identifier = $image' "$file" >server.json
+          cat server.json
+
+      - run: ./mcp-publisher login github-oidc
+
+      - run: ./mcp-publisher publish server.json
+
+  # Checks server.json on pull requests against the MCP Registry, without
+  # publishing, and that the Dockerfile labels the image with its name.
+  mcp-registry-check:
+    name: MCP Registry (check)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    env:
+      MCP_PUBLISHER_VERSION: v1.8.16
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: sigstore/cosign-installer@756fe2d284c7292c4e9b62c8a28f1e5629c59532 # v4.1.3
+
+      - name: Download and verify mcp-publisher
+        run: |
+          os="$(uname -s | tr '[:upper:]' '[:lower:]')"
+          arch="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')"
+          archive="mcp-publisher_${os}_${arch}.tar.gz"
+          base_url="https://github.com/modelcontextprotocol/registry/releases/download/${MCP_PUBLISHER_VERSION}"
+
+          curl --fail --location --silent --show-error --output "$archive" "$base_url/$archive"
+          curl --fail --location --silent --show-error --output "$archive.sigstore.json" "$base_url/$archive.sigstore.json"
+          cosign verify-blob \
+            --bundle "$archive.sigstore.json" \
+            --certificate-identity "https://github.com/modelcontextprotocol/registry/.github/workflows/release.yml@refs/tags/${MCP_PUBLISHER_VERSION}" \
+            --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+            "$archive"
+          tar xzf "$archive" mcp-publisher
+          rm -f "$archive" "$archive.sigstore.json"
+
+      - run: ./mcp-publisher validate crates/transitous/server.json
+
+      - name: Check the label of the image
+        run: |
+          name=$(jq -r .name crates/transitous/server.json)
+          grep -qxF "LABEL io.modelcontextprotocol.server.name=\"$name\"" Dockerfile
 
   # The formula points to the archives of the published release. Pull
   # requests print the formula without pushing it.
