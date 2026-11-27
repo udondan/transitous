@@ -1,0 +1,170 @@
+{
+  "run": "2026-11-27T11:00:05Z",
+  "stops": [
+    {
+      "stopId": "de-DELFI_de:06412:1_G",
+      "n": 102,
+      "realtime": 102,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "PREDICTED": 7,
+        "PROPAGATED": 95
+      },
+      "cancellations": []
+    },
+    {
+      "stopId": "at-Railway-Current-Reference-Data-2026_de:06412:10:16:16",
+      "n": 100,
+      "realtime": 92,
+      "cancelled": 1,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 8,
+        "PREDICTED": 23,
+        "PROPAGATED": 69
+      },
+      "cancellations": [
+        {
+          "place": {
+            "name": "Frankfurt (Main) Hauptbahnhof",
+            "stopId": "de-DELFI_de:06412:10_G",
+            "importance": 0.032944027334451675,
+            "lat": 50.10668,
+            "lon": 8.662828,
+            "tz": "Europe/Berlin",
+            "arrival": "2026-11-27T11:14:00Z",
+            "departure": "2026-11-27T11:14:00Z",
+            "scheduledArrival": "2026-11-27T09:37:00Z",
+            "scheduledDeparture": "2026-11-27T09:43:00Z",
+            "track": "5",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NORMAL",
+            "cancelled": false,
+            "arrivalTimestampReason": "INCONSISTENT_RT",
+            "departureTimestampReason": "PREDICTED",
+            "modes": [
+              "HIGHSPEED_RAIL",
+              "LONG_DISTANCE",
+              "COACH",
+              "NIGHT_RAIL",
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "SUBWAY",
+              "TRAM",
+              "BUS"
+            ]
+          },
+          "mode": "HIGHSPEED_RAIL",
+          "realTime": true,
+          "headsign": "Wiesbaden Hauptbahnhof",
+          "tripFrom": {
+            "name": "Dresden Hauptbahnhof",
+            "stopId": "de-DELFI_de:14612:28:12:Gleis14",
+            "parentId": "de-DELFI_de:14612:28",
+            "importance": 0.00942826084792614,
+            "lat": 51.04052,
+            "lon": 13.731961999999998,
+            "level": 1,
+            "tz": "Europe/Berlin",
+            "scheduledTrack": "Gl.11",
+            "track": "3",
+            "description": "Mittelhalle 10+11",
+            "vertexType": "TRANSIT",
+            "pickupType": "NORMAL",
+            "dropoffType": "NORMAL",
+            "cancelled": false,
+            "departureTimestampReason": "PREDICTED",
+            "modes": [
+              "HIGHSPEED_RAIL",
+              "LONG_DISTANCE",
+              "COACH",
+              "NIGHT_RAIL",
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "TRAM",
+              "BUS"
+            ]
+          },
+          "tripTo": {
+            "name": "Frankfurt (Main) Hauptbahnhof",
+            "stopId": "de-DELFI_de:06412:10_G",
+            "importance": 0.032944027334451675,
+            "lat": 50.10668,
+            "lon": 8.662828,
+            "tz": "Europe/Berlin",
+            "track": "5",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NORMAL",
+            "cancelled": false,
+            "arrivalTimestampReason": "INCONSISTENT_RT",
+            "departureTimestampReason": "PREDICTED",
+            "modes": [
+              "HIGHSPEED_RAIL",
+              "LONG_DISTANCE",
+              "COACH",
+              "NIGHT_RAIL",
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "SUBWAY",
+              "TRAM",
+              "BUS"
+            ]
+          },
+          "agencyId": "12681",
+          "agencyName": "DB Fernverkehr AG",
+          "agencyUrl": "",
+          "routeId": "de-DELFI_162314_101",
+          "routeUrl": "",
+          "directionId": "0",
+          "tripId": "20261127_06:11_de-DELFI_3490181522",
+          "routeType": 101,
+          "routeShortName": "50",
+          "routeLongName": "",
+          "tripShortName": "ICE 1654",
+          "displayName": "ICE 1654",
+          "pickupDropoffType": "NOT_ALLOWED",
+          "cancelled": true,
+          "tripCancelled": false,
+          "bikesAllowed": false,
+          "wheelchairAccessible": "NOT_ACCESSIBLE",
+          "reservation": "NONE",
+          "source": "de_DELFI.gtfs.zip/stop_times.txt:51905984:51905995"
+        }
+      ]
+    },
+    {
+      "stopId": "de-DELFI_de:06412:510_G",
+      "n": 101,
+      "realtime": 101,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "PREDICTED": 3,
+        "PROPAGATED": 98
+      },
+      "cancellations": []
+    },
+    {
+      "stopId": "de-DELFI_de:06412:1201",
+      "n": 100,
+      "realtime": 95,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 5,
+        "PREDICTED": 18,
+        "PROPAGATED": 77
+      },
+      "cancellations": []
+    }
+  ],
+  "comparisons": [],
+  "errors": []
+}
