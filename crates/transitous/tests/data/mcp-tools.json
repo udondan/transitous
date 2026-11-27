@@ -39,7 +39,7 @@
           "type": "string"
         },
         "time": {
-          "description": "From this time: RFC 3339, a local time or HH:MM today. Default now.",
+          "description": "From this time: RFC 3339 with an offset, or HH:MM today or a local\ntime like 2026-11-27T07:50 at the stop. Default now.",
           "type": [
             "string",
             "null"
@@ -768,7 +768,7 @@
           "type": "boolean"
         },
         "time": {
-          "description": "Depart at this time, or arrive by it with `arrive_by`: RFC 3339, a\nlocal time or HH:MM today. Default now.",
+          "description": "Depart at this time, or arrive by it with `arrive_by`: RFC 3339 with\nan offset, or HH:MM today or a local time like 2026-11-27T07:50 at the\norigin, or at the destination with `arrive_by`. Default now.",
           "type": [
             "string",
             "null"

@@ -35,8 +35,10 @@ Always pass `-o json` for results you parse.
 - Stops are an ID or a name that fits exactly one stop; `trip` also takes
   `LAT,LON`. Prefer IDs once you have them: they are unambiguous and save a
   request.
-- Times are `HH:MM` (today, local time, never tomorrow), a local time like
-  `2026-11-27T07:50`, or RFC 3339. For tomorrow, give the date.
+- Times are `HH:MM` (today, never tomorrow), a local time like
+  `2026-11-27T07:50`, or RFC 3339 with an offset. `HH:MM` and local times are
+  the time at the stop (the origin of `trip`, the destination with
+  `--arrive`), like the times of the results. For tomorrow, give the date.
 - `page_cursor.earlier` and `page_cursor.later` of a result go to
   `--page-cursor` for the page before or after.
 
