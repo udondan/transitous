@@ -1,0 +1,1 @@
+{"run":"2026-11-27T06:10:23Z","stops":[],"comparisons":[],"errors":["geocode: curl (56) CONNECT tunnel failed, response 403 (proxy blocks api.transitous.org)","stoptimes calls skipped: same proxy block"]}
