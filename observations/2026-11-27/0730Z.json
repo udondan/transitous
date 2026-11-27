@@ -1,0 +1,1048 @@
+{
+  "run": "2026-11-27T07:30:05Z",
+  "stops": [
+    {
+      "stopId": "de-DELFI_de:06412:1_G",
+      "n": 100,
+      "realtime": 91,
+      "cancelled": 3,
+      "tripCancelled": 3,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 9,
+        "PREDICTED": 6,
+        "PROPAGATED": 85
+      },
+      "cancellations": [
+        {
+          "place": {
+            "name": "Frankfurt (Main) Hauptwache",
+            "stopId": "de-DELFI_de:06412:1_G",
+            "importance": 0.017081359401345253,
+            "lat": 50.113926,
+            "lon": 8.678946999999999,
+            "level": -3,
+            "tz": "Europe/Berlin",
+            "arrival": "2026-11-27T07:37:00Z",
+            "departure": "2026-11-27T07:38:00Z",
+            "scheduledArrival": "2026-11-27T07:37:00Z",
+            "scheduledDeparture": "2026-11-27T07:38:00Z",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "SUBURBAN",
+              "SUBWAY"
+            ]
+          },
+          "mode": "SUBURBAN",
+          "realTime": false,
+          "headsign": "Rödermark-Ober-Roden Bahnhof",
+          "tripFrom": {
+            "name": "Frankfurt (Main) Höchst Bahnhof",
+            "stopId": "de-DELFI_de:06412:1008",
+            "importance": 0.004581620451062918,
+            "lat": 50.102634,
+            "lon": 8.542369999999998,
+            "level": 1,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "BUS",
+              "ODM"
+            ]
+          },
+          "tripTo": {
+            "name": "Rödermark-Ober-Roden Bahnhof",
+            "stopId": "de-DELFI_de:06438:4646",
+            "importance": 0.0016036333981901407,
+            "lat": 49.97362,
+            "lon": 8.828960999999998,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "BUS"
+            ]
+          },
+          "agencyId": "12201",
+          "agencyName": "DB Regio AG S-Bahn Rhein-Main",
+          "agencyUrl": "",
+          "routeId": "de-DELFI_de:rmv:00001314:_109",
+          "routeUrl": "",
+          "directionId": "0",
+          "routeColor": "009edd",
+          "routeTextColor": "ffffff",
+          "tripId": "20261127_08:18_de-DELFI_3490142096",
+          "routeType": 109,
+          "routeShortName": "S1",
+          "routeLongName": "",
+          "tripShortName": "036119",
+          "displayName": "S1",
+          "pickupDropoffType": "NOT_ALLOWED",
+          "cancelled": true,
+          "tripCancelled": true,
+          "bikesAllowed": false,
+          "wheelchairAccessible": "NOT_ACCESSIBLE",
+          "reservation": "NONE",
+          "source": "de_DELFI.gtfs.zip/stop_times.txt:52242110:52242114"
+        },
+        {
+          "place": {
+            "name": "Frankfurt (Main) Hauptwache",
+            "stopId": "de-DELFI_de:06412:1_G",
+            "importance": 0.017081359401345253,
+            "lat": 50.113926,
+            "lon": 8.678946999999999,
+            "level": -3,
+            "tz": "Europe/Berlin",
+            "arrival": "2026-11-27T07:52:00Z",
+            "departure": "2026-11-27T07:53:00Z",
+            "scheduledArrival": "2026-11-27T07:52:00Z",
+            "scheduledDeparture": "2026-11-27T07:53:00Z",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "SUBURBAN",
+              "SUBWAY"
+            ]
+          },
+          "mode": "SUBURBAN",
+          "realTime": false,
+          "headsign": "Frankfurt (Main) Höchst Bahnhof",
+          "tripFrom": {
+            "name": "Rödermark-Ober-Roden Bahnhof",
+            "stopId": "de-DELFI_de:06438:4646",
+            "importance": 0.0016036333981901407,
+            "lat": 49.97362,
+            "lon": 8.828960999999998,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "BUS"
+            ]
+          },
+          "tripTo": {
+            "name": "Frankfurt (Main) Höchst Bahnhof",
+            "stopId": "de-DELFI_de:06412:1008",
+            "importance": 0.004581620451062918,
+            "lat": 50.102634,
+            "lon": 8.542369999999998,
+            "level": 1,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "BUS",
+              "ODM"
+            ]
+          },
+          "agencyId": "12201",
+          "agencyName": "DB Regio AG S-Bahn Rhein-Main",
+          "agencyUrl": "",
+          "routeId": "de-DELFI_de:rmv:00001314:_109",
+          "routeUrl": "",
+          "directionId": "1",
+          "routeColor": "009edd",
+          "routeTextColor": "ffffff",
+          "tripId": "20261127_08:13_de-DELFI_3490141366",
+          "routeType": 109,
+          "routeShortName": "S1",
+          "routeLongName": "",
+          "tripShortName": "036120",
+          "displayName": "S1",
+          "pickupDropoffType": "NOT_ALLOWED",
+          "cancelled": true,
+          "tripCancelled": true,
+          "bikesAllowed": false,
+          "wheelchairAccessible": "NOT_ACCESSIBLE",
+          "reservation": "NONE",
+          "source": "de_DELFI.gtfs.zip/stop_times.txt:52238872:52238894"
+        },
+        {
+          "place": {
+            "name": "Frankfurt (Main) Hauptwache",
+            "stopId": "de-DELFI_de:06412:1_G",
+            "importance": 0.017081359401345253,
+            "lat": 50.113926,
+            "lon": 8.678946999999999,
+            "level": -3,
+            "tz": "Europe/Berlin",
+            "arrival": "2026-11-27T08:07:00Z",
+            "departure": "2026-11-27T08:08:00Z",
+            "scheduledArrival": "2026-11-27T08:07:00Z",
+            "scheduledDeparture": "2026-11-27T08:08:00Z",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "SUBURBAN",
+              "SUBWAY"
+            ]
+          },
+          "mode": "SUBURBAN",
+          "realTime": false,
+          "headsign": "Rödermark-Ober-Roden Bahnhof",
+          "tripFrom": {
+            "name": "Frankfurt (Main) Höchst Bahnhof",
+            "stopId": "de-DELFI_de:06412:1008",
+            "importance": 0.004581620451062918,
+            "lat": 50.102634,
+            "lon": 8.542369999999998,
+            "level": 1,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "BUS",
+              "ODM"
+            ]
+          },
+          "tripTo": {
+            "name": "Rödermark-Ober-Roden Bahnhof",
+            "stopId": "de-DELFI_de:06438:4646",
+            "importance": 0.0016036333981901407,
+            "lat": 49.97362,
+            "lon": 8.828960999999998,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "BUS"
+            ]
+          },
+          "agencyId": "12201",
+          "agencyName": "DB Regio AG S-Bahn Rhein-Main",
+          "agencyUrl": "",
+          "routeId": "de-DELFI_de:rmv:00001314:_109",
+          "routeUrl": "",
+          "directionId": "0",
+          "routeColor": "009edd",
+          "routeTextColor": "ffffff",
+          "tripId": "20261127_08:48_de-DELFI_3490142095",
+          "routeType": 109,
+          "routeShortName": "S1",
+          "routeLongName": "",
+          "tripShortName": "036121",
+          "displayName": "S1",
+          "pickupDropoffType": "NOT_ALLOWED",
+          "cancelled": true,
+          "tripCancelled": true,
+          "bikesAllowed": false,
+          "wheelchairAccessible": "NOT_ACCESSIBLE",
+          "reservation": "NONE",
+          "source": "de_DELFI.gtfs.zip/stop_times.txt:52242105:52242109"
+        }
+      ]
+    },
+    {
+      "stopId": "at-Railway-Current-Reference-Data-2026_de:06412:10:16:16",
+      "n": 101,
+      "realtime": 90,
+      "cancelled": 1,
+      "tripCancelled": 1,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 11,
+        "PREDICTED": 22,
+        "PROPAGATED": 68
+      },
+      "cancellations": [
+        {
+          "place": {
+            "name": "Frankfurt (Main) Hauptbahnhof tief",
+            "stopId": "de-DELFI_de:06412:7010",
+            "importance": 0.032944027334451675,
+            "lat": 50.107110000000006,
+            "lon": 8.662561,
+            "level": -3,
+            "tz": "Europe/Berlin",
+            "arrival": "2026-11-27T07:33:00Z",
+            "departure": "2026-11-27T07:34:00Z",
+            "scheduledArrival": "2026-11-27T07:33:00Z",
+            "scheduledDeparture": "2026-11-27T07:34:00Z",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "HIGHSPEED_RAIL",
+              "LONG_DISTANCE",
+              "COACH",
+              "NIGHT_RAIL",
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "SUBWAY",
+              "TRAM",
+              "BUS"
+            ]
+          },
+          "mode": "SUBURBAN",
+          "realTime": false,
+          "headsign": "Rödermark-Ober-Roden Bahnhof",
+          "tripFrom": {
+            "name": "Frankfurt (Main) Höchst Bahnhof",
+            "stopId": "de-DELFI_de:06412:1008",
+            "importance": 0.004581620451062918,
+            "lat": 50.102634,
+            "lon": 8.542369999999998,
+            "level": 1,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "BUS",
+              "ODM"
+            ]
+          },
+          "tripTo": {
+            "name": "Rödermark-Ober-Roden Bahnhof",
+            "stopId": "de-DELFI_de:06438:4646",
+            "importance": 0.0016036333981901407,
+            "lat": 49.97362,
+            "lon": 8.828960999999998,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "BUS"
+            ]
+          },
+          "agencyId": "12201",
+          "agencyName": "DB Regio AG S-Bahn Rhein-Main",
+          "agencyUrl": "",
+          "routeId": "de-DELFI_de:rmv:00001314:_109",
+          "routeUrl": "",
+          "directionId": "0",
+          "routeColor": "009edd",
+          "routeTextColor": "ffffff",
+          "tripId": "20261127_08:18_de-DELFI_3490142096",
+          "routeType": 109,
+          "routeShortName": "S1",
+          "routeLongName": "",
+          "tripShortName": "036119",
+          "displayName": "S1",
+          "pickupDropoffType": "NOT_ALLOWED",
+          "cancelled": true,
+          "tripCancelled": true,
+          "bikesAllowed": false,
+          "wheelchairAccessible": "NOT_ACCESSIBLE",
+          "reservation": "NONE",
+          "source": "de_DELFI.gtfs.zip/stop_times.txt:52242110:52242114"
+        }
+      ]
+    },
+    {
+      "stopId": "de-DELFI_de:06412:510_G",
+      "n": 101,
+      "realtime": 97,
+      "cancelled": 2,
+      "tripCancelled": 2,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 4,
+        "PREDICTED": 6,
+        "PROPAGATED": 91
+      },
+      "cancellations": [
+        {
+          "place": {
+            "name": "Frankfurt (Main) Konstablerwache",
+            "stopId": "de-DELFI_de:06412:510_G",
+            "importance": 0.016656819730997086,
+            "lat": 50.11462399999999,
+            "lon": 8.687097999999999,
+            "level": -3,
+            "tz": "Europe/Berlin",
+            "arrival": "2026-11-27T07:39:00Z",
+            "departure": "2026-11-27T07:39:00Z",
+            "scheduledArrival": "2026-11-27T07:39:00Z",
+            "scheduledDeparture": "2026-11-27T07:39:00Z",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "SUBURBAN",
+              "SUBWAY",
+              "TRAM",
+              "BUS"
+            ]
+          },
+          "mode": "SUBURBAN",
+          "realTime": false,
+          "headsign": "Rödermark-Ober-Roden Bahnhof",
+          "tripFrom": {
+            "name": "Frankfurt (Main) Höchst Bahnhof",
+            "stopId": "de-DELFI_de:06412:1008",
+            "importance": 0.004581620451062918,
+            "lat": 50.102634,
+            "lon": 8.542369999999998,
+            "level": 1,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "BUS",
+              "ODM"
+            ]
+          },
+          "tripTo": {
+            "name": "Rödermark-Ober-Roden Bahnhof",
+            "stopId": "de-DELFI_de:06438:4646",
+            "importance": 0.0016036333981901407,
+            "lat": 49.97362,
+            "lon": 8.828960999999998,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "BUS"
+            ]
+          },
+          "agencyId": "12201",
+          "agencyName": "DB Regio AG S-Bahn Rhein-Main",
+          "agencyUrl": "",
+          "routeId": "de-DELFI_de:rmv:00001314:_109",
+          "routeUrl": "",
+          "directionId": "0",
+          "routeColor": "009edd",
+          "routeTextColor": "ffffff",
+          "tripId": "20261127_08:18_de-DELFI_3490142096",
+          "routeType": 109,
+          "routeShortName": "S1",
+          "routeLongName": "",
+          "tripShortName": "036119",
+          "displayName": "S1",
+          "pickupDropoffType": "NOT_ALLOWED",
+          "cancelled": true,
+          "tripCancelled": true,
+          "bikesAllowed": false,
+          "wheelchairAccessible": "NOT_ACCESSIBLE",
+          "reservation": "NONE",
+          "source": "de_DELFI.gtfs.zip/stop_times.txt:52242110:52242114"
+        },
+        {
+          "place": {
+            "name": "Frankfurt (Main) Konstablerwache",
+            "stopId": "de-DELFI_de:06412:510_G",
+            "importance": 0.016656819730997086,
+            "lat": 50.11462399999999,
+            "lon": 8.687097999999999,
+            "level": -3,
+            "tz": "Europe/Berlin",
+            "arrival": "2026-11-27T07:51:00Z",
+            "departure": "2026-11-27T07:51:00Z",
+            "scheduledArrival": "2026-11-27T07:51:00Z",
+            "scheduledDeparture": "2026-11-27T07:51:00Z",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "SUBURBAN",
+              "SUBWAY",
+              "TRAM",
+              "BUS"
+            ]
+          },
+          "mode": "SUBURBAN",
+          "realTime": false,
+          "headsign": "Frankfurt (Main) Höchst Bahnhof",
+          "tripFrom": {
+            "name": "Rödermark-Ober-Roden Bahnhof",
+            "stopId": "de-DELFI_de:06438:4646",
+            "importance": 0.0016036333981901407,
+            "lat": 49.97362,
+            "lon": 8.828960999999998,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "BUS"
+            ]
+          },
+          "tripTo": {
+            "name": "Frankfurt (Main) Höchst Bahnhof",
+            "stopId": "de-DELFI_de:06412:1008",
+            "importance": 0.004581620451062918,
+            "lat": 50.102634,
+            "lon": 8.542369999999998,
+            "level": 1,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "BUS",
+              "ODM"
+            ]
+          },
+          "agencyId": "12201",
+          "agencyName": "DB Regio AG S-Bahn Rhein-Main",
+          "agencyUrl": "",
+          "routeId": "de-DELFI_de:rmv:00001314:_109",
+          "routeUrl": "",
+          "directionId": "1",
+          "routeColor": "009edd",
+          "routeTextColor": "ffffff",
+          "tripId": "20261127_08:13_de-DELFI_3490141366",
+          "routeType": 109,
+          "routeShortName": "S1",
+          "routeLongName": "",
+          "tripShortName": "036120",
+          "displayName": "S1",
+          "pickupDropoffType": "NOT_ALLOWED",
+          "cancelled": true,
+          "tripCancelled": true,
+          "bikesAllowed": false,
+          "wheelchairAccessible": "NOT_ACCESSIBLE",
+          "reservation": "NONE",
+          "source": "de_DELFI.gtfs.zip/stop_times.txt:52238872:52238894"
+        }
+      ]
+    },
+    {
+      "stopId": "de-DELFI_de:06412:1201",
+      "n": 103,
+      "realtime": 93,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 10,
+        "PREDICTED": 12,
+        "PROPAGATED": 81
+      },
+      "cancellations": []
+    }
+  ],
+  "comparisons": [
+    {
+      "tripId": "20261127_08:13_de-DELFI_3490141366",
+      "from": "de-DELFI_de:06412:1_G",
+      "to": "de-DELFI_de:06412:11",
+      "time": "2026-11-27T07:51:00Z",
+      "realtime": [
+        {
+          "startTime": "2026-11-27T07:55:00Z",
+          "endTime": "2026-11-27T07:57:00Z",
+          "legs": [
+            {
+              "displayName": "S6",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:34_de-DELFI_3490140209",
+              "startTime": "2026-11-27T07:55:00Z",
+              "scheduledStartTime": "2026-11-27T07:55:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:58:00Z",
+          "endTime": "2026-11-27T07:59:00Z",
+          "legs": [
+            {
+              "displayName": "S9",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:31_de-DELFI_3490139336",
+              "startTime": "2026-11-27T07:58:00Z",
+              "scheduledStartTime": "2026-11-27T07:58:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T08:00:00Z",
+          "endTime": "2026-11-27T08:01:00Z",
+          "legs": [
+            {
+              "displayName": "S5",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:53_de-DELFI_3490136961",
+              "startTime": "2026-11-27T08:00:00Z",
+              "scheduledStartTime": "2026-11-27T08:00:00Z",
+              "realTime": false,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T08:05:00Z",
+          "endTime": "2026-11-27T08:06:00Z",
+          "legs": [
+            {
+              "displayName": "S3",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:58_de-DELFI_3490142610",
+              "startTime": "2026-11-27T08:05:00Z",
+              "scheduledStartTime": "2026-11-27T08:05:00Z",
+              "realTime": false,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        }
+      ],
+      "annotation_only": [
+        {
+          "startTime": "2026-11-27T07:53:00Z",
+          "endTime": "2026-11-27T07:54:00Z",
+          "legs": [
+            {
+              "displayName": "S1",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:13_de-DELFI_3490141366",
+              "startTime": "2026-11-27T07:53:00Z",
+              "scheduledStartTime": "2026-11-27T07:53:00Z",
+              "realTime": false,
+              "cancelled": true,
+              "fromCancelled": true,
+              "pickup": "NOT_ALLOWED",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:55:00Z",
+          "endTime": "2026-11-27T07:57:00Z",
+          "legs": [
+            {
+              "displayName": "S6",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:34_de-DELFI_3490140209",
+              "startTime": "2026-11-27T07:55:00Z",
+              "scheduledStartTime": "2026-11-27T07:55:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:58:00Z",
+          "endTime": "2026-11-27T07:59:00Z",
+          "legs": [
+            {
+              "displayName": "S9",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:31_de-DELFI_3490139336",
+              "startTime": "2026-11-27T07:58:00Z",
+              "scheduledStartTime": "2026-11-27T07:58:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T08:00:00Z",
+          "endTime": "2026-11-27T08:01:00Z",
+          "legs": [
+            {
+              "displayName": "S5",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:53_de-DELFI_3490136961",
+              "startTime": "2026-11-27T08:00:00Z",
+              "scheduledStartTime": "2026-11-27T08:00:00Z",
+              "realTime": false,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T08:05:00Z",
+          "endTime": "2026-11-27T08:06:00Z",
+          "legs": [
+            {
+              "displayName": "S3",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:58_de-DELFI_3490142610",
+              "startTime": "2026-11-27T08:05:00Z",
+              "scheduledStartTime": "2026-11-27T08:05:00Z",
+              "realTime": false,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        }
+      ],
+      "in_realtime": false,
+      "in_annotation_only": true,
+      "cancelled_realtime": null,
+      "cancelled_annotation_only": true
+    },
+    {
+      "tripId": "20261127_08:18_de-DELFI_3490142096",
+      "from": "de-DELFI_de:06412:1_G",
+      "to": "de-DELFI_de:06412:510_G",
+      "time": "2026-11-27T07:36:00Z",
+      "realtime": [
+        {
+          "startTime": "2026-11-27T07:38:00Z",
+          "endTime": "2026-11-27T07:40:00Z",
+          "legs": [
+            {
+              "displayName": "U6",
+              "mode": "SUBWAY",
+              "tripId": "20261127_08:27_de-DELFI_3031889931",
+              "startTime": "2026-11-27T07:38:00Z",
+              "scheduledStartTime": "2026-11-27T07:38:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:40:00Z",
+          "endTime": "2026-11-27T07:41:00Z",
+          "legs": [
+            {
+              "displayName": "S6",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_07:50_de-DELFI_3490140805",
+              "startTime": "2026-11-27T07:40:00Z",
+              "scheduledStartTime": "2026-11-27T07:35:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:41:00Z",
+          "endTime": "2026-11-27T07:42:00Z",
+          "legs": [
+            {
+              "displayName": "S3",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:11_de-DELFI_3490142897",
+              "startTime": "2026-11-27T07:41:00Z",
+              "scheduledStartTime": "2026-11-27T07:41:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:42:00Z",
+          "endTime": "2026-11-27T07:44:00Z",
+          "legs": [
+            {
+              "displayName": "U7",
+              "mode": "SUBWAY",
+              "tripId": "20261127_08:28_de-DELFI_3031890551",
+              "startTime": "2026-11-27T07:42:00Z",
+              "scheduledStartTime": "2026-11-27T07:42:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:45:00Z",
+          "endTime": "2026-11-27T07:46:00Z",
+          "legs": [
+            {
+              "displayName": "S2",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:03_de-DELFI_3490136155",
+              "startTime": "2026-11-27T07:45:00Z",
+              "scheduledStartTime": "2026-11-27T07:44:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:46:00Z",
+          "endTime": "2026-11-27T07:47:00Z",
+          "legs": [
+            {
+              "displayName": "S5",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:19_de-DELFI_3490137311",
+              "startTime": "2026-11-27T07:46:00Z",
+              "scheduledStartTime": "2026-11-27T07:46:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:50:00Z",
+          "endTime": "2026-11-27T07:51:00Z",
+          "legs": [
+            {
+              "displayName": "S6",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:17_de-DELFI_3490140400",
+              "startTime": "2026-11-27T07:50:00Z",
+              "scheduledStartTime": "2026-11-27T07:50:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        }
+      ],
+      "annotation_only": [
+        {
+          "startTime": "2026-11-27T07:38:00Z",
+          "endTime": "2026-11-27T07:39:00Z",
+          "legs": [
+            {
+              "displayName": "S1",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:18_de-DELFI_3490142096",
+              "startTime": "2026-11-27T07:38:00Z",
+              "scheduledStartTime": "2026-11-27T07:38:00Z",
+              "realTime": false,
+              "cancelled": true,
+              "fromCancelled": true,
+              "pickup": "NOT_ALLOWED",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:41:00Z",
+          "endTime": "2026-11-27T07:42:00Z",
+          "legs": [
+            {
+              "displayName": "S3",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:11_de-DELFI_3490142897",
+              "startTime": "2026-11-27T07:41:00Z",
+              "scheduledStartTime": "2026-11-27T07:41:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:42:00Z",
+          "endTime": "2026-11-27T07:44:00Z",
+          "legs": [
+            {
+              "displayName": "U7",
+              "mode": "SUBWAY",
+              "tripId": "20261127_08:28_de-DELFI_3031890551",
+              "startTime": "2026-11-27T07:42:00Z",
+              "scheduledStartTime": "2026-11-27T07:42:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:44:00Z",
+          "endTime": "2026-11-27T07:45:00Z",
+          "legs": [
+            {
+              "displayName": "S2",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:03_de-DELFI_3490136155",
+              "startTime": "2026-11-27T07:45:00Z",
+              "scheduledStartTime": "2026-11-27T07:44:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:46:00Z",
+          "endTime": "2026-11-27T07:47:00Z",
+          "legs": [
+            {
+              "displayName": "S5",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:19_de-DELFI_3490137311",
+              "startTime": "2026-11-27T07:46:00Z",
+              "scheduledStartTime": "2026-11-27T07:46:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:48:00Z",
+          "endTime": "2026-11-27T07:49:00Z",
+          "legs": [
+            {
+              "displayName": "S8",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_07:48_de-DELFI_3490138925",
+              "startTime": "2026-11-27T07:57:00Z",
+              "scheduledStartTime": "2026-11-27T07:48:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T07:50:00Z",
+          "endTime": "2026-11-27T07:51:00Z",
+          "legs": [
+            {
+              "displayName": "S6",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_08:17_de-DELFI_3490140400",
+              "startTime": "2026-11-27T07:50:00Z",
+              "scheduledStartTime": "2026-11-27T07:50:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        }
+      ],
+      "in_realtime": false,
+      "in_annotation_only": true,
+      "cancelled_realtime": null,
+      "cancelled_annotation_only": true
+    }
+  ],
+  "errors": []
+}
