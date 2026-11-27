@@ -1,5 +1,11 @@
 # transitous
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/udondan/transitous/main/docs/banner-dark.webp">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/udondan/transitous/main/docs/banner-light.webp">
+  <img alt="transitous – Public transport. CLI + MCP." src="https://raw.githubusercontent.com/udondan/transitous/main/docs/banner-light.webp">
+</picture>
+
 [![Release](https://img.shields.io/github/v/release/udondan/transitous?filter=transitous-v*&label=release)](https://github.com/udondan/transitous/releases/latest)
 [![Docker](https://img.shields.io/docker/v/udondan/transitous?sort=semver&label=docker)](https://hub.docker.com/r/udondan/transitous)
 [![CI](https://github.com/udondan/transitous/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/udondan/transitous/actions/workflows/test.yml)
