@@ -1,6 +1,6 @@
 [package]
 name = "motis"
-version = "0.1.0"
+version = "1.0.0"
 description = "Client for the MOTIS 2 public transport routing API"
 keywords = ["motis", "transit", "gtfs", "routing", "api"]
 categories = ["api-bindings", "web-programming::http-client"]

@@ -1,6 +1,6 @@
 [package]
 name = "motis-sim"
-version = "0.1.0"
+version = "1.0.0"
 description = "Fake MOTIS 2 server for tests, serving recorded Transitous responses with injected cancellations, delays and errors"
 keywords = ["motis", "transitous", "public-transport", "testing", "mock"]
 categories = ["development-tools::testing"]
