@@ -15,7 +15,8 @@ permissions:
 jobs:
   # Squash merges use the PR title as the commit message, which release-please
   # reads. A crate as scope puts the change in the release notes of that crate
-  # only (.github/scripts/release-notes-scope.py).
+  # only, and of the crates that depend on it under "Dependencies"
+  # (.github/scripts/release-notes-scope.py).
   conventional-pr-title:
     runs-on: ubuntu-latest
     timeout-minutes: 5
