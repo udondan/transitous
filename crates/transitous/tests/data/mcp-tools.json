@@ -1,7 +1,8 @@
 [
   {
     "name": "transitous_departures",
-    "description": "The next departures or arrivals at a stop, with realtime times, delays, cancellations and alerts.",
+    "title": "Departures at a stop",
+    "description": "Lists the next departures, or with `arrivals` the arrivals, at one stop from `time` on: each with mode, line, operator, headsign, planned and realtime time, delay, track, cancellation of the stop or the whole ride, and alerts, and the trip_id for transitous_journey. Use it for what leaves a stop soon; to get from A to B with transfers use transitous_trip, for all stops of one ride transitous_journey. `page_cursor.earlier` and `later` of the result page through more. Counts against the limit of 20 requests per minute (answer rate_limited with retry_after_seconds); answers are cached for 60 seconds.",
     "inputSchema": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
       "properties": {
@@ -28,7 +29,7 @@
           "type": "array"
         },
         "page_cursor": {
-          "description": "The page before or after, from `page_cursor` of a result.",
+          "description": "The page before or after: `page_cursor.earlier` or `later` of the\nprevious result, with the same other arguments.",
           "type": [
             "string",
             "null"
@@ -323,13 +324,17 @@
       "type": "object"
     },
     "annotations": {
+      "title": "Departures at a stop",
       "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
       "openWorldHint": true
     }
   },
   {
     "name": "transitous_find_stop",
-    "description": "Find stops by name, with their IDs for the other tools.",
+    "title": "Find a stop",
+    "description": "Searches stops by name, or a part of it, and returns up to `count` matches (default 10, at most 20), each with stop ID, name, area, coordinates and modes; `near` ranks stops close to a place first. Use it to get a stop ID, or when a name is ambiguous: transitous_departures and transitous_trip also take a name that fits one stop, and answer ambiguous_stop with candidates otherwise. Counts against the limit of 20 requests per minute (answer rate_limited with retry_after_seconds); answers are cached for 15 minutes.",
     "inputSchema": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
       "properties": {
@@ -343,7 +348,7 @@
           ]
         },
         "name": {
-          "description": "The name of the stop, or a part of it.",
+          "description": "The name of the stop, or a part of it, like `Frankfurt Hbf` or\n`Hauptwache`.",
           "type": "string"
         },
         "near": {
@@ -456,18 +461,22 @@
       "type": "object"
     },
     "annotations": {
+      "title": "Find a stop",
       "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
       "openWorldHint": true
     }
   },
   {
     "name": "transitous_journey",
-    "description": "A trip with all its stops, realtime times and cancellations, by its trip_id from a departure or leg.",
+    "title": "One ride with all stops",
+    "description": "Returns one ride (a vehicle's trip) with line, operator, headsign, whether it is cancelled, its alerts, and every stop with planned and realtime times, delays, tracks and cancelled stops. Takes the trip_id of a departure from transitous_departures or of a leg from transitous_trip. Use it to follow a train along its route or to see where a delay starts. Counts against the limit of 20 requests per minute (answer rate_limited with retry_after_seconds); answers are cached for 60 seconds.",
     "inputSchema": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
       "properties": {
         "trip_id": {
-          "description": "The trip ID, from `trip_id` of a departure or leg.",
+          "description": "The trip ID, from `trip_id` of a departure of\n`transitous_departures` or a leg of `transitous_trip`, as it is.",
           "type": "string"
         }
       },
@@ -710,13 +719,17 @@
       "type": "object"
     },
     "annotations": {
+      "title": "One ride with all stops",
       "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
       "openWorldHint": true
     }
   },
   {
     "name": "transitous_trip",
-    "description": "Connections between two stops or places, each with a status: ok, delayed, cancelled, unreachable (a transfer is missed or the first ride has left) or no_realtime, with the reasons. With arrive_by, also the earlier connections.",
+    "title": "Connections from A to B",
+    "description": "Searches connections between two stops or places, each with departure, arrival, duration, transfers, its legs (with trip_id) and a status: ok, delayed, cancelled, unreachable (a transfer is missed or the first ride has left) or no_realtime, with the reasons. With `arrive_by`, the connections arriving last before `time`, and earlier ones to switch to. Use it to plan or check a route; for one stop's departures use transitous_departures, for one ride with all stops transitous_journey. `page_cursor.earlier` and `later` page through more. Counts against the limit of 20 requests per minute (answer rate_limited with retry_after_seconds); each call is also one of the plan requests of the daily limit (default 720, answer daily_limit). Answers are cached for 60 seconds; ask every few minutes at most for the same trip.",
     "inputSchema": {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
       "properties": {
@@ -739,7 +752,7 @@
           "type": "string"
         },
         "max_transfers": {
-          "description": "The most transfers.",
+          "description": "The most transfers, like 0 for direct connections only. Default: no\nlimit.",
           "format": "uint32",
           "minimum": 0,
           "type": [
@@ -756,7 +769,7 @@
           "type": "array"
         },
         "page_cursor": {
-          "description": "The page before or after, from `page_cursor` of a result.",
+          "description": "The page before or after: `page_cursor.earlier` or `later` of the\nprevious result, with the same other arguments.",
           "type": [
             "string",
             "null"
@@ -1353,7 +1366,10 @@
       "type": "object"
     },
     "annotations": {
+      "title": "Connections from A to B",
       "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
       "openWorldHint": true
     }
   }
