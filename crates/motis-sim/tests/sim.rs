@@ -2,7 +2,7 @@
 
 use std::time::{Duration, Instant};
 
-use motis::{
+use motis_dev::{
     Client, Error, Geocode, PickupDropoffType, Plan, ReverseGeocode, Stoptimes, TimestampReason,
     Trip,
 };
