@@ -227,6 +227,11 @@ docker run --rm -i -e TRANSITOUS_CONTACT=mailto:you@example.org udondan/transito
 The cache and the usage counter live in `/home/transitous`; mount a volume
 there to keep the counter across containers.
 
+The image is listed in the
+[MCP Registry](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.udondan/transitous)
+as `io.github.udondan/transitous`; clients that install servers from there
+run this image and ask for `TRANSITOUS_CONTACT`.
+
 `mise run docker-build` builds the image from source. For the Docker MCP
 Toolkit, `mise run docker` builds it and adds
 [docker-mcp.yml](https://github.com/udondan/transitous/blob/main/docker-mcp.yml)

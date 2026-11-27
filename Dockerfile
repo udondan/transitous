@@ -32,6 +32,9 @@ FROM alpine:3.24
 
 LABEL com.docker.desktop.mcp="true"
 LABEL com.docker.desktop.mcp.name="transitous"
+# Proves to the MCP Registry that this image belongs to the server of
+# crates/transitous/server.json.
+LABEL io.modelcontextprotocol.server.name="io.github.udondan/transitous"
 
 # apk upgrade pulls fixes for Alpine packages released after the base image.
 # The home directory holds the cache and the usage counter
