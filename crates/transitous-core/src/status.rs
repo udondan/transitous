@@ -582,29 +582,31 @@ mod tests {
         }
     }
 
-    /// The U1 of 07:29 from Frankfurt Römerstadt, cancelled on 2026-11-27,
-    /// as `plan` with `REALTIME_ANNOTATION_ONLY` returned it (trimmed).
+    /// The S1 of 08:23 from Frankfurt Hauptwache, cancelled on 2026-11-27,
+    /// and the S6 after it, 3 minutes late, as `plan` with `REALTIME_ANNOTATION_ONLY`
+    /// returned them (trimmed).
     #[test]
     fn the_recorded_cancellation_is_cancelled_with_realtime() {
         let plan: motis::PlanResponse =
             serde_json::from_str(include_str!("../tests/data/plan-cancelled.json")).unwrap();
-        let now: Timestamp = "2026-11-27T06:12:00Z".parse().unwrap();
+        let now: Timestamp = "2026-11-27T07:13:00Z".parse().unwrap();
         let results: Vec<Evaluation> = plan
             .itineraries
             .iter()
             .map(|itinerary| evaluate(itinerary, now, 2))
             .collect();
-        assert_eq!(results[0].status, Status::Ok);
+        assert_eq!(results[0].status, Status::Cancelled);
         assert_eq!(results[0].realtime, Realtime::Full);
-        assert_eq!(results[1].status, Status::Cancelled);
-        assert_eq!(results[1].realtime, Realtime::Full);
-        assert_eq!(results[1].max_delay_minutes, None);
+        assert_eq!(results[0].max_delay_minutes, None);
         assert_eq!(
-            results[1].reasons,
+            results[0].reasons,
             [Reason::LegCancelled { leg: 0 }],
             "{:?}",
-            plan.itineraries[1].legs
+            plan.itineraries[0].legs
         );
+        assert_eq!(results[1].status, Status::Delayed);
+        assert_eq!(results[1].realtime, Realtime::Full);
+        assert_eq!(results[1].max_delay_minutes, Some(3));
     }
 
     #[test]

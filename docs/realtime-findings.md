@@ -33,14 +33,13 @@ What this means:
 
 ### Confirmed on 2026-11-27
 
-A local observer (stoptimes at Hauptwache, Hbf, Konstablerwache and Römerstadt every 30 minutes, plus a `plan` comparison per new cancelled trip) confirmed the behaviour. Cancelled S1, U8 and U1 trips showed up in `stoptimes`; the `plan` comparison ran for the S1 from Hauptwache (`20261127_06:43_de-DELFI_3490141369`) and the U1 07:29 from Römerstadt towards Ginnheim (`20261127_07:07_de-DELFI_3126800591`), with the same result for both.
+A local observer (stoptimes at four Frankfurt stops, among them Hauptwache, Hauptbahnhof and Konstablerwache, every 30 minutes, plus a `plan` comparison per new cancelled trip) confirmed the behaviour. Cancelled S-Bahn and U-Bahn trips showed up in `stoptimes`; by 07:00 UTC the `plan` comparison had run for six cancelled trips, among them five S-Bahn trains from Hauptwache and Konstablerwache (for example the S1 `20261127_06:43_de-DELFI_3490141369`), with the same result for all.
 
 - In `stoptimes` every cancelled entry had `cancelled: true`, `tripCancelled: true`, `realTime: false` and `pickupType`/`dropoffType` `NOT_ALLOWED`.
 - `plan` from the stop to the next one, two minutes before the scheduled departure:
-  - `REALTIME`: the cancelled trip was missing; for the U1 07:29 the four results were the trains before and after it.
-  - `REALTIME_ANNOTATION_ONLY`: the trip was included (for the U1 as the second result), with `cancelled: true`, `from.cancelled: true`, `pickupType`/`dropoffType` `NOT_ALLOWED` and `realTime: false`.
-- **Consequence:** `realTime: false` on a cancelled ride does not mean that realtime data is missing; the cancellation is realtime data. The status rules therefore neither list `no_realtime` for a cancelled ride nor count it against `realtime`. The trimmed `REALTIME_ANNOTATION_ONLY` response is the fixture `crates/transitous-core/tests/data/plan-cancelled.json`.
-- An app showing Transitous departures at Römerstadt listed the same U1 as "fällt aus", so the data matches what users see.
+  - `REALTIME`: the cancelled trip was missing; the results were the trains before and after it.
+  - `REALTIME_ANNOTATION_ONLY`: the trip was included, with `cancelled: true`, `from.cancelled`/`to.cancelled: true`, `pickupType`/`dropoffType` `NOT_ALLOWED` and `realTime: false`.
+- **Consequence:** `realTime: false` on a cancelled ride does not mean that realtime data is missing; the cancellation is realtime data. The status rules therefore neither list `no_realtime` for a cancelled ride nor count it against `realtime`. A trimmed `REALTIME_ANNOTATION_ONLY` response for the S1 of 08:23 from Hauptwache to Taunusanlage, with the S6 after it, is the fixture `crates/transitous-core/tests/data/plan-cancelled.json`.
 
 ## `arriveBy`
 
