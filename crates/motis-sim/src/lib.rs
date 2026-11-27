@@ -1,17 +1,18 @@
-//! Fake MOTIS 2 server on loopback that serves recorded Transitous responses,
-//! for tests.
+//! Fake [MOTIS 2](https://github.com/motis-project/motis) server on loopback,
+//! for tests of clients of its API.
 //!
-//! The responses come from `fixtures/`, trimmed answers of the live API for
-//! Frankfurt (Main) Hauptbahnhof and Hauptwache. [`Injection`]s change them,
+//! The responses come from `fixtures/`, trimmed answers of the
+//! [Transitous](https://transitous.org) instance of MOTIS for Frankfurt (Main)
+//! Hauptbahnhof and Hauptwache. [`Injection`]s change them,
 //! to produce cancellations, delays and errors on demand. Every request is
 //! recorded, so tests can check what was sent, and that nothing was sent.
 //!
 //! ```no_run
 //! # async fn run() {
-//! use transitous_sim::{Injection, Sim};
+//! use motis_sim::{Injection, Sim};
 //!
 //! let sim = Sim::start().await;
-//! sim.inject(Injection::Cancel { trip_id: transitous_sim::DIRECT_TRIP.into() });
+//! sim.inject(Injection::Cancel { trip_id: motis_sim::DIRECT_TRIP.into() });
 //! // point the client under test at sim.base_url()
 //! assert_eq!(sim.requests().len(), 0);
 //! # }
@@ -46,6 +47,7 @@ pub const CONNECTING_TRIP: &str = "20261126_21:25_de-DELFI_3126800675";
 
 /// The endpoints the sim serves.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum Endpoint {
     Plan,
     Stoptimes,
@@ -88,6 +90,7 @@ impl Endpoint {
 /// A change to the answers of the sim. Injections stay until
 /// [`Sim::clear`].
 #[derive(Debug, Clone, PartialEq)]
+#[non_exhaustive]
 pub enum Injection {
     /// Cancels a trip: its legs, their stops and its departures.
     Cancel { trip_id: String },
@@ -113,6 +116,7 @@ pub enum Injection {
 
 /// A request the sim received.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub struct Recorded {
     pub path: String,
     /// The query parameters, decoded, in the order sent.
@@ -159,20 +163,24 @@ impl Sim {
     ///
     /// If no loopback port can be bound.
     pub async fn start() -> Self {
+        Self::start_on(0).await.expect("a loopback port is free")
+    }
+
+    /// Starts a sim on this port of 127.0.0.1 (0 for a free one), on the
+    /// current Tokio runtime.
+    pub async fn start_on(port: u16) -> std::io::Result<Self> {
         let shared = Shared::default();
         let app = Router::new()
             .fallback(handle)
             .with_state(Arc::clone(&shared));
-        let listener = tokio::net::TcpListener::bind("127.0.0.1:0")
-            .await
-            .expect("a loopback port is free");
-        let address = listener.local_addr().expect("the listener has an address");
+        let listener = tokio::net::TcpListener::bind(("127.0.0.1", port)).await?;
+        let address = listener.local_addr()?;
         let task = tokio::spawn(axum::serve(listener, app).into_future());
-        Self {
+        Ok(Self {
             base_url: format!("http://{address}"),
             shared,
             task,
-        }
+        })
     }
 
     /// The base URL to point a client at.

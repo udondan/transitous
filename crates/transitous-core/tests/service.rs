@@ -6,12 +6,10 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use jiff::Timestamp;
+use motis_sim::{CONNECTING_TRIP, DIRECT_TRIP, Endpoint, FEEDER_TRIP, Injection, Recorded, Sim};
 use transitous_core::model::TripResult;
 use transitous_core::status::{Reason, Side};
 use transitous_core::{Config, DeparturesQuery, Error, Status, StopsQuery, Transitous, TripQuery};
-use transitous_sim::{
-    CONNECTING_TRIP, DIRECT_TRIP, Endpoint, FEEDER_TRIP, Injection, Recorded, Sim,
-};
 
 const CONTACT: &str = "https://github.com/udondan/transitous";
 const HAUPTBAHNHOF: &str = "at-Railway-Current-Reference-Data-2026_de:06412:10:16:16";

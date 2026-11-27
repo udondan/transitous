@@ -9,14 +9,14 @@ license = "Apache-2.0"
 repository = "https://github.com/udondan/transitous"
 authors = ["Daniel Schroeder"]
 
-# Library crates (motis, transitous-core, transitous-sim) use regular version
+# Library crates (motis, transitous-core, motis-sim) use regular version
 # requirements, so their users don't run into version conflicts. The
 # transitous binary declares its own dependencies with exact versions.
 # Cargo.lock pins every build.
 [workspace.dependencies]
 motis = { path = "crates/motis", version = "0.1.0" }
 transitous-core = { path = "crates/transitous-core", version = "0.1.0" }
-transitous-sim = { path = "crates/transitous-sim" }
+motis-sim = { path = "crates/motis-sim" }
 
 [workspace.lints.rust]
 unsafe_code = "forbid"

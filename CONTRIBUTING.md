@@ -13,7 +13,7 @@ make lint test
 
 ## Tests
 
-Tests never call the real Transitous API. They run against `transitous-sim`,
+Tests never call the real Transitous API. They run against `motis-sim`,
 a fake MOTIS server on loopback that serves recorded responses and can inject
 cancellations, delays and errors.
 

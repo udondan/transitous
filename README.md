@@ -272,14 +272,18 @@ Transitous:
 | Crate | crates.io | docs.rs | Purpose |
 | --- | --- | --- | --- |
 | [`motis`](https://github.com/udondan/transitous/tree/main/crates/motis) | [![motis on crates.io][motis-crate-badge]][motis-crate] | [![motis on docs.rs][motis-docs-badge]][motis-docs] | Neutral client for the MOTIS 2 API (`v2.11.4`) |
+| [`motis-sim`](https://github.com/udondan/transitous/tree/main/crates/motis-sim) | [![motis-sim on crates.io][motis-sim-crate-badge]][motis-sim-crate] | [![motis-sim on docs.rs][motis-sim-docs-badge]][motis-sim-docs] | Fake MOTIS server for tests, with recorded responses and injected cancellations, delays and errors |
 | [`transitous-core`](https://github.com/udondan/transitous/tree/main/crates/transitous-core) | [![transitous-core on crates.io][transitous-core-crate-badge]][transitous-core-crate] | [![transitous-core on docs.rs][transitous-core-docs-badge]][transitous-core-docs] | Configuration, usage rules, cache, stop resolution, status and the output model |
-| [`transitous-sim`](https://github.com/udondan/transitous/tree/main/crates/transitous-sim) | – | – | Fake MOTIS server for tests (not published) |
 | [`transitous`](https://github.com/udondan/transitous/tree/main/crates/transitous) | [![transitous on crates.io][transitous-crate-badge]][transitous-crate] | – | The binary: CLI and `transitous mcp` |
 
 [motis-crate-badge]: https://img.shields.io/crates/v/motis?label=
 [motis-crate]: https://crates.io/crates/motis
 [motis-docs-badge]: https://img.shields.io/docsrs/motis?label=
 [motis-docs]: https://docs.rs/motis
+[motis-sim-crate-badge]: https://img.shields.io/crates/v/motis-sim?label=
+[motis-sim-crate]: https://crates.io/crates/motis-sim
+[motis-sim-docs-badge]: https://img.shields.io/docsrs/motis-sim?label=
+[motis-sim-docs]: https://docs.rs/motis-sim
 [transitous-core-crate-badge]: https://img.shields.io/crates/v/transitous-core?label=
 [transitous-core-crate]: https://crates.io/crates/transitous-core
 [transitous-core-docs-badge]: https://img.shields.io/docsrs/transitous-core?label=

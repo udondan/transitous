@@ -31,7 +31,7 @@ exclude_patterns = [
   "**/vendor/**",
   "**/.claude/**",
   # Recorded API responses (JSON), not code.
-  "crates/transitous-sim/fixtures/**",
+  "crates/motis-sim/fixtures/**",
 ]
 
 test_patterns = [

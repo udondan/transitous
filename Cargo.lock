@@ -1223,6 +1223,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "motis-sim"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "form_urlencoded",
+ "jiff",
+ "motis",
+ "serde_json",
+ "tokio",
+]
+
+[[package]]
 name = "multiversion_no_op"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2248,6 +2260,7 @@ dependencies = [
  "clap_complete",
  "jiff",
  "motis",
+ "motis-sim",
  "rmcp",
  "rustls",
  "serde",
@@ -2260,7 +2273,6 @@ dependencies = [
  "tracing",
  "tracing-subscriber",
  "transitous-core",
- "transitous-sim",
 ]
 
 [[package]]
@@ -2270,6 +2282,7 @@ dependencies = [
  "directories",
  "jiff",
  "motis",
+ "motis-sim",
  "schemars",
  "serde",
  "serde_json",
@@ -2278,19 +2291,6 @@ dependencies = [
  "tokio",
  "toml",
  "tracing",
- "transitous-sim",
-]
-
-[[package]]
-name = "transitous-sim"
-version = "0.1.0"
-dependencies = [
- "axum",
- "form_urlencoded",
- "jiff",
- "motis",
- "serde_json",
- "tokio",
 ]
 
 [[package]]
