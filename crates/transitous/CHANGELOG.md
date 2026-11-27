@@ -5,7 +5,7 @@
 
 ### Features
 
-* **transitous:** describe what each MCP tool returns and when to use it ([#29](https://github.com/udondan/transitous/issues/29)) ([e457d3a](https://github.com/udondan/transitous/commit/e457d3a05d5a482432229f5faf0c4c4196f58e7b))
+* describe what each MCP tool returns and when to use it ([#29](https://github.com/udondan/transitous/issues/29)) ([e457d3a](https://github.com/udondan/transitous/commit/e457d3a05d5a482432229f5faf0c4c4196f58e7b))
 
 ## [1.1.0](https://github.com/udondan/transitous/compare/transitous-v1.0.0...transitous-v1.1.0) (2026-11-27)
 
