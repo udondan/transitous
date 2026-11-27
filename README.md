@@ -44,6 +44,7 @@ explains the rules.
 - [Configuration](#configuration)
 - [Usage rules and limits](#usage-rules-and-limits)
 - [Crates](#crates)
+- [Versioning](#versioning)
 - [Data and credits](#data-and-credits)
 
 ## Installation
@@ -303,6 +304,15 @@ Transitous:
 [transitous-core-docs]: https://docs.rs/transitous-core
 [transitous-crate-badge]: https://img.shields.io/crates/v/transitous?label=
 [transitous-crate]: https://crates.io/crates/transitous
+
+## Versioning
+
+`transitous` follows [Semantic Versioning](https://semver.org) from 1.0.0.
+Its public interface is the commands and their options, the MCP tools, the
+JSON and YAML output, the error statuses, the settings and the environment
+variables. Breaking changes to it come with a new major version only; new
+fields in the output can come with any minor version. The text output is
+meant for people and can change at any time.
 
 ## Data and credits
 

@@ -38,7 +38,7 @@ contributors.
 
 ```toml
 [dev-dependencies]
-motis-sim = "0.1"
+motis-sim = "1"
 ```
 
 ```rust,no_run
@@ -70,6 +70,11 @@ motis-sim --port 8080
 It prints `listening on http://127.0.0.1:8080` once it accepts requests and
 ends with status 0 on Ctrl-C (SIGINT). Without `--port` it picks a free
 port. Injections are only available from Rust.
+
+## Versioning
+
+`motis-sim` follows [Semantic Versioning](https://semver.org) from 1.0.0: a
+breaking change of its public API comes with a new major version only.
 
 ## License
 
