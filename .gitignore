@@ -10,3 +10,4 @@ lcov.info
 .qlty/out
 .qlty/plugin_cachedir
 .qlty/results
+__pycache__/

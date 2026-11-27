@@ -65,7 +65,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.OVERRIDE_TOKEN }}
         run: |
-          cp .github/scripts/release-notes-scope.py .github/scripts/release-title.sh "$RUNNER_TEMP/"
+          cp .github/scripts/release_notes.py .github/scripts/release-notes-*.py \
+            .github/scripts/release-title.sh "$RUNNER_TEMP/"
           prs=$(gh pr list -R "$GITHUB_REPOSITORY" --state open \
             --label "autorelease: pending" --json number --jq '.[].number')
           for pr in $prs; do
@@ -73,8 +74,9 @@ jobs:
             git fetch -q origin "$branch"
             git checkout -q -B "$branch" FETCH_HEAD
             gh pr view "$pr" -R "$GITHUB_REPOSITORY" --json body --jq .body |
-              python3 "$RUNNER_TEMP/release-notes-scope.py" body > "$RUNNER_TEMP/body.md"
-            python3 "$RUNNER_TEMP/release-notes-scope.py" changelogs < "$RUNNER_TEMP/body.md"
+              python3 "$RUNNER_TEMP/release-notes-scope.py" |
+              python3 "$RUNNER_TEMP/release-notes-dependencies.py" > "$RUNNER_TEMP/body.md"
+            python3 "$RUNNER_TEMP/release-notes-changelogs.py" < "$RUNNER_TEMP/body.md"
             if ! git diff --quiet; then
               git add crates/*/CHANGELOG.md
               git -c user.name=udondan -c user.email=6443408+udondan@users.noreply.github.com \

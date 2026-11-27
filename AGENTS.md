@@ -41,7 +41,7 @@ Cargo workspace:
   is listed under every crate whose files outside `tests/` it changes. A
   crate released together with one of its workspace dependencies lists that
   dependency's version under "Dependencies", with its entries if it ships
-  with the crate (`.github/scripts/release-notes-scope.py`).
+  with the crate (`.github/scripts/release-notes-*.py`).
 
 ## Commands
 
