@@ -62,6 +62,7 @@ jobs:
       code: ${{ steps.filter.outputs.code }}
       docker: ${{ steps.filter.outputs.docker }}
       actions: ${{ steps.filter.outputs.actions }}
+      tools: ${{ steps.filter.outputs.tools }}
     steps:
       - name: Check turn
         if: needs.boarding-gate.result == 'failure' || needs.boarding-gate.result == 'cancelled'
@@ -90,6 +91,10 @@ jobs:
             actions:
               - .github/**
               - mise.toml
+            tools:
+              - crates/transitous/tests/data/mcp-tools.json
+              - mise.toml
+              - .github/workflows/test.yml
 
   build:
     needs: [boarding-gate, changes]
@@ -259,6 +264,41 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }} # zizmor checks the actions online
 
+  # Lints the MCP tool descriptions with the deterministic checks of Glama's
+  # Tool Definition Quality Score (TDQS). It reads the tool list of the golden
+  # file, which the tests keep equal to what the server sends. Warnings fail
+  # the job, notes only go into the summary.
+  tdqs:
+    name: TDQS
+    needs: [boarding-gate, changes]
+    # Skipped if neither the tool list nor the linter changed.
+    if: ${{ !cancelled() && (needs.changes.result == 'skipped' || (needs.changes.result == 'success' && needs.changes.outputs.tools == 'true')) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Check turn
+        if: needs.boarding-gate.result == 'failure' || needs.boarding-gate.result == 'cancelled'
+        run: exit 1
+
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: jdx/mise-action@924e7c586e33d7d4bae9c14e26c5d22e2beb6e78 # v5.3.0
+        with:
+          install_args: node npm:mcp-tdqs
+
+      - name: Lint the tool descriptions
+        run: |
+          status=0
+          tdqs lint --file crates/transitous/tests/data/mcp-tools.json --server-name transitous \
+            --fail-on warning --format markdown --output tdqs.md || status=$?
+          cat tdqs.md
+          cat tdqs.md >> "$GITHUB_STEP_SUMMARY"
+          exit "$status"
+
   # Builds the image and runs it the way the Docker MCP Toolkit does, through
   # a profile and the gateway. Needs no network: listing the tools sends no
   # request.
@@ -340,7 +380,7 @@ jobs:
   #   anyway, or when build was skipped for lack of changes;
   # - boarding-gate: for pull requests from forks;
   # - changes: outside of pull requests;
-  # - build, docker and actions: when changes found nothing they use.
+  # - build, docker, actions and tdqs: when changes found nothing they use.
   required:
     if: always()
     runs-on: ubuntu-latest
@@ -353,6 +393,7 @@ jobs:
       - coverage
       - docker
       - qlty
+      - tdqs
     steps:
       - name: Check that all jobs succeeded
         env:
@@ -368,7 +409,8 @@ jobs:
                 or (.key == "changes" and ($pr | not))
                 or (.key == "build" and $pr and $changed.code == "false")
                 or (.key == "docker" and $pr and $changed.docker == "false")
-                or (.key == "actions" and $pr and $changed.actions == "false");
+                or (.key == "actions" and $pr and $changed.actions == "false")
+                or (.key == "tdqs" and $pr and $changed.tools == "false");
               to_entries[]
               | select(.value.result != "success" and (.value.result != "skipped" or (may_skip | not)))
               | "\(.key): \(.value.result)"')
