@@ -1,9 +1,11 @@
 # transitous
 
-[![Test](https://github.com/udondan/transitous/actions/workflows/test.yml/badge.svg)](https://github.com/udondan/transitous/actions/workflows/test.yml)
-[![Coverage](https://codecov.io/gh/udondan/transitous/graph/badge.svg)](https://codecov.io/gh/udondan/transitous)
-[![crates.io](https://img.shields.io/crates/v/transitous)](https://crates.io/crates/transitous)
-[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](https://github.com/udondan/transitous/blob/main/LICENSE)
+[![Release](https://img.shields.io/github/v/release/udondan/transitous?filter=transitous-v*&label=release)](https://github.com/udondan/transitous/releases/latest)
+[![Docker](https://img.shields.io/docker/v/udondan/transitous?sort=semver&label=docker)](https://hub.docker.com/r/udondan/transitous)
+[![CI](https://github.com/udondan/transitous/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/udondan/transitous/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/udondan/transitous/graph/badge.svg)](https://codecov.io/gh/udondan/transitous)
+[![Maintainability](https://qlty.sh/gh/udondan/projects/transitous/maintainability.svg)](https://qlty.sh/gh/udondan/projects/transitous)
+[![License](https://img.shields.io/github/license/udondan/transitous)](https://github.com/udondan/transitous/blob/main/LICENSE)
 
 CLI and MCP server for public transport connections and departures, using the
 [Transitous](https://transitous.org) API (MOTIS 2).
@@ -267,12 +269,23 @@ Transitous:
 
 ## Crates
 
-| Crate | Purpose |
-| --- | --- |
-| [`motis`](https://github.com/udondan/transitous/tree/main/crates/motis) | Neutral client for the MOTIS 2 API (`v2.11.4`) |
-| [`transitous-core`](https://github.com/udondan/transitous/tree/main/crates/transitous-core) | Configuration, usage rules, cache, stop resolution, status and the output model |
-| [`transitous-sim`](https://github.com/udondan/transitous/tree/main/crates/transitous-sim) | Fake MOTIS server for tests (not published) |
-| [`transitous`](https://github.com/udondan/transitous/tree/main/crates/transitous) | The binary: CLI and `transitous mcp` |
+| Crate | crates.io | docs.rs | Purpose |
+| --- | --- | --- | --- |
+| [`motis`](https://github.com/udondan/transitous/tree/main/crates/motis) | [![motis on crates.io][motis-crate-badge]][motis-crate] | [![motis on docs.rs][motis-docs-badge]][motis-docs] | Neutral client for the MOTIS 2 API (`v2.11.4`) |
+| [`transitous-core`](https://github.com/udondan/transitous/tree/main/crates/transitous-core) | [![transitous-core on crates.io][transitous-core-crate-badge]][transitous-core-crate] | [![transitous-core on docs.rs][transitous-core-docs-badge]][transitous-core-docs] | Configuration, usage rules, cache, stop resolution, status and the output model |
+| [`transitous-sim`](https://github.com/udondan/transitous/tree/main/crates/transitous-sim) | – | – | Fake MOTIS server for tests (not published) |
+| [`transitous`](https://github.com/udondan/transitous/tree/main/crates/transitous) | [![transitous on crates.io][transitous-crate-badge]][transitous-crate] | – | The binary: CLI and `transitous mcp` |
+
+[motis-crate-badge]: https://img.shields.io/crates/v/motis?label=
+[motis-crate]: https://crates.io/crates/motis
+[motis-docs-badge]: https://img.shields.io/docsrs/motis?label=
+[motis-docs]: https://docs.rs/motis
+[transitous-core-crate-badge]: https://img.shields.io/crates/v/transitous-core?label=
+[transitous-core-crate]: https://crates.io/crates/transitous-core
+[transitous-core-docs-badge]: https://img.shields.io/docsrs/transitous-core?label=
+[transitous-core-docs]: https://docs.rs/transitous-core
+[transitous-crate-badge]: https://img.shields.io/crates/v/transitous?label=
+[transitous-crate]: https://crates.io/crates/transitous
 
 ## Data and credits
 
