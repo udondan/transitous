@@ -1,6 +1,6 @@
 [package]
 name = "transitous-core"
-version = "0.1.0"
+version = "1.0.0"
 description = "Usage rules, stop resolution and connection status for the Transitous API"
 keywords = ["transitous", "transit", "public-transport", "realtime"]
 categories = ["api-bindings"]

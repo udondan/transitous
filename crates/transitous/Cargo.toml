@@ -1,6 +1,6 @@
 [package]
 name = "transitous"
-version = "0.1.0"
+version = "1.0.0"
 description = "CLI and MCP server for public transport connections and departures on the Transitous API, with realtime status"
 keywords = ["transitous", "transit", "public-transport", "mcp", "cli"]
 categories = ["command-line-utilities"]
