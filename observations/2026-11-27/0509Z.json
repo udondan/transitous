@@ -1,0 +1,9 @@
+{
+  "run": "2026-11-27T05:09:58Z",
+  "stops": [],
+  "comparisons": [],
+  "errors": [
+    "geocode: curl (56) CONNECT tunnel failed, response 403 (proxy blocks api.transitous.org)",
+    "stoptimes calls skipped: permission denied by auto-mode classifier; same proxy block"
+  ]
+}
