@@ -5,7 +5,7 @@
 # accepts a version that another run published at the same time.
 set -euo pipefail
 
-CRATES=(motis transitous-core transitous)
+CRATES=(motis motis-sim transitous-core transitous)
 
 # Path of a crate in the sparse index, see
 # https://doc.rust-lang.org/cargo/reference/registry-index.html#index-files

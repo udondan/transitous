@@ -93,10 +93,10 @@
         "crates/transitous-core/tests"
       ]
     },
-    "crates/transitous-sim": {
-      "component": "transitous-sim",
+    "crates/motis-sim": {
+      "component": "motis-sim",
       "exclude-paths": [
-        "crates/transitous-sim/tests"
+        "crates/motis-sim/tests"
       ]
     },
     "crates/transitous": {

@@ -8,6 +8,7 @@
 use std::io::{Read as _, Write as _};
 use std::process::Stdio;
 
+use motis_sim::{DIRECT_TRIP, Injection, Sim};
 use rmcp::model::CallToolRequestParams;
 use rmcp::service::RunningService;
 use rmcp::transport::streamable_http_client::StreamableHttpClientTransportConfig;
@@ -15,7 +16,6 @@ use rmcp::transport::{ConfigureCommandExt as _, StreamableHttpClientTransport, T
 use rmcp::{RoleClient, ServiceExt as _};
 use serde_json::{Value, json};
 use tokio::io::{AsyncBufReadExt as _, BufReader};
-use transitous_sim::{DIRECT_TRIP, Injection, Sim};
 
 const CONTACT: &str = "https://github.com/udondan/transitous";
 const HAUPTBAHNHOF: &str = "at-Railway-Current-Reference-Data-2026_de:06412:10:16:16";

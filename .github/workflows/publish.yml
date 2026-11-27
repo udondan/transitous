@@ -19,7 +19,7 @@ on:
       - motis-v*
       - transitous-v*
       - transitous-core-v*
-      - transitous-sim-v*
+      - motis-sim-v*
   pull_request:
     branches:
       - main
@@ -83,7 +83,7 @@ jobs:
 
       - run: rustup update stable && rustup default stable
 
-      - run: cargo package --locked -p motis -p transitous-core -p transitous
+      - run: cargo package --locked -p motis -p motis-sim -p transitous-core -p transitous
 
   binaries:
     name: Binary ${{ matrix.target }}

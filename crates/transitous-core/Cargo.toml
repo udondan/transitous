@@ -27,7 +27,7 @@ tracing = { version = "0.1.44", default-features = false, features = ["std"] }
 [dev-dependencies]
 tempfile = "=3.27.0"
 tokio = { version = "=1.54.1", features = ["macros", "rt-multi-thread"] }
-transitous-sim.workspace = true
+motis-sim.workspace = true
 
 [lints]
 workspace = true

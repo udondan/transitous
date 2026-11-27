@@ -8,8 +8,8 @@
 use std::path::Path;
 use std::process::{Command, Output};
 
+use motis_sim::{DIRECT_TRIP, Injection, Sim};
 use serde_json::Value;
-use transitous_sim::{DIRECT_TRIP, Injection, Sim};
 
 const CONTACT: &str = "https://github.com/udondan/transitous";
 const HAUPTBAHNHOF: &str = "at-Railway-Current-Reference-Data-2026_de:06412:10:16:16";

@@ -27,6 +27,6 @@ jobs:
           scopes: |
             motis
             transitous-core
-            transitous-sim
+            motis-sim
             transitous
             deps

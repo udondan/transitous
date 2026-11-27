@@ -6,11 +6,11 @@ use motis::{
     Client, Error, Geocode, PickupDropoffType, Plan, ReverseGeocode, Stoptimes, TimestampReason,
     Trip,
 };
-use transitous_sim::{
+use motis_sim::{
     CONNECTING_TRIP, DEPARTURE_TRIP, DIRECT_TRIP, Endpoint, FEEDER_TRIP, Injection, Sim,
 };
 
-const AGENT: &str = "transitous-sim-test";
+const AGENT: &str = "motis-sim-test";
 
 fn client(sim: &Sim) -> Client {
     Client::builder(sim.base_url())
