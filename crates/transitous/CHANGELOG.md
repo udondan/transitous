@@ -5,7 +5,7 @@
 
 ### Features
 
-* **transitous:** publish the MCP server to the MCP Registry ([#25](https://github.com/udondan/transitous/issues/25)) ([59ed2ef](https://github.com/udondan/transitous/commit/59ed2ef0c3f880f2a25652b62d04e31c882e1918))
+* publish the MCP server to the MCP Registry ([#25](https://github.com/udondan/transitous/issues/25)) ([59ed2ef](https://github.com/udondan/transitous/commit/59ed2ef0c3f880f2a25652b62d04e31c882e1918))
 
 ## [1.0.0](https://github.com/udondan/transitous/compare/transitous-v0.1.0...transitous-v1.0.0) (2026-11-27)
 
