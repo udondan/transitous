@@ -8,6 +8,7 @@
 
 [![Release](https://img.shields.io/github/v/release/udondan/transitous?filter=transitous-v*&label=release)](https://github.com/udondan/transitous/releases/latest)
 [![Docker](https://img.shields.io/docker/v/udondan/transitous?sort=semver&label=docker)](https://hub.docker.com/r/udondan/transitous)
+[![udondan/transitous MCP server](https://glama.ai/mcp/servers/udondan/transitous/badges/score.svg)](https://glama.ai/mcp/servers/udondan/transitous)
 [![CI](https://github.com/udondan/transitous/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/udondan/transitous/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/udondan/transitous/graph/badge.svg)](https://codecov.io/gh/udondan/transitous)
 [![Maintainability](https://qlty.sh/gh/udondan/projects/transitous/maintainability.svg)](https://qlty.sh/gh/udondan/projects/transitous)
