@@ -22,3 +22,13 @@
 2026-11-27T06:30:41Z 200 /api/v6/trip?tripId=20261127_07%3A18_de-DELFI_3490142098
 2026-11-27T06:30:41Z 200 /api/v6/plan?fromPlace=de-DELFI_de%3A06412%3A510_G&toPlace=de-DELFI_de%3A06412%3A525&time=2026-11-27T06:37:00Z&numItineraries=4&detailedTransfers=false&realtimeMode=REALTIME
 2026-11-27T06:30:41Z 200 /api/v6/plan?fromPlace=de-DELFI_de%3A06412%3A510_G&toPlace=de-DELFI_de%3A06412%3A525&time=2026-11-27T06:37:00Z&numItineraries=4&detailedTransfers=false&realtimeMode=REALTIME_ANNOTATION_ONLY
+2026-11-27T07:00:06Z 200 /api/v6/stoptimes?stopId=de-DELFI_de%3A06412%3A1_G&n=100
+2026-11-27T07:00:07Z 200 /api/v6/stoptimes?stopId=at-Railway-Current-Reference-Data-2026_de%3A06412%3A10%3A16%3A16&n=100
+2026-11-27T07:00:07Z 200 /api/v6/stoptimes?stopId=de-DELFI_de%3A06412%3A510_G&n=100
+2026-11-27T07:00:07Z 200 /api/v6/stoptimes?stopId=de-DELFI_de%3A06412%3A1366&n=100
+2026-11-27T07:00:07Z 200 /api/v6/trip?tripId=20261127_07%3A43_de-DELFI_3490141367
+2026-11-27T07:00:07Z 200 /api/v6/plan?fromPlace=de-DELFI_de%3A06412%3A1_G&toPlace=de-DELFI_de%3A06412%3A11&time=2026-11-27T07:21:00Z&numItineraries=4&detailedTransfers=false&realtimeMode=REALTIME
+2026-11-27T07:00:08Z 200 /api/v6/plan?fromPlace=de-DELFI_de%3A06412%3A1_G&toPlace=de-DELFI_de%3A06412%3A11&time=2026-11-27T07:21:00Z&numItineraries=4&detailedTransfers=false&realtimeMode=REALTIME_ANNOTATION_ONLY
+2026-11-27T07:00:08Z 200 /api/v6/trip?tripId=20261127_07%3A48_de-DELFI_3490142097
+2026-11-27T07:00:08Z 200 /api/v6/plan?fromPlace=de-DELFI_de%3A06412%3A1_G&toPlace=de-DELFI_de%3A06412%3A510_G&time=2026-11-27T07:06:00Z&numItineraries=4&detailedTransfers=false&realtimeMode=REALTIME
+2026-11-27T07:00:08Z 200 /api/v6/plan?fromPlace=de-DELFI_de%3A06412%3A1_G&toPlace=de-DELFI_de%3A06412%3A510_G&time=2026-11-27T07:06:00Z&numItineraries=4&detailedTransfers=false&realtimeMode=REALTIME_ANNOTATION_ONLY
