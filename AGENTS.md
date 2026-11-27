@@ -32,7 +32,9 @@ Cargo workspace:
   version requirements; the `transitous` binary and dev-dependencies use
   exact versions (`=x.y.z`) for external crates. The crates of the workspace
   come from `[workspace.dependencies]`, whose versions release-please keeps
-  in step with each release.
+  in step with each release. A workspace crate needed by tests only goes
+  under a key other than its name, like `motis_sim`, so that its releases
+  do not release the crates that test with it (see the root `Cargo.toml`).
 - Conventional commits: `feat:`/`fix:` only for changes to shipped code,
   `chore:` for tooling and CI, `build(deps):` for runtime dependency updates.
   A change that belongs to one crate names it as scope, like

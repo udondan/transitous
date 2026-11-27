@@ -16,7 +16,14 @@ authors = ["Daniel Schroeder"]
 [workspace.dependencies]
 motis = { path = "crates/motis", version = "0.1.0" }
 transitous-core = { path = "crates/transitous-core", version = "0.1.0" }
-motis-sim = { path = "crates/motis-sim" }
+
+# Dependencies of the tests only, under a key other than the crate name.
+# Release Please releases every crate that depends on a released crate, and it
+# finds those dependencies by their key, in dev-dependencies too. Under these
+# keys, a release of motis or motis-sim releases no crate that needs them for
+# its tests only. Keep the keys.
+motis_dev = { package = "motis", path = "crates/motis" }
+motis_sim = { package = "motis-sim", path = "crates/motis-sim" }
 
 [workspace.lints.rust]
 unsafe_code = "forbid"
