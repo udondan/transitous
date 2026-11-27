@@ -1051,7 +1051,7 @@
             },
             {
               "const": "none",
-              "description": "No ride.",
+              "description": "No ride, or the connection has no rides.",
               "type": "string"
             }
           ]

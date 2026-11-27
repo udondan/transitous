@@ -27,6 +27,11 @@ disappear from the result instead of being marked.
 Only rides count, which are legs whose mode is transit. Walks have no realtime
 data and cannot be cancelled.
 
+A ride has realtime data if it has `realTime`, or if it or its boarding or
+alighting stop is cancelled. Transitous sends `realTime: false` with every
+cancellation, because a cancelled ride has no realtime times, but the
+cancellation itself is realtime data. Delays count only with `realTime`.
+
 ## Statuses
 
 From most to least important; a connection has the most important status
@@ -52,7 +57,7 @@ included.
 | `transfer_missed` | `unreachable` | The ride leaves before the previous ride arrives plus the scheduled time of the walks in between, both by their actual times. `margin_minutes` is negative. Rides that continue as the same vehicle are no transfer. |
 | `departed` | `unreachable` | The first ride left `minutes_ago` minutes ago, by its actual time. |
 | `delayed` | `delayed` | The first ride departs `minutes` off its schedule (early is negative, any whole minute counts), or the last ride arrives `minutes` late, at least the threshold. |
-| `no_realtime` | `no_realtime` | The ride has no realtime data. It makes the status `no_realtime` only if no ride has any; otherwise it is listed but the status comes from the other reasons. |
+| `no_realtime` | `no_realtime` | The ride has no realtime data (a cancellation counts as realtime data). It makes the status `no_realtime` only if no ride has any; otherwise it is listed but the status comes from the other reasons. |
 
 Delays in the middle of a connection only matter through the transfers: a
 late ride that still makes its transfer changes nothing for the caller.
@@ -63,9 +68,11 @@ default.
 ## Other fields
 
 - `realtime`: `full` if every ride has realtime data, `partial` if some do,
-  `none` if none do.
+  `none` if none do or the connection has no rides, like walking the whole
+  way.
 - `max_delay_minutes`: the largest departure or arrival delay of a ride with
-  realtime data, early being negative. Absent without realtime data.
+  `realTime`, early being negative. Absent without such a ride, so also when
+  the only rides are cancelled.
 - `departure` and `arrival` of the connection, and of each leg: `scheduled`,
   `actual` (the best known time: with realtime data the expected one, else
   the timetable) and `delay_minutes`. The times of the connection come from

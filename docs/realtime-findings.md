@@ -31,6 +31,17 @@ What this means:
 - `REALTIME_ANNOTATION_ONLY` does not show alternatives that exist only because of delays, such as an earlier train running late. `--realtime-routing` switches to `REALTIME` for those cases.
 - Missed transfers are not marked in either mode. They have to be computed from the actual times of consecutive legs.
 
+### Confirmed on 2026-11-27
+
+A local observer (stoptimes at Hauptwache, Hbf, Konstablerwache and Römerstadt every 30 minutes, plus a `plan` comparison per new cancelled trip) confirmed the behaviour. Cancelled S1, U8 and U1 trips showed up in `stoptimes`; the `plan` comparison ran for the S1 from Hauptwache (`20261127_06:43_de-DELFI_3490141369`) and the U1 07:29 from Römerstadt towards Ginnheim (`20261127_07:07_de-DELFI_3126800591`), with the same result for both.
+
+- In `stoptimes` every cancelled entry had `cancelled: true`, `tripCancelled: true`, `realTime: false` and `pickupType`/`dropoffType` `NOT_ALLOWED`.
+- `plan` from the stop to the next one, two minutes before the scheduled departure:
+  - `REALTIME`: the cancelled trip was missing; for the U1 07:29 the four results were the trains before and after it.
+  - `REALTIME_ANNOTATION_ONLY`: the trip was included (for the U1 as the second result), with `cancelled: true`, `from.cancelled: true`, `pickupType`/`dropoffType` `NOT_ALLOWED` and `realTime: false`.
+- **Consequence:** `realTime: false` on a cancelled ride does not mean that realtime data is missing; the cancellation is realtime data. The status rules therefore neither list `no_realtime` for a cancelled ride nor count it against `realtime`. The trimmed `REALTIME_ANNOTATION_ONLY` response is the fixture `crates/transitous-core/tests/data/plan-cancelled.json`.
+- An app showing Transitous departures at Römerstadt listed the same U1 as "fällt aus", so the data matches what users see.
+
 ## `arriveBy`
 
 - `arriveBy=true` with `numItineraries=3` returned 7 itineraries arriving before the deadline, sorted by departure, including ones with transfers.
