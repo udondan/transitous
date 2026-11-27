@@ -1,0 +1,328 @@
+{
+  "run": "2026-11-27T11:30:04Z",
+  "stops": [
+    {
+      "stopId": "de-DELFI_de:06412:1_G",
+      "n": 101,
+      "realtime": 99,
+      "cancelled": 1,
+      "tripCancelled": 1,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 2,
+        "PREDICTED": 8,
+        "PROPAGATED": 91
+      },
+      "cancellations": [
+        {
+          "place": {
+            "name": "Frankfurt (Main) Hauptwache",
+            "stopId": "de-DELFI_de:06412:1_G",
+            "importance": 0.017081359401345253,
+            "lat": 50.113926,
+            "lon": 8.678946999999999,
+            "level": -3,
+            "tz": "Europe/Berlin",
+            "arrival": "2026-11-27T12:22:00Z",
+            "departure": "2026-11-27T12:23:00Z",
+            "scheduledArrival": "2026-11-27T12:22:00Z",
+            "scheduledDeparture": "2026-11-27T12:23:00Z",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "SUBURBAN",
+              "SUBWAY"
+            ]
+          },
+          "mode": "SUBURBAN",
+          "realTime": false,
+          "headsign": "Frankfurt (Main) Höchst Bahnhof",
+          "tripFrom": {
+            "name": "Offenbach (Main)-Offenbach Ost Ostbahnhof",
+            "stopId": "de-DELFI_de:06413:2601",
+            "importance": 0.0035208004992455244,
+            "lat": 50.10271000000001,
+            "lon": 8.784424,
+            "level": 1,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "SUBURBAN",
+              "BUS"
+            ]
+          },
+          "tripTo": {
+            "name": "Frankfurt (Main) Höchst Bahnhof",
+            "stopId": "de-DELFI_de:06412:1008",
+            "importance": 0.004581620451062918,
+            "lat": 50.102634,
+            "lon": 8.542369999999998,
+            "level": 1,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "BUS",
+              "ODM"
+            ]
+          },
+          "agencyId": "12201",
+          "agencyName": "DB Regio AG S-Bahn Rhein-Main",
+          "agencyUrl": "",
+          "routeId": "de-DELFI_de:rmv:00001314:_109",
+          "routeUrl": "",
+          "directionId": "1",
+          "routeColor": "009edd",
+          "routeTextColor": "ffffff",
+          "tripId": "20261127_13:08_de-DELFI_3490141393",
+          "routeType": 109,
+          "routeShortName": "S1",
+          "routeLongName": "",
+          "tripShortName": "036138",
+          "displayName": "S1",
+          "pickupDropoffType": "NOT_ALLOWED",
+          "cancelled": true,
+          "tripCancelled": true,
+          "bikesAllowed": false,
+          "wheelchairAccessible": "NOT_ACCESSIBLE",
+          "reservation": "NONE",
+          "source": "de_DELFI.gtfs.zip/stop_times.txt:52239215:52239227"
+        }
+      ]
+    },
+    {
+      "stopId": "at-Railway-Current-Reference-Data-2026_de:06412:10:16:16",
+      "n": 103,
+      "realtime": 100,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 3,
+        "PREDICTED": 29,
+        "PROPAGATED": 71
+      },
+      "cancellations": []
+    },
+    {
+      "stopId": "de-DELFI_de:06412:510_G",
+      "n": 101,
+      "realtime": 100,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 1,
+        "PREDICTED": 5,
+        "PROPAGATED": 95
+      },
+      "cancellations": []
+    },
+    {
+      "stopId": "de-DELFI_de:06412:1201",
+      "n": 101,
+      "realtime": 97,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 4,
+        "PREDICTED": 19,
+        "PROPAGATED": 78
+      },
+      "cancellations": []
+    }
+  ],
+  "comparisons": [
+    {
+      "tripId": "20261127_13:08_de-DELFI_3490141393",
+      "from": "de-DELFI_de:06412:1_G",
+      "to": "de-DELFI_de:06412:11",
+      "time": "2026-11-27T12:21:00Z",
+      "realtime": [
+        {
+          "startTime": "2026-11-27T12:25:00Z",
+          "endTime": "2026-11-27T12:27:00Z",
+          "legs": [
+            {
+              "displayName": "S6",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_13:04_de-DELFI_3490140200",
+              "startTime": "2026-11-27T12:25:00Z",
+              "scheduledStartTime": "2026-11-27T12:25:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T12:28:00Z",
+          "endTime": "2026-11-27T12:29:00Z",
+          "legs": [
+            {
+              "displayName": "S9",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_13:01_de-DELFI_3490139309",
+              "startTime": "2026-11-27T12:28:00Z",
+              "scheduledStartTime": "2026-11-27T12:28:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T12:30:00Z",
+          "endTime": "2026-11-27T12:31:00Z",
+          "legs": [
+            {
+              "displayName": "S5",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_13:23_de-DELFI_3490136952",
+              "startTime": "2026-11-27T12:30:00Z",
+              "scheduledStartTime": "2026-11-27T12:30:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T12:35:00Z",
+          "endTime": "2026-11-27T12:36:00Z",
+          "legs": [
+            {
+              "displayName": "S3",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_13:28_de-DELFI_3490142592",
+              "startTime": "2026-11-27T12:35:00Z",
+              "scheduledStartTime": "2026-11-27T12:35:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        }
+      ],
+      "annotation_only": [
+        {
+          "startTime": "2026-11-27T12:23:00Z",
+          "endTime": "2026-11-27T12:24:00Z",
+          "legs": [
+            {
+              "displayName": "S1",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_13:08_de-DELFI_3490141393",
+              "startTime": "2026-11-27T12:23:00Z",
+              "scheduledStartTime": "2026-11-27T12:23:00Z",
+              "realTime": false,
+              "cancelled": true,
+              "fromCancelled": true,
+              "pickup": "NOT_ALLOWED",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T12:25:00Z",
+          "endTime": "2026-11-27T12:27:00Z",
+          "legs": [
+            {
+              "displayName": "S6",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_13:04_de-DELFI_3490140200",
+              "startTime": "2026-11-27T12:25:00Z",
+              "scheduledStartTime": "2026-11-27T12:25:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T12:28:00Z",
+          "endTime": "2026-11-27T12:29:00Z",
+          "legs": [
+            {
+              "displayName": "S9",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_13:01_de-DELFI_3490139309",
+              "startTime": "2026-11-27T12:28:00Z",
+              "scheduledStartTime": "2026-11-27T12:28:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T12:30:00Z",
+          "endTime": "2026-11-27T12:31:00Z",
+          "legs": [
+            {
+              "displayName": "S5",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_13:23_de-DELFI_3490136952",
+              "startTime": "2026-11-27T12:30:00Z",
+              "scheduledStartTime": "2026-11-27T12:30:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-27T12:35:00Z",
+          "endTime": "2026-11-27T12:36:00Z",
+          "legs": [
+            {
+              "displayName": "S3",
+              "mode": "SUBURBAN",
+              "tripId": "20261127_13:28_de-DELFI_3490142592",
+              "startTime": "2026-11-27T12:35:00Z",
+              "scheduledStartTime": "2026-11-27T12:35:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        }
+      ],
+      "in_realtime": false,
+      "in_annotation_only": true,
+      "cancelled_realtime": null,
+      "cancelled_annotation_only": true
+    }
+  ],
+  "errors": []
+}
