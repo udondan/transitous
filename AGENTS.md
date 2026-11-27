@@ -39,9 +39,9 @@ Cargo workspace:
   `feat(motis): add the trip endpoint`: it then appears in the release notes
   of that crate only, even when it touches others. Without a scope, a change
   is listed under every crate whose files outside `tests/` it changes. A
-  crate released together with one of its workspace dependencies lists that
-  dependency's version under "Dependencies", with its entries if it ships
-  with the crate (`.github/scripts/release-notes-*.py`).
+  crate released together with a workspace dependency that ships with it
+  lists that dependency's version and entries under "Dependencies"
+  (`.github/scripts/release-notes-*.py`).
 
 ## Commands
 

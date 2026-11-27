@@ -1,15 +1,16 @@
 """Adds the workspace dependencies released in the same pull request.
 
-A crate whose workspace dependency is released in the same pull request gets
-an item for it under "Dependencies": the version, and for a dependency that
-ships with the crate its entries, like
+A crate whose workspace dependency ships with it and is released in the same
+pull request gets an item for it under "Dependencies", with the version and
+the entries of the dependency, like
 
     * transitous-core 0.1.1
       * count cancellations as realtime data (#12) (03aa2af)
 
-A development dependency gets the version only. Release Please releases the
-crate in both cases but leaves its notes empty, because the crates inherit
-the dependencies from [workspace.dependencies] without a version of their own.
+Release Please releases the crate but leaves its notes empty, because the
+crates inherit the dependencies from [workspace.dependencies] without a
+version of their own. Development dependencies do not matter to the users of
+a crate and are left out.
 The items go under an existing "Dependencies" heading or a new one, and a
 second run gives the same result.
 
@@ -31,6 +32,7 @@ from release_notes import (
 )
 
 HEADING = "### Dependencies"
+# Earlier runs also listed development dependencies, with this suffix.
 DEV = " (development dependency)"
 
 
@@ -42,20 +44,22 @@ def entries(lines):
 def items(deps, versions, notes):
     """The items for the dependencies released in the same pull request."""
     out = []
-    released = [d for d in deps if d in versions]
-    for dep in sorted(released, key=lambda d: (deps[d] == "dev", d)):
-        if deps[dep] == "dev":
-            out.append(f"* {dep} {versions[dep]}{DEV}")
-        else:
-            out.append(f"* {dep} {versions[dep]}")
-            out.extend(f"  {line}" for line in entries(notes[dep]))
+    for dep in sorted(d for d in deps if d in versions and deps[d] == "runtime"):
+        out.append(f"* {dep} {versions[dep]}")
+        out.extend(f"  {line}" for line in entries(notes[dep]))
     return out
 
 
 def add(lines, new):
-    """Appends items to the "Dependencies" heading, which it adds if missing."""
+    """Appends items to the "Dependencies" heading, which it adds if missing.
+
+    Also ends the notes with a single line break, which dropped items of an
+    earlier run could leave doubled.
+    """
     while lines and not lines[-1].strip():
         lines = lines[:-1]
+    if not new:
+        return [*lines, ""]
     if HEADING not in lines:
         return [*lines, "", "", HEADING, "", *new, ""]
     end = lines.index(HEADING) + 1
@@ -80,7 +84,7 @@ def main():
     for summary, component, version, _, rest in sections:
         lines = notes[component]
         new = items(workspace_dependencies(paths[component], set(paths)), versions, notes)
-        out.append((summary, component, version, add(lines, new) if new else lines, rest))
+        out.append((summary, component, version, add(lines, new), rest))
     sys.stdout.write(join_body(head, out))
 
 
