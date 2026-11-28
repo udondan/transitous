@@ -1,0 +1,412 @@
+{
+  "run": "2026-11-28T08:00:03Z",
+  "stops": [
+    {
+      "stopId": "de-DELFI_de:06412:1_G",
+      "n": 101,
+      "realtime": 99,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 2,
+        "PREDICTED": 9,
+        "PROPAGATED": 90
+      },
+      "cancellations": []
+    },
+    {
+      "stopId": "at-Railway-Current-Reference-Data-2026_de:06412:10:16:16",
+      "n": 102,
+      "realtime": 95,
+      "cancelled": 1,
+      "tripCancelled": 1,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 7,
+        "PREDICTED": 23,
+        "PROPAGATED": 72
+      },
+      "cancellations": [
+        {
+          "place": {
+            "name": "Frankfurt (Main) Hauptbahnhof",
+            "stopId": "de-DELFI_de:06412:10_G",
+            "importance": 0.032947324216365814,
+            "lat": 50.10668,
+            "lon": 8.662828,
+            "tz": "Europe/Berlin",
+            "departure": "2026-11-28T08:24:00Z",
+            "scheduledDeparture": "2026-11-28T08:24:00Z",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "HIGHSPEED_RAIL",
+              "LONG_DISTANCE",
+              "COACH",
+              "NIGHT_RAIL",
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "SUBWAY",
+              "TRAM",
+              "BUS"
+            ]
+          },
+          "mode": "REGIONAL_RAIL",
+          "realTime": false,
+          "headsign": "Erbach (Odw.) Bahnhof",
+          "tripFrom": {
+            "name": "Frankfurt (Main) Hauptbahnhof",
+            "stopId": "de-DELFI_de:06412:10_G",
+            "importance": 0.032947324216365814,
+            "lat": 50.10668,
+            "lon": 8.662828,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "HIGHSPEED_RAIL",
+              "LONG_DISTANCE",
+              "COACH",
+              "NIGHT_RAIL",
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "SUBWAY",
+              "TRAM",
+              "BUS"
+            ]
+          },
+          "tripTo": {
+            "name": "Erbach (Odw.) Bahnhof",
+            "stopId": "de-DELFI_de:06437:11223",
+            "importance": 0.0005580775323323905,
+            "lat": 49.656710000000004,
+            "lon": 8.989827,
+            "tz": "Europe/Berlin",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "REGIONAL_RAIL",
+              "BUS"
+            ]
+          },
+          "agencyId": "10933",
+          "agencyName": "VIAS Rail GmbH",
+          "agencyUrl": "",
+          "routeId": "de-DELFI_161889_100",
+          "routeUrl": "",
+          "directionId": "0",
+          "routeColor": "ec1f25",
+          "routeTextColor": "ffffff",
+          "tripId": "20261128_09:24_de-DELFI_3490070273",
+          "routeType": 100,
+          "routeShortName": "RB82",
+          "routeLongName": "",
+          "tripShortName": "025163",
+          "displayName": "RB82",
+          "pickupDropoffType": "NOT_ALLOWED",
+          "cancelled": true,
+          "tripCancelled": true,
+          "bikesAllowed": false,
+          "wheelchairAccessible": "NOT_ACCESSIBLE",
+          "reservation": "NONE",
+          "source": "de_DELFI.gtfs.zip/stop_times.txt:50954952:50954968"
+        }
+      ]
+    },
+    {
+      "stopId": "de-DELFI_de:06412:510_G",
+      "n": 101,
+      "realtime": 100,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 1,
+        "PREDICTED": 11,
+        "PROPAGATED": 89
+      },
+      "cancellations": []
+    },
+    {
+      "stopId": "de-DELFI_de:06412:1201",
+      "n": 100,
+      "realtime": 98,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 2,
+        "PREDICTED": 16,
+        "PROPAGATED": 82
+      },
+      "cancellations": []
+    }
+  ],
+  "comparisons": [
+    {
+      "tripId": "20261128_09:24_de-DELFI_3490070273",
+      "from": "de-DELFI_de:06412:10_G",
+      "to": "de-DELFI_de:06411:4720",
+      "time": "2026-11-28T08:22:00Z",
+      "realtime": [
+        {
+          "startTime": "2026-11-28T08:34:00Z",
+          "endTime": "2026-11-28T09:21:00Z",
+          "legs": [
+            {
+              "displayName": "RE60",
+              "mode": "REGIONAL_RAIL",
+              "tripId": "20261128_09:34_de-DELFI_3489855696",
+              "startTime": "2026-11-28T08:34:00Z",
+              "scheduledStartTime": "2026-11-28T08:34:00Z",
+              "realTime": false,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            },
+            {
+              "displayName": "3",
+              "mode": "TRAM",
+              "tripId": "20261128_10:04_de-DELFI_3033906835",
+              "startTime": "2026-11-28T09:04:00Z",
+              "scheduledStartTime": "2026-11-28T09:04:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            },
+            {
+              "displayName": "8",
+              "mode": "TRAM",
+              "tripId": "20261128_09:34_de-DELFI_3033926958",
+              "startTime": "2026-11-28T09:16:00Z",
+              "scheduledStartTime": "2026-11-28T09:16:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T08:42:00Z",
+          "endTime": "2026-11-28T09:26:00Z",
+          "legs": [
+            {
+              "displayName": "ICE 1573",
+              "mode": "HIGHSPEED_RAIL",
+              "tripId": "20261128_04:44_de-DELFI_3490171879",
+              "startTime": "2026-11-28T08:42:00Z",
+              "scheduledStartTime": "2026-11-28T08:42:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            },
+            {
+              "displayName": "R",
+              "mode": "BUS",
+              "tripId": "20261128_10:01_de-DELFI_3189216645",
+              "startTime": "2026-11-28T09:15:00Z",
+              "scheduledStartTime": "2026-11-28T09:15:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T09:06:00Z",
+          "endTime": "2026-11-28T09:36:00Z",
+          "legs": [
+            {
+              "displayName": "RB68",
+              "mode": "REGIONAL_RAIL",
+              "tripId": "20261128_10:06_de-DELFI_3489855520",
+              "startTime": "2026-11-28T09:06:00Z",
+              "scheduledStartTime": "2026-11-28T09:06:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            },
+            {
+              "displayName": "RB75",
+              "mode": "REGIONAL_RAIL",
+              "tripId": "20261128_09:37_de-DELFI_3490113358",
+              "startTime": "2026-11-28T09:31:00Z",
+              "scheduledStartTime": "2026-11-28T09:31:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T09:24:00Z",
+          "endTime": "2026-11-28T09:43:00Z",
+          "legs": [
+            {
+              "displayName": "RB82",
+              "mode": "REGIONAL_RAIL",
+              "tripId": "20261128_10:24_de-DELFI_3490070252",
+              "startTime": "2026-11-28T09:24:00Z",
+              "scheduledStartTime": "2026-11-28T09:24:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        }
+      ],
+      "annotation_only": [
+        {
+          "startTime": "2026-11-28T08:24:00Z",
+          "endTime": "2026-11-28T08:43:00Z",
+          "legs": [
+            {
+              "displayName": "RB82",
+              "mode": "REGIONAL_RAIL",
+              "tripId": "20261128_09:24_de-DELFI_3490070273",
+              "startTime": "2026-11-28T08:24:00Z",
+              "scheduledStartTime": "2026-11-28T08:24:00Z",
+              "realTime": false,
+              "cancelled": true,
+              "fromCancelled": true,
+              "pickup": "NOT_ALLOWED",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T08:34:00Z",
+          "endTime": "2026-11-28T09:21:00Z",
+          "legs": [
+            {
+              "displayName": "RE60",
+              "mode": "REGIONAL_RAIL",
+              "tripId": "20261128_09:34_de-DELFI_3489855696",
+              "startTime": "2026-11-28T08:34:00Z",
+              "scheduledStartTime": "2026-11-28T08:34:00Z",
+              "realTime": false,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            },
+            {
+              "displayName": "3",
+              "mode": "TRAM",
+              "tripId": "20261128_10:04_de-DELFI_3033906835",
+              "startTime": "2026-11-28T09:04:00Z",
+              "scheduledStartTime": "2026-11-28T09:04:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            },
+            {
+              "displayName": "8",
+              "mode": "TRAM",
+              "tripId": "20261128_09:34_de-DELFI_3033926958",
+              "startTime": "2026-11-28T09:16:00Z",
+              "scheduledStartTime": "2026-11-28T09:16:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T08:42:00Z",
+          "endTime": "2026-11-28T09:26:00Z",
+          "legs": [
+            {
+              "displayName": "ICE 1573",
+              "mode": "HIGHSPEED_RAIL",
+              "tripId": "20261128_04:44_de-DELFI_3490171879",
+              "startTime": "2026-11-28T08:42:00Z",
+              "scheduledStartTime": "2026-11-28T08:42:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            },
+            {
+              "displayName": "R",
+              "mode": "BUS",
+              "tripId": "20261128_10:01_de-DELFI_3189216645",
+              "startTime": "2026-11-28T09:15:00Z",
+              "scheduledStartTime": "2026-11-28T09:15:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T09:06:00Z",
+          "endTime": "2026-11-28T09:36:00Z",
+          "legs": [
+            {
+              "displayName": "RB68",
+              "mode": "REGIONAL_RAIL",
+              "tripId": "20261128_10:06_de-DELFI_3489855520",
+              "startTime": "2026-11-28T09:06:00Z",
+              "scheduledStartTime": "2026-11-28T09:06:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            },
+            {
+              "displayName": "RB75",
+              "mode": "REGIONAL_RAIL",
+              "tripId": "20261128_09:37_de-DELFI_3490113358",
+              "startTime": "2026-11-28T09:31:00Z",
+              "scheduledStartTime": "2026-11-28T09:31:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        }
+      ],
+      "in_realtime": false,
+      "in_annotation_only": true,
+      "cancelled_realtime": null,
+      "cancelled_annotation_only": true
+    }
+  ],
+  "errors": []
+}
