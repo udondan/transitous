@@ -1,0 +1,579 @@
+{
+  "run": "2026-11-28T06:00:03Z",
+  "stops": [
+    {
+      "stopId": "de-DELFI_de:06412:1_G",
+      "n": 100,
+      "realtime": 91,
+      "cancelled": 2,
+      "tripCancelled": 2,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 9,
+        "PREDICTED": 7,
+        "PROPAGATED": 84
+      },
+      "cancellations": [
+        {
+          "place": {
+            "name": "Frankfurt (Main) Hauptwache",
+            "stopId": "de-DELFI_de:06412:1:22:4",
+            "parentId": "de-DELFI_de:06412:1",
+            "importance": 0.017081359401345253,
+            "lat": 50.113956,
+            "lon": 8.679179,
+            "level": -4,
+            "tz": "Europe/Berlin",
+            "arrival": "2026-11-28T06:45:00Z",
+            "departure": "2026-11-28T06:45:00Z",
+            "scheduledArrival": "2026-11-28T06:45:00Z",
+            "scheduledDeparture": "2026-11-28T06:45:00Z",
+            "description": "NSüdbahnhof",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "SUBURBAN",
+              "SUBWAY"
+            ]
+          },
+          "mode": "SUBWAY",
+          "realTime": false,
+          "headsign": "Frankfurt (Main) Südbahnhof",
+          "tripFrom": {
+            "name": "Frankfurt (Main) Ginnheim Mitte",
+            "stopId": "de-DELFI_de:06412:1309:7:1",
+            "parentId": "de-DELFI_de:06412:1309",
+            "importance": 0.0028538366314023733,
+            "lat": 50.140186,
+            "lon": 8.646871999999998,
+            "tz": "Europe/Berlin",
+            "scheduledTrack": "3",
+            "track": "3",
+            "description": "U Bahn Gleis 3",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "SUBWAY",
+              "TRAM",
+              "BUS"
+            ]
+          },
+          "tripTo": {
+            "name": "Frankfurt (Main) Südbahnhof",
+            "stopId": "de-DELFI_de:06412:912:7:11",
+            "parentId": "de-DELFI_de:06412:912",
+            "importance": 0.013789508491754532,
+            "lat": 50.099304000000004,
+            "lon": 8.686516000000001,
+            "level": -2,
+            "tz": "Europe/Berlin",
+            "description": "Bahnsteig (U) Ausstieg",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "HIGHSPEED_RAIL",
+              "LONG_DISTANCE",
+              "NIGHT_RAIL",
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "SUBWAY",
+              "TRAM",
+              "BUS"
+            ]
+          },
+          "agencyId": "8639",
+          "agencyName": "Stadtwerke Verkehrsgesellschaft Frankfurt",
+          "agencyUrl": "",
+          "routeId": "de-DELFI_de:rmv:00000895:_1",
+          "routeUrl": "",
+          "directionId": "0",
+          "routeColor": "c52b1e",
+          "routeTextColor": "ffffff",
+          "tripId": "20261128_07:24_de-DELFI_3126801051",
+          "routeType": 1,
+          "routeShortName": "U1",
+          "routeLongName": "",
+          "tripShortName": "10005",
+          "displayName": "U1",
+          "pickupDropoffType": "NOT_ALLOWED",
+          "cancelled": true,
+          "tripCancelled": true,
+          "bikesAllowed": false,
+          "wheelchairAccessible": "NOT_ACCESSIBLE",
+          "reservation": "NONE",
+          "source": "de_DELFI.gtfs.zip/stop_times.txt:7946362:7946381"
+        },
+        {
+          "place": {
+            "name": "Frankfurt (Main) Hauptwache",
+            "stopId": "de-DELFI_de:06412:1:21:3",
+            "parentId": "de-DELFI_de:06412:1",
+            "importance": 0.017081359401345253,
+            "lat": 50.11393,
+            "lon": 8.679333,
+            "level": -4,
+            "tz": "Europe/Berlin",
+            "arrival": "2026-11-28T06:59:00Z",
+            "departure": "2026-11-28T06:59:00Z",
+            "scheduledArrival": "2026-11-28T06:59:00Z",
+            "scheduledDeparture": "2026-11-28T06:59:00Z",
+            "description": "NHeddernheim",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "SUBURBAN",
+              "SUBWAY"
+            ]
+          },
+          "mode": "SUBWAY",
+          "realTime": false,
+          "headsign": "Frankfurt (Main) Ginnheim Mitte",
+          "tripFrom": {
+            "name": "Frankfurt (Main) Südbahnhof",
+            "stopId": "de-DELFI_de:06412:912:7:10",
+            "parentId": "de-DELFI_de:06412:912",
+            "importance": 0.013789508491754532,
+            "lat": 50.099346000000004,
+            "lon": 8.686586000000002,
+            "level": -2,
+            "tz": "Europe/Berlin",
+            "description": "Bahnsteig (U) Einstieg",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "departureTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "HIGHSPEED_RAIL",
+              "LONG_DISTANCE",
+              "NIGHT_RAIL",
+              "REGIONAL_RAIL",
+              "SUBURBAN",
+              "SUBWAY",
+              "TRAM",
+              "BUS"
+            ]
+          },
+          "tripTo": {
+            "name": "Frankfurt (Main) Ginnheim Mitte",
+            "stopId": "de-DELFI_de:06412:1309:7:1",
+            "parentId": "de-DELFI_de:06412:1309",
+            "importance": 0.0028538366314023733,
+            "lat": 50.140186,
+            "lon": 8.646871999999998,
+            "tz": "Europe/Berlin",
+            "scheduledTrack": "3",
+            "track": "3",
+            "description": "U Bahn Gleis 3",
+            "vertexType": "TRANSIT",
+            "pickupType": "NOT_ALLOWED",
+            "dropoffType": "NOT_ALLOWED",
+            "cancelled": true,
+            "arrivalTimestampReason": "NO_RT_DATA",
+            "modes": [
+              "SUBWAY",
+              "TRAM",
+              "BUS"
+            ]
+          },
+          "agencyId": "8639",
+          "agencyName": "Stadtwerke Verkehrsgesellschaft Frankfurt",
+          "agencyUrl": "",
+          "routeId": "de-DELFI_de:rmv:00000895:_1",
+          "routeUrl": "",
+          "directionId": "1",
+          "routeColor": "c52b1e",
+          "routeTextColor": "ffffff",
+          "tripId": "20261128_07:55_de-DELFI_3126800692",
+          "routeType": 1,
+          "routeShortName": "U1",
+          "routeLongName": "",
+          "tripShortName": "10005",
+          "displayName": "U1",
+          "pickupDropoffType": "NOT_ALLOWED",
+          "cancelled": true,
+          "tripCancelled": true,
+          "bikesAllowed": false,
+          "wheelchairAccessible": "NOT_ACCESSIBLE",
+          "reservation": "NONE",
+          "source": "de_DELFI.gtfs.zip/stop_times.txt:7844534:7844553"
+        }
+      ]
+    },
+    {
+      "stopId": "at-Railway-Current-Reference-Data-2026_de:06412:10:16:16",
+      "n": 101,
+      "realtime": 89,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 12,
+        "PREDICTED": 23,
+        "PROPAGATED": 66
+      },
+      "cancellations": []
+    },
+    {
+      "stopId": "de-DELFI_de:06412:510_G",
+      "n": 101,
+      "realtime": 95,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 6,
+        "PREDICTED": 6,
+        "PROPAGATED": 89
+      },
+      "cancellations": []
+    },
+    {
+      "stopId": "de-DELFI_de:06412:1201",
+      "n": 101,
+      "realtime": 93,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 8,
+        "PREDICTED": 16,
+        "PROPAGATED": 77
+      },
+      "cancellations": []
+    }
+  ],
+  "comparisons": [
+    {
+      "tripId": "20261128_07:24_de-DELFI_3126801051",
+      "from": "de-DELFI_de:06412:1:22:4",
+      "to": "de-DELFI_de:06412:4:22:2",
+      "time": "2026-11-28T06:43:00Z",
+      "realtime": [
+        {
+          "startTime": "2026-11-28T06:50:00Z",
+          "endTime": "2026-11-28T06:51:00Z",
+          "legs": [
+            {
+              "displayName": "U2",
+              "mode": "SUBWAY",
+              "tripId": "20261128_07:25_de-DELFI_3106806657",
+              "startTime": "2026-11-28T06:50:00Z",
+              "scheduledStartTime": "2026-11-28T06:50:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T06:55:00Z",
+          "endTime": "2026-11-28T06:56:00Z",
+          "legs": [
+            {
+              "displayName": "U8",
+              "mode": "SUBWAY",
+              "tripId": "20261128_07:34_de-DELFI_3126803101",
+              "startTime": "2026-11-28T06:55:00Z",
+              "scheduledStartTime": "2026-11-28T06:55:00Z",
+              "realTime": false,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T06:57:00Z",
+          "endTime": "2026-11-28T06:58:00Z",
+          "legs": [
+            {
+              "displayName": "U3",
+              "mode": "SUBWAY",
+              "tripId": "20261128_07:20_de-DELFI_3031887592",
+              "startTime": "2026-11-28T06:57:00Z",
+              "scheduledStartTime": "2026-11-28T06:57:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T07:00:00Z",
+          "endTime": "2026-11-28T07:01:00Z",
+          "legs": [
+            {
+              "displayName": "U1",
+              "mode": "SUBWAY",
+              "tripId": "20261128_07:39_de-DELFI_3126801052",
+              "startTime": "2026-11-28T07:00:00Z",
+              "scheduledStartTime": "2026-11-28T07:00:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        }
+      ],
+      "annotation_only": [
+        {
+          "startTime": "2026-11-28T06:45:00Z",
+          "endTime": "2026-11-28T06:46:00Z",
+          "legs": [
+            {
+              "displayName": "U1",
+              "mode": "SUBWAY",
+              "tripId": "20261128_07:24_de-DELFI_3126801051",
+              "startTime": "2026-11-28T06:45:00Z",
+              "scheduledStartTime": "2026-11-28T06:45:00Z",
+              "realTime": false,
+              "cancelled": true,
+              "fromCancelled": true,
+              "pickup": "NOT_ALLOWED",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T06:50:00Z",
+          "endTime": "2026-11-28T06:51:00Z",
+          "legs": [
+            {
+              "displayName": "U2",
+              "mode": "SUBWAY",
+              "tripId": "20261128_07:25_de-DELFI_3106806657",
+              "startTime": "2026-11-28T06:50:00Z",
+              "scheduledStartTime": "2026-11-28T06:50:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T06:55:00Z",
+          "endTime": "2026-11-28T06:56:00Z",
+          "legs": [
+            {
+              "displayName": "U8",
+              "mode": "SUBWAY",
+              "tripId": "20261128_07:34_de-DELFI_3126803101",
+              "startTime": "2026-11-28T06:55:00Z",
+              "scheduledStartTime": "2026-11-28T06:55:00Z",
+              "realTime": false,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T06:57:00Z",
+          "endTime": "2026-11-28T06:58:00Z",
+          "legs": [
+            {
+              "displayName": "U3",
+              "mode": "SUBWAY",
+              "tripId": "20261128_07:20_de-DELFI_3031887592",
+              "startTime": "2026-11-28T06:57:00Z",
+              "scheduledStartTime": "2026-11-28T06:57:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        }
+      ],
+      "in_realtime": false,
+      "in_annotation_only": true,
+      "cancelled_realtime": null,
+      "cancelled_annotation_only": true
+    },
+    {
+      "tripId": "20261128_07:55_de-DELFI_3126800692",
+      "from": "de-DELFI_de:06412:1:21:3",
+      "to": "de-DELFI_de:06412:401:1:1",
+      "time": "2026-11-28T06:57:00Z",
+      "realtime": [
+        {
+          "startTime": "2026-11-28T07:04:00Z",
+          "endTime": "2026-11-28T07:05:00Z",
+          "legs": [
+            {
+              "displayName": "U3",
+              "mode": "SUBWAY",
+              "tripId": "20261128_08:00_de-DELFI_3031887397",
+              "startTime": "2026-11-28T07:04:00Z",
+              "scheduledStartTime": "2026-11-28T07:04:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T07:09:00Z",
+          "endTime": "2026-11-28T07:10:00Z",
+          "legs": [
+            {
+              "displayName": "U2",
+              "mode": "SUBWAY",
+              "tripId": "20261128_08:05_de-DELFI_3106806339",
+              "startTime": "2026-11-28T07:09:00Z",
+              "scheduledStartTime": "2026-11-28T07:09:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T07:14:00Z",
+          "endTime": "2026-11-28T07:15:00Z",
+          "legs": [
+            {
+              "displayName": "U1",
+              "mode": "SUBWAY",
+              "tripId": "20261128_08:10_de-DELFI_3126800693",
+              "startTime": "2026-11-28T07:14:00Z",
+              "scheduledStartTime": "2026-11-28T07:14:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T07:19:00Z",
+          "endTime": "2026-11-28T07:20:00Z",
+          "legs": [
+            {
+              "displayName": "U8",
+              "mode": "SUBWAY",
+              "tripId": "20261128_08:15_de-DELFI_3126802845",
+              "startTime": "2026-11-28T07:19:00Z",
+              "scheduledStartTime": "2026-11-28T07:19:00Z",
+              "realTime": false,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        }
+      ],
+      "annotation_only": [
+        {
+          "startTime": "2026-11-28T06:59:00Z",
+          "endTime": "2026-11-28T07:00:00Z",
+          "legs": [
+            {
+              "displayName": "U1",
+              "mode": "SUBWAY",
+              "tripId": "20261128_07:55_de-DELFI_3126800692",
+              "startTime": "2026-11-28T06:59:00Z",
+              "scheduledStartTime": "2026-11-28T06:59:00Z",
+              "realTime": false,
+              "cancelled": true,
+              "fromCancelled": true,
+              "pickup": "NOT_ALLOWED",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T07:04:00Z",
+          "endTime": "2026-11-28T07:05:00Z",
+          "legs": [
+            {
+              "displayName": "U3",
+              "mode": "SUBWAY",
+              "tripId": "20261128_08:00_de-DELFI_3031887397",
+              "startTime": "2026-11-28T07:04:00Z",
+              "scheduledStartTime": "2026-11-28T07:04:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T07:09:00Z",
+          "endTime": "2026-11-28T07:10:00Z",
+          "legs": [
+            {
+              "displayName": "U2",
+              "mode": "SUBWAY",
+              "tripId": "20261128_08:05_de-DELFI_3106806339",
+              "startTime": "2026-11-28T07:09:00Z",
+              "scheduledStartTime": "2026-11-28T07:09:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        },
+        {
+          "startTime": "2026-11-28T07:14:00Z",
+          "endTime": "2026-11-28T07:15:00Z",
+          "legs": [
+            {
+              "displayName": "U1",
+              "mode": "SUBWAY",
+              "tripId": "20261128_08:10_de-DELFI_3126800693",
+              "startTime": "2026-11-28T07:14:00Z",
+              "scheduledStartTime": "2026-11-28T07:14:00Z",
+              "realTime": true,
+              "cancelled": false,
+              "fromCancelled": false,
+              "pickup": "NORMAL",
+              "alerts": 0
+            }
+          ]
+        }
+      ],
+      "in_realtime": false,
+      "in_annotation_only": true,
+      "cancelled_realtime": null,
+      "cancelled_annotation_only": true
+    }
+  ],
+  "errors": []
+}
