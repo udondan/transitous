@@ -1,0 +1,2 @@
+# Names that clippy::doc_markdown would otherwise want in backticks.
+doc-valid-idents = ["MOTIS", "Transitous", "OpenStreetMap", "GTFS", "GTFS-RT", "OpenAPI", ".."]

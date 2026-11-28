@@ -1,0 +1,88 @@
+---
+name: Release Please
+
+# Opens the release pull request and, once it is merged, creates the tags and
+# draft releases. Releases in this repository are immutable once published, so
+# they start as drafts; the tags start the Publish workflow, which attaches
+# the binaries and publishes the releases.
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # Runs with a personal token: tags created with the GITHUB_TOKEN would
+      # not start the Publish workflow, and commits pushed with it would not
+      # start the checks of the release pull request.
+      - id: release
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          token: ${{ secrets.OVERRIDE_TOKEN }}
+
+      # Release Please bumps the versions in the crate manifests only. The
+      # requirements in the root [workspace.dependencies] and Cargo.lock
+      # follow in a commit on the release pull request. Without a changed
+      # release pull request, the checkout of main provides the scripts.
+      - uses: actions/checkout@v7
+        with: # zizmor: ignore[artipacked] pushes to the release pull request
+          ref: ${{ fromJSON(steps.release.outputs.pr || '{}').headBranchName || github.ref_name }}
+          token: ${{ secrets.OVERRIDE_TOKEN }}
+
+      - if: steps.release.outputs.pr
+        name: Sync the workspace versions
+        run: |
+          rustup update stable
+          rustup default stable
+          bash .github/scripts/sync-workspace-versions.sh
+          if git diff --quiet; then
+            exit 0
+          fi
+          git add Cargo.toml Cargo.lock
+          git -c user.name=udondan -c user.email=6443408+udondan@users.noreply.github.com \
+            commit -m "chore: sync the workspace versions"
+          git push
+
+      # Release Please lists a commit under every crate whose files it
+      # changes. A commit with a crate as scope, like "feat(transitous-core): …",
+      # belongs to the notes of that crate only. A crate released with a
+      # workspace dependency gets that dependency under "Dependencies", which
+      # Release Please leaves empty for inherited dependencies. The body of
+      # the release pull request becomes the notes of the releases, and the
+      # changelogs follow it in a commit on its branch. With several
+      # components, Release Please also titles the pull request "chore:
+      # release main"; name the planned versions instead. The pull request is
+      # found by its label, because Release Please reports it in its outputs
+      # only when it changed it.
+      - name: Scope the notes and name the versions in the title
+        env:
+          GH_TOKEN: ${{ secrets.OVERRIDE_TOKEN }}
+        run: |
+          cp .github/scripts/release_notes.py .github/scripts/release-notes-*.py \
+            .github/scripts/release-title.sh "$RUNNER_TEMP/"
+          prs=$(gh pr list -R "$GITHUB_REPOSITORY" --state open \
+            --label "autorelease: pending" --json number --jq '.[].number')
+          for pr in $prs; do
+            branch=$(gh pr view "$pr" -R "$GITHUB_REPOSITORY" --json headRefName --jq .headRefName)
+            git fetch -q origin "$branch"
+            git checkout -q -B "$branch" FETCH_HEAD
+            gh pr view "$pr" -R "$GITHUB_REPOSITORY" --json body --jq .body |
+              python3 "$RUNNER_TEMP/release-notes-scope.py" |
+              python3 "$RUNNER_TEMP/release-notes-dependencies.py" > "$RUNNER_TEMP/body.md"
+            python3 "$RUNNER_TEMP/release-notes-changelogs.py" < "$RUNNER_TEMP/body.md"
+            if ! git diff --quiet; then
+              git add crates/*/CHANGELOG.md
+              git -c user.name=udondan -c user.email=6443408+udondan@users.noreply.github.com \
+                commit -q -m "chore: scope the changelogs and add released dependencies"
+              git push -q origin "HEAD:$branch"
+            fi
+            title=$(bash "$RUNNER_TEMP/release-title.sh" < "$RUNNER_TEMP/body.md")
+            gh pr edit "$pr" -R "$GITHUB_REPOSITORY" --title "$title" --body-file "$RUNNER_TEMP/body.md"
+          done

@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Checks before a push that the tests cover every changed line, like the patch
+# status of Codecov on the pull request. Install with `make hooks`, skip once
+# with `git push --no-verify`.
+#
+# CI measures on Linux, where llvm-cov counts lines that macOS does not, like
+# error paths after `?` or in `map_err` closures. So the check runs in a Linux
+# container with the current stable toolchain, like CI. Set
+# TRANSITOUS_COVERAGE=native to measure with the local toolchain instead.
+set -euo pipefail
+
+base=origin/main
+merge_base=$(git merge-base "$base" HEAD)
+if git diff --quiet "$merge_base" -- 'crates/*.rs'; then
+    exit 0
+fi
+
+# The report goes to target/lcov.info, with the paths of the working tree.
+root=$(git rev-parse --show-toplevel)
+mkdir -p "$root/target"
+
+if [[ "${TRANSITOUS_COVERAGE:-docker}" == native ]]; then
+    if ! cargo llvm-cov --version >/dev/null 2>&1; then
+        echo "cargo-llvm-cov is not installed, see https://github.com/taiki-e/cargo-llvm-cov" >&2
+        exit 1
+    fi
+    # Coverage needs the component llvm-tools, which rustup provides and some
+    # packaged toolchains lack.
+    cargo=(cargo)
+    if command -v rustup >/dev/null; then
+        cargo=(rustup run stable cargo)
+    fi
+    echo "measuring the coverage of the changes against $base" >&2
+    # Test binaries of earlier builds would add their stale line counts to the
+    # report, so measure from a clean build directory.
+    rm -rf target/llvm-cov-target
+    "${cargo[@]}" llvm-cov --workspace --all-features --lcov --output-path target/lcov.info --quiet
+else
+    if ! docker info >/dev/null 2>&1; then
+        echo "Docker is not running; start it, or set TRANSITOUS_COVERAGE=native" >&2
+        exit 1
+    fi
+    echo "measuring the coverage of the changes against $base on Linux" >&2
+    # The volumes keep the toolchain, cargo-llvm-cov and the build between
+    # runs. Four jobs keep the linker within the memory of the Docker VM.
+    docker run --rm \
+        -v "$root:$root" -w "$root" \
+        -v transitous-coverage-cargo:/usr/local/cargo \
+        -v transitous-coverage-target:/coverage-target \
+        -e CARGO_TARGET_DIR=/coverage-target \
+        -e CARGO_BUILD_JOBS=4 \
+        rust:1 scripts/coverage-linux.sh
+fi
+
+python3 scripts/patch-coverage.py target/lcov.info "$base"

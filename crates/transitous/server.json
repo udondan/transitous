@@ -1,0 +1,35 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.udondan/transitous",
+  "title": "Transitous public transport",
+  "description": "Stops, departures and connections on Transitous, with cancellations, delays and missed transfers",
+  "version": "1.2.0",
+  "repository": {
+    "url": "https://github.com/udondan/transitous",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "oci",
+      "identifier": "docker.io/udondan/transitous:1.0.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "packageArguments": [
+        {
+          "type": "positional",
+          "value": "mcp"
+        }
+      ],
+      "environmentVariables": [
+        {
+          "name": "TRANSITOUS_CONTACT",
+          "description": "Contact for the User-Agent that the Transitous usage rules require: a URL, mailto: URL or email address. Without it, every tool answers contact_missing.",
+          "isRequired": true,
+          "isSecret": false,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,247 @@
+[
+ {
+  "type": "STOP",
+  "name": "Frankfurt (Main) Hauptwache",
+  "id": "de-DELFI_de:06412:1_G",
+  "lat": 50.113926,
+  "lon": 8.678946999999999,
+  "level": -3,
+  "country": "DE",
+  "zip": "60313",
+  "tz": "Europe/Berlin",
+  "areas": [
+   {
+    "name": "Deutschland",
+    "adminLevel": 2,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Hessen",
+    "adminLevel": 4,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Regierungsbezirk Darmstadt",
+    "adminLevel": 5,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Frankfurt am Main",
+    "adminLevel": 6,
+    "matched": false,
+    "unique": true,
+    "default": true
+   },
+   {
+    "name": "Innenstadt 1",
+    "adminLevel": 9,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Innenstadt",
+    "adminLevel": 1E+1,
+    "matched": false,
+    "unique": false,
+    "default": false
+   }
+  ],
+  "score": -29.688060760498047,
+  "modes": [
+   "SUBURBAN",
+   "SUBWAY"
+  ],
+  "importance": 0.017081359401345253
+ },
+ {
+  "type": "STOP",
+  "name": "Frankfurt (Main) Freßgass/Hauptwache",
+  "id": "de-DELFI_de:06412:60854:1:1",
+  "lat": 50.113983,
+  "lon": 8.676466000000001,
+  "country": "DE",
+  "zip": "60313",
+  "tz": "Europe/Berlin",
+  "areas": [
+   {
+    "name": "Deutschland",
+    "adminLevel": 2,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Hessen",
+    "adminLevel": 4,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Regierungsbezirk Darmstadt",
+    "adminLevel": 5,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Frankfurt am Main",
+    "adminLevel": 6,
+    "matched": false,
+    "unique": true,
+    "default": true
+   },
+   {
+    "name": "Innenstadt 1",
+    "adminLevel": 9,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Innenstadt",
+    "adminLevel": 1E+1,
+    "matched": false,
+    "unique": false,
+    "default": false
+   }
+  ],
+  "score": -24.600000381469727,
+  "modes": [
+   "BUS"
+  ],
+  "importance": 0.000001413842142028443
+ },
+ {
+  "type": "STOP",
+  "name": "Frankfurt Hauptbahnhof",
+  "id": "at-Railway-Current-Reference-Data-2026_de:06412:10:16:16",
+  "lat": 50.106293,
+  "lon": 8.661960999999998,
+  "level": 0,
+  "country": "DE",
+  "zip": "60329",
+  "tz": "Europe/Berlin",
+  "areas": [
+   {
+    "name": "Deutschland",
+    "adminLevel": 2,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Hessen",
+    "adminLevel": 4,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Regierungsbezirk Darmstadt",
+    "adminLevel": 5,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Frankfurt am Main",
+    "adminLevel": 6,
+    "matched": false,
+    "unique": true,
+    "default": true
+   },
+   {
+    "name": "Innenstadt 1",
+    "adminLevel": 9,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Gallus",
+    "adminLevel": 1E+1,
+    "matched": false,
+    "unique": false,
+    "default": false
+   }
+  ],
+  "score": -18.244840621948242,
+  "modes": [
+   "HIGHSPEED_RAIL",
+   "LONG_DISTANCE",
+   "COACH",
+   "NIGHT_RAIL",
+   "RIDE_SHARING",
+   "REGIONAL_RAIL",
+   "SUBURBAN",
+   "SUBWAY",
+   "TRAM",
+   "BUS"
+  ],
+  "importance": 0.032942838966846466
+ },
+ {
+  "type": "STOP",
+  "name": "Frankfurt (Oder)",
+  "id": "de-DELFI_de:12053:900360000",
+  "lat": 52.336708,
+  "lon": 14.547146999999999,
+  "level": 1,
+  "country": "DE",
+  "zip": "15230",
+  "tz": "Europe/Berlin",
+  "areas": [
+   {
+    "name": "Deutschland",
+    "adminLevel": 2,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Brandenburg",
+    "adminLevel": 4,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Frankfurt (Oder)",
+    "adminLevel": 6,
+    "matched": false,
+    "unique": true,
+    "default": true
+   },
+   {
+    "name": "Gubener Vorstadt, Innenstadt, Frankfurt (Oder)",
+    "adminLevel": 9,
+    "matched": false,
+    "unique": false,
+    "default": false
+   },
+   {
+    "name": "Innenstadt, Frankfurt (Oder)",
+    "adminLevel": 9,
+    "matched": false,
+    "unique": false,
+    "default": false
+   }
+  ],
+  "score": -15.721665382385254,
+  "modes": [
+   "LONG_DISTANCE",
+   "REGIONAL_RAIL",
+   "TRAM",
+   "BUS"
+  ],
+  "importance": 0.0073959543369710445
+ }
+]

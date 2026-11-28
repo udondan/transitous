@@ -1,0 +1,1376 @@
+[
+  {
+    "name": "transitous_departures",
+    "title": "Departures at a stop",
+    "description": "Lists the next departures, or with `arrivals` the arrivals, at one stop from `time` on: each with mode, line, operator, headsign, planned and realtime time, delay, track, cancellation of the stop or the whole ride, and alerts, and the trip_id for transitous_journey. Use it for what leaves a stop soon; to get from A to B with transfers use transitous_trip, for all stops of one ride transitous_journey. `page_cursor.earlier` and `later` of the result page through more. Counts against the limit of 20 requests per minute (answer rate_limited with retry_after_seconds); answers are cached for 60 seconds.",
+    "inputSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "properties": {
+        "arrivals": {
+          "default": false,
+          "description": "Arrivals instead of departures.",
+          "type": "boolean"
+        },
+        "count": {
+          "description": "How many departures to ask for, up to 100. Default 10. Transitous\ncan return more.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "modes": {
+          "default": [],
+          "description": "Only these modes, like `[\"subway\", \"bus\"]`.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "page_cursor": {
+          "description": "The page before or after: `page_cursor.earlier` or `later` of the\nprevious result, with the same other arguments.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stop": {
+          "description": "The stop: its ID, or a name that fits one stop.",
+          "type": "string"
+        },
+        "time": {
+          "description": "From this time: RFC 3339 with an offset, or HH:MM today or a local\ntime like 2026-11-27T07:50 at the stop. Default now.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "stop"
+      ],
+      "type": "object"
+    },
+    "outputSchema": {
+      "$defs": {
+        "Alert": {
+          "description": "A service alert.",
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "effect": {
+              "description": "Like `NO_SERVICE` or `DETOUR`.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "header": {
+              "type": "string"
+            },
+            "periods": {
+              "description": "When the alert applies.",
+              "items": {
+                "$ref": "#/$defs/Period"
+              },
+              "type": "array"
+            },
+            "severity": {
+              "description": "`INFO`, `WARNING` or `SEVERE`.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "url": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "header"
+          ],
+          "type": "object"
+        },
+        "Attribution": {
+          "description": "The data sources and the terms of Transitous. Keep it with the data.",
+          "properties": {
+            "sources_url": {
+              "description": "The timetable sources and their licenses.",
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            },
+            "usage_rules_url": {
+              "description": "The usage rules of the API.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "text",
+            "sources_url",
+            "usage_rules_url"
+          ],
+          "type": "object"
+        },
+        "Departure": {
+          "description": "A departure or arrival at a stop.",
+          "properties": {
+            "alerts": {
+              "items": {
+                "$ref": "#/$defs/Alert"
+              },
+              "type": "array"
+            },
+            "cancelled": {
+              "description": "Whether this departure or arrival is cancelled.",
+              "type": "boolean"
+            },
+            "headsign": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "line": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "mode": {
+              "type": "string"
+            },
+            "operator": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "realtime": {
+              "type": "boolean"
+            },
+            "stop": {
+              "$ref": "#/$defs/StopEvent",
+              "description": "The stop or platform, with the time of the departure or arrival."
+            },
+            "trip_cancelled": {
+              "description": "Whether the whole trip is cancelled.",
+              "type": "boolean"
+            },
+            "trip_id": {
+              "description": "For `transitous journey`.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "mode",
+            "trip_id",
+            "stop",
+            "realtime",
+            "cancelled",
+            "trip_cancelled"
+          ],
+          "type": "object"
+        },
+        "Location": {
+          "description": "A stop of a connection or departure.",
+          "properties": {
+            "id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        },
+        "PageCursor": {
+          "description": "Cursors for the next page, to pass as `page_cursor`.",
+          "properties": {
+            "earlier": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "later": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "Period": {
+          "description": "A period of an alert. An absent end means until further notice.",
+          "properties": {
+            "end": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "start": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "StopEvent": {
+          "description": "Where a leg starts or ends.",
+          "properties": {
+            "actual": {
+              "description": "The best known time: with realtime data the expected or actual one,\nelse the schedule.",
+              "type": "string"
+            },
+            "cancelled": {
+              "description": "Whether boarding or alighting here is cancelled.",
+              "type": "boolean"
+            },
+            "delay_minutes": {
+              "description": "`actual` minus `scheduled`. Absent without realtime data.",
+              "format": "int64",
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "name": {
+              "type": "string"
+            },
+            "scheduled": {
+              "type": "string"
+            },
+            "scheduled_track": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "track": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "name",
+            "scheduled",
+            "actual",
+            "cancelled"
+          ],
+          "type": "object"
+        }
+      },
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "properties": {
+        "arrivals": {
+          "description": "Whether these are arrivals instead of departures.",
+          "type": "boolean"
+        },
+        "attribution": {
+          "$ref": "#/$defs/Attribution"
+        },
+        "departures": {
+          "items": {
+            "$ref": "#/$defs/Departure"
+          },
+          "type": "array"
+        },
+        "page_cursor": {
+          "$ref": "#/$defs/PageCursor"
+        },
+        "stop": {
+          "$ref": "#/$defs/Location"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "stop",
+        "arrivals",
+        "departures",
+        "page_cursor",
+        "attribution",
+        "warnings"
+      ],
+      "type": "object"
+    },
+    "annotations": {
+      "title": "Departures at a stop",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "transitous_find_stop",
+    "title": "Find a stop",
+    "description": "Searches stops by name, or a part of it, and returns up to `count` matches (default 10, at most 20), each with stop ID, name, area, coordinates and modes; `near` ranks stops close to a place first. Use it to get a stop ID, or when a name is ambiguous: transitous_departures and transitous_trip also take a name that fits one stop, and answer ambiguous_stop with candidates otherwise. Counts against the limit of 20 requests per minute (answer rate_limited with retry_after_seconds); answers are cached for 15 minutes.",
+    "inputSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "properties": {
+        "count": {
+          "description": "The most stops, up to 20. Default 10.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "name": {
+          "description": "The name of the stop, or a part of it, like `Frankfurt Hbf` or\n`Hauptwache`.",
+          "type": "string"
+        },
+        "near": {
+          "description": "Prefer stops near this place, as `LAT,LON` like `50.11,8.68`.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "outputSchema": {
+      "$defs": {
+        "Attribution": {
+          "description": "The data sources and the terms of Transitous. Keep it with the data.",
+          "properties": {
+            "sources_url": {
+              "description": "The timetable sources and their licenses.",
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            },
+            "usage_rules_url": {
+              "description": "The usage rules of the API.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "text",
+            "sources_url",
+            "usage_rules_url"
+          ],
+          "type": "object"
+        },
+        "StopMatch": {
+          "description": "A stop, as found by name.",
+          "properties": {
+            "area": {
+              "description": "The town or district, to tell stops of the same name apart.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "id": {
+              "description": "The ID to pass instead of the name.",
+              "type": "string"
+            },
+            "lat": {
+              "format": "double",
+              "type": "number"
+            },
+            "lon": {
+              "format": "double",
+              "type": "number"
+            },
+            "modes": {
+              "description": "The modes that serve the stop, like `SUBWAY`.",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "lat",
+            "lon",
+            "modes"
+          ],
+          "type": "object"
+        }
+      },
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "properties": {
+        "attribution": {
+          "$ref": "#/$defs/Attribution"
+        },
+        "query": {
+          "type": "string"
+        },
+        "stops": {
+          "items": {
+            "$ref": "#/$defs/StopMatch"
+          },
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "query",
+        "stops",
+        "attribution",
+        "warnings"
+      ],
+      "type": "object"
+    },
+    "annotations": {
+      "title": "Find a stop",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "transitous_journey",
+    "title": "One ride with all stops",
+    "description": "Returns one ride (a vehicle's trip) with line, operator, headsign, whether it is cancelled, its alerts, and every stop with planned and realtime times, delays, tracks and cancelled stops. Takes the trip_id of a departure from transitous_departures or of a leg from transitous_trip. Use it to follow a train along its route or to see where a delay starts. Counts against the limit of 20 requests per minute (answer rate_limited with retry_after_seconds); answers are cached for 60 seconds.",
+    "inputSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "properties": {
+        "trip_id": {
+          "description": "The trip ID, from `trip_id` of a departure of\n`transitous_departures` or a leg of `transitous_trip`, as it is.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "trip_id"
+      ],
+      "type": "object"
+    },
+    "outputSchema": {
+      "$defs": {
+        "Alert": {
+          "description": "A service alert.",
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "effect": {
+              "description": "Like `NO_SERVICE` or `DETOUR`.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "header": {
+              "type": "string"
+            },
+            "periods": {
+              "description": "When the alert applies.",
+              "items": {
+                "$ref": "#/$defs/Period"
+              },
+              "type": "array"
+            },
+            "severity": {
+              "description": "`INFO`, `WARNING` or `SEVERE`.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "url": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "header"
+          ],
+          "type": "object"
+        },
+        "Attribution": {
+          "description": "The data sources and the terms of Transitous. Keep it with the data.",
+          "properties": {
+            "sources_url": {
+              "description": "The timetable sources and their licenses.",
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            },
+            "usage_rules_url": {
+              "description": "The usage rules of the API.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "text",
+            "sources_url",
+            "usage_rules_url"
+          ],
+          "type": "object"
+        },
+        "JourneyStop": {
+          "description": "A stop of a trip.",
+          "properties": {
+            "arrival": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Absent at the first stop."
+            },
+            "cancelled": {
+              "description": "Whether the trip skips this stop.",
+              "type": "boolean"
+            },
+            "departure": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Absent at the last stop."
+            },
+            "id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "name": {
+              "type": "string"
+            },
+            "scheduled_track": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "track": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "name",
+            "cancelled"
+          ],
+          "type": "object"
+        },
+        "Period": {
+          "description": "A period of an alert. An absent end means until further notice.",
+          "properties": {
+            "end": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "start": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "Time": {
+          "description": "A time by the schedule and the expected or actual one.",
+          "properties": {
+            "actual": {
+              "description": "The best known time: with realtime data the expected or actual one,\nelse the schedule.",
+              "type": "string"
+            },
+            "delay_minutes": {
+              "description": "`actual` minus `scheduled`. Absent without realtime data.",
+              "format": "int64",
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "scheduled": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "scheduled",
+            "actual"
+          ],
+          "type": "object"
+        }
+      },
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "properties": {
+        "alerts": {
+          "items": {
+            "$ref": "#/$defs/Alert"
+          },
+          "type": "array"
+        },
+        "attribution": {
+          "$ref": "#/$defs/Attribution"
+        },
+        "cancelled": {
+          "description": "Whether the trip is cancelled.",
+          "type": "boolean"
+        },
+        "headsign": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "line": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "type": "string"
+        },
+        "operator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "realtime": {
+          "type": "boolean"
+        },
+        "stops": {
+          "items": {
+            "$ref": "#/$defs/JourneyStop"
+          },
+          "type": "array"
+        },
+        "trip_id": {
+          "type": "string"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "trip_id",
+        "mode",
+        "realtime",
+        "cancelled",
+        "stops",
+        "attribution",
+        "warnings"
+      ],
+      "type": "object"
+    },
+    "annotations": {
+      "title": "One ride with all stops",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "transitous_trip",
+    "title": "Connections from A to B",
+    "description": "Searches connections between two stops or places, each with departure, arrival, duration, transfers, its legs (with trip_id) and a status: ok, delayed, cancelled, unreachable (a transfer is missed or the first ride has left) or no_realtime, with the reasons. With `arrive_by`, the connections arriving last before `time`, and earlier ones to switch to. Use it to plan or check a route; for one stop's departures use transitous_departures, for one ride with all stops transitous_journey. `page_cursor.earlier` and `later` page through more. Counts against the limit of 20 requests per minute (answer rate_limited with retry_after_seconds); each call is also one of the plan requests of the daily limit (default 720, answer daily_limit). Answers are cached for 60 seconds; ask every few minutes at most for the same trip.",
+    "inputSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "properties": {
+        "arrive_by": {
+          "default": false,
+          "description": "Arrive by `time`. The connections arriving last before it come with\nearlier ones, to switch to.",
+          "type": "boolean"
+        },
+        "count": {
+          "description": "How many connections to ask for, up to 20. Default 5. Transitous\ncan return more; all are returned, so the page cursors skip none.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "from": {
+          "description": "Where from: a stop ID, a stop name that fits one stop, or `LAT,LON`.",
+          "type": "string"
+        },
+        "max_transfers": {
+          "description": "The most transfers, like 0 for direct connections only. Default: no\nlimit.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "modes": {
+          "default": [],
+          "description": "Only these transit modes, like `[\"rail\", \"subway\"]`.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "page_cursor": {
+          "description": "The page before or after: `page_cursor.earlier` or `later` of the\nprevious result, with the same other arguments.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "realtime_routing": {
+          "default": false,
+          "description": "Route on the realtime timetable: cancelled rides and missed transfers\nthen drop out instead of being reported.",
+          "type": "boolean"
+        },
+        "time": {
+          "description": "Depart at this time, or arrive by it with `arrive_by`: RFC 3339 with\nan offset, or HH:MM today or a local time like 2026-11-27T07:50 at the\norigin, or at the destination with `arrive_by`. Default now.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "to": {
+          "description": "Where to, like `from`.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "from",
+        "to"
+      ],
+      "type": "object"
+    },
+    "outputSchema": {
+      "$defs": {
+        "Alert": {
+          "description": "A service alert.",
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "effect": {
+              "description": "Like `NO_SERVICE` or `DETOUR`.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "header": {
+              "type": "string"
+            },
+            "periods": {
+              "description": "When the alert applies.",
+              "items": {
+                "$ref": "#/$defs/Period"
+              },
+              "type": "array"
+            },
+            "severity": {
+              "description": "`INFO`, `WARNING` or `SEVERE`.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "url": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "header"
+          ],
+          "type": "object"
+        },
+        "Attribution": {
+          "description": "The data sources and the terms of Transitous. Keep it with the data.",
+          "properties": {
+            "sources_url": {
+              "description": "The timetable sources and their licenses.",
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            },
+            "usage_rules_url": {
+              "description": "The usage rules of the API.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "text",
+            "sources_url",
+            "usage_rules_url"
+          ],
+          "type": "object"
+        },
+        "Connection": {
+          "description": "A connection with its status.",
+          "properties": {
+            "arrival": {
+              "$ref": "#/$defs/Time"
+            },
+            "departure": {
+              "$ref": "#/$defs/Time"
+            },
+            "duration_minutes": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "legs": {
+              "items": {
+                "$ref": "#/$defs/Leg"
+              },
+              "type": "array"
+            },
+            "max_delay_minutes": {
+              "description": "The largest delay of a ride, at departure or arrival.",
+              "format": "int64",
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "realtime": {
+              "$ref": "#/$defs/Realtime",
+              "description": "Whether the rides have realtime data: all, some or none."
+            },
+            "reasons": {
+              "description": "Why the status is not `ok`, most important first.",
+              "items": {
+                "$ref": "#/$defs/Reason"
+              },
+              "type": "array"
+            },
+            "status": {
+              "$ref": "#/$defs/Status",
+              "description": "What the caller has to know first; see the reasons."
+            },
+            "transfers": {
+              "format": "int64",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "status",
+            "reasons",
+            "realtime",
+            "departure",
+            "arrival",
+            "duration_minutes",
+            "transfers",
+            "legs"
+          ],
+          "type": "object"
+        },
+        "Leg": {
+          "description": "One leg of a connection: a ride or a walk.",
+          "properties": {
+            "alerts": {
+              "items": {
+                "$ref": "#/$defs/Alert"
+              },
+              "type": "array"
+            },
+            "cancelled": {
+              "description": "Whether the trip is cancelled.",
+              "type": "boolean"
+            },
+            "duration_minutes": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "from": {
+              "$ref": "#/$defs/StopEvent"
+            },
+            "headsign": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "line": {
+              "description": "The line, like `U5`.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "mode": {
+              "description": "Like `SUBWAY`, `BUS` or `WALK`.",
+              "type": "string"
+            },
+            "operator": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "realtime": {
+              "description": "Whether realtime data exists for this leg.",
+              "type": "boolean"
+            },
+            "stay_seated": {
+              "description": "Whether passengers stay in the vehicle from the previous leg.",
+              "type": "boolean"
+            },
+            "to": {
+              "$ref": "#/$defs/StopEvent"
+            },
+            "trip_id": {
+              "description": "For `transitous journey`.",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "mode",
+            "from",
+            "to",
+            "duration_minutes",
+            "realtime",
+            "cancelled"
+          ],
+          "type": "object"
+        },
+        "Location": {
+          "description": "A stop of a connection or departure.",
+          "properties": {
+            "id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "type": "object"
+        },
+        "PageCursor": {
+          "description": "Cursors for the next page, to pass as `page_cursor`.",
+          "properties": {
+            "earlier": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "later": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "Period": {
+          "description": "A period of an alert. An absent end means until further notice.",
+          "properties": {
+            "end": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "start": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "Realtime": {
+          "description": "How much of a connection has realtime data.",
+          "oneOf": [
+            {
+              "const": "full",
+              "description": "Every ride.",
+              "type": "string"
+            },
+            {
+              "const": "partial",
+              "description": "Some rides.",
+              "type": "string"
+            },
+            {
+              "const": "none",
+              "description": "No ride, or the connection has no rides.",
+              "type": "string"
+            }
+          ]
+        },
+        "Reason": {
+          "description": "Why a connection has its status. `leg` is the index in `legs`.",
+          "oneOf": [
+            {
+              "description": "The trip of the leg is cancelled.",
+              "properties": {
+                "kind": {
+                  "const": "leg_cancelled",
+                  "type": "string"
+                },
+                "leg": {
+                  "format": "uint",
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "kind",
+                "leg"
+              ],
+              "type": "object"
+            },
+            {
+              "description": "Boarding (`departure`) or alighting (`arrival`) is not possible.",
+              "properties": {
+                "kind": {
+                  "const": "stop_cancelled",
+                  "type": "string"
+                },
+                "leg": {
+                  "format": "uint",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "side": {
+                  "$ref": "#/$defs/Side"
+                }
+              },
+              "required": [
+                "kind",
+                "leg",
+                "side"
+              ],
+              "type": "object"
+            },
+            {
+              "description": "The ride of `leg` leaves before the previous ride arrives plus the\nwalk in between. `margin_minutes` is negative.",
+              "properties": {
+                "kind": {
+                  "const": "transfer_missed",
+                  "type": "string"
+                },
+                "leg": {
+                  "format": "uint",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "margin_minutes": {
+                  "format": "int64",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "kind",
+                "leg",
+                "margin_minutes"
+              ],
+              "type": "object"
+            },
+            {
+              "description": "The first ride has left already.",
+              "properties": {
+                "kind": {
+                  "const": "departed",
+                  "type": "string"
+                },
+                "leg": {
+                  "format": "uint",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "minutes_ago": {
+                  "format": "int64",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "kind",
+                "leg",
+                "minutes_ago"
+              ],
+              "type": "object"
+            },
+            {
+              "description": "The ride is late (positive) or early (negative).",
+              "properties": {
+                "kind": {
+                  "const": "delayed",
+                  "type": "string"
+                },
+                "leg": {
+                  "format": "uint",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "minutes": {
+                  "format": "int64",
+                  "type": "integer"
+                },
+                "side": {
+                  "$ref": "#/$defs/Side"
+                }
+              },
+              "required": [
+                "kind",
+                "leg",
+                "side",
+                "minutes"
+              ],
+              "type": "object"
+            },
+            {
+              "description": "The ride has no realtime data.",
+              "properties": {
+                "kind": {
+                  "const": "no_realtime",
+                  "type": "string"
+                },
+                "leg": {
+                  "format": "uint",
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "kind",
+                "leg"
+              ],
+              "type": "object"
+            }
+          ]
+        },
+        "Side": {
+          "description": "Where at a stop.",
+          "enum": [
+            "departure",
+            "arrival"
+          ],
+          "type": "string"
+        },
+        "Status": {
+          "description": "What the caller has to know first, from most to least important.",
+          "oneOf": [
+            {
+              "const": "cancelled",
+              "description": "A ride, or boarding or alighting at a stop of it, is cancelled.",
+              "type": "string"
+            },
+            {
+              "const": "unreachable",
+              "description": "A transfer cannot be made any more, or the first ride has left.",
+              "type": "string"
+            },
+            {
+              "const": "delayed",
+              "description": "The arrival is late by at least the threshold, or the departure is\noff by a minute or more.",
+              "type": "string"
+            },
+            {
+              "const": "no_realtime",
+              "description": "No ride has realtime data: the times are the schedule.",
+              "type": "string"
+            },
+            {
+              "const": "ok",
+              "description": "As planned, as far as the realtime data tells.",
+              "type": "string"
+            }
+          ]
+        },
+        "StopEvent": {
+          "description": "Where a leg starts or ends.",
+          "properties": {
+            "actual": {
+              "description": "The best known time: with realtime data the expected or actual one,\nelse the schedule.",
+              "type": "string"
+            },
+            "cancelled": {
+              "description": "Whether boarding or alighting here is cancelled.",
+              "type": "boolean"
+            },
+            "delay_minutes": {
+              "description": "`actual` minus `scheduled`. Absent without realtime data.",
+              "format": "int64",
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "name": {
+              "type": "string"
+            },
+            "scheduled": {
+              "type": "string"
+            },
+            "scheduled_track": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "track": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "name",
+            "scheduled",
+            "actual",
+            "cancelled"
+          ],
+          "type": "object"
+        },
+        "Time": {
+          "description": "A time by the schedule and the expected or actual one.",
+          "properties": {
+            "actual": {
+              "description": "The best known time: with realtime data the expected or actual one,\nelse the schedule.",
+              "type": "string"
+            },
+            "delay_minutes": {
+              "description": "`actual` minus `scheduled`. Absent without realtime data.",
+              "format": "int64",
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "scheduled": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "scheduled",
+            "actual"
+          ],
+          "type": "object"
+        }
+      },
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "properties": {
+        "attribution": {
+          "$ref": "#/$defs/Attribution"
+        },
+        "connections": {
+          "description": "Sorted by departure.",
+          "items": {
+            "$ref": "#/$defs/Connection"
+          },
+          "type": "array"
+        },
+        "from": {
+          "$ref": "#/$defs/Location"
+        },
+        "page_cursor": {
+          "$ref": "#/$defs/PageCursor"
+        },
+        "to": {
+          "$ref": "#/$defs/Location"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "from",
+        "to",
+        "connections",
+        "page_cursor",
+        "attribution",
+        "warnings"
+      ],
+      "type": "object"
+    },
+    "annotations": {
+      "title": "Connections from A to B",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  }
+]

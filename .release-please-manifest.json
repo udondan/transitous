@@ -1,0 +1,6 @@
+{
+  "crates/motis": "1.0.0",
+  "crates/transitous-core": "1.0.0",
+  "crates/motis-sim": "1.0.0",
+  "crates/transitous": "1.2.0"
+}
