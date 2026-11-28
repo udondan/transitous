@@ -1,0 +1,62 @@
+{
+  "run": "2026-11-28T13:00:08Z",
+  "stops": [
+    {
+      "stopId": "de-DELFI_de:06412:1_G",
+      "n": 100,
+      "realtime": 99,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 1,
+        "PREDICTED": 12,
+        "PROPAGATED": 87
+      },
+      "cancellations": []
+    },
+    {
+      "stopId": "at-Railway-Current-Reference-Data-2026_de:06412:10:16:16",
+      "n": 100,
+      "realtime": 96,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 4,
+        "PREDICTED": 20,
+        "PROPAGATED": 76
+      },
+      "cancellations": []
+    },
+    {
+      "stopId": "de-DELFI_de:06412:510_G",
+      "n": 101,
+      "realtime": 101,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "PREDICTED": 12,
+        "PROPAGATED": 89
+      },
+      "cancellations": []
+    },
+    {
+      "stopId": "de-DELFI_de:06412:1201",
+      "n": 100,
+      "realtime": 97,
+      "cancelled": 0,
+      "tripCancelled": 0,
+      "withAlerts": 0,
+      "reasons": {
+        "NO_RT_DATA": 3,
+        "PREDICTED": 17,
+        "PROPAGATED": 80
+      },
+      "cancellations": []
+    }
+  ],
+  "comparisons": [],
+  "errors": []
+}
